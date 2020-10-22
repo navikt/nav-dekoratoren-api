@@ -11,7 +11,7 @@ import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenService
 import no.nav.personbruker.innloggingsstatus.openam.OpenAMTokenInfo
 import no.nav.personbruker.innloggingsstatus.openam.OpenAMTokenService
 import no.nav.personbruker.innloggingsstatus.user.SubjectNameService
-import org.amshove.kluent.`should equal`
+import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 
@@ -49,9 +49,9 @@ internal class AuthTokenServiceTest {
 
         val subjectInfo = runBlocking { authTokenService.getAuthenticatedUserInfo(call) }
 
-        subjectInfo.authenticated `should equal` true
-        subjectInfo.name `should equal` subject1Name
-        subjectInfo.securityLevel `should equal` "3"
+        subjectInfo.authenticated `should be equal to` true
+        subjectInfo.name `should be equal to` subject1Name
+        subjectInfo.securityLevel `should be equal to` "3"
     }
 
     @Test
@@ -68,9 +68,9 @@ internal class AuthTokenServiceTest {
 
         val subjectInfo = runBlocking { authTokenService.getAuthenticatedUserInfo(call) }
 
-        subjectInfo.authenticated `should equal` true
-        subjectInfo.name `should equal` subject1Name
-        subjectInfo.securityLevel `should equal` "3"
+        subjectInfo.authenticated `should be equal to` true
+        subjectInfo.name `should be equal to` subject1Name
+        subjectInfo.securityLevel `should be equal to` "3"
     }
 
     @Test
@@ -82,9 +82,9 @@ internal class AuthTokenServiceTest {
 
         val subjectInfo = runBlocking { authTokenService.getAuthenticatedUserInfo(call) }
 
-        subjectInfo.authenticated `should equal` false
-        subjectInfo.name `should equal` null
-        subjectInfo.securityLevel `should equal` null
+        subjectInfo.authenticated `should be equal to` false
+        subjectInfo.name `should be equal to` null
+        subjectInfo.securityLevel `should be equal to` null
     }
 
     @Test
@@ -109,9 +109,9 @@ internal class AuthTokenServiceTest {
 
         val subjectInfo = runBlocking { authTokenService.getAuthenticatedUserInfo(call) }
 
-        subjectInfo.authenticated `should equal` true
-        subjectInfo.name `should equal` subject1Name
-        subjectInfo.securityLevel `should equal` "4"
+        subjectInfo.authenticated `should be equal to` true
+        subjectInfo.name `should be equal to` subject1Name
+        subjectInfo.securityLevel `should be equal to` "4"
     }
 
     @Test
@@ -136,9 +136,9 @@ internal class AuthTokenServiceTest {
 
         val subjectInfo = runBlocking { authTokenService.getAuthenticatedUserInfo(call) }
 
-        subjectInfo.authenticated `should equal` true
-        subjectInfo.name `should equal` subject1Name
-        subjectInfo.securityLevel `should equal` "4"
+        subjectInfo.authenticated `should be equal to` true
+        subjectInfo.name `should be equal to` subject1Name
+        subjectInfo.securityLevel `should be equal to` "4"
     }
 
     @Test
@@ -163,9 +163,9 @@ internal class AuthTokenServiceTest {
 
         val subjectInfo = runBlocking { authTokenService.getAuthenticatedUserInfo(call) }
 
-        subjectInfo.authenticated `should equal` false
-        subjectInfo.name `should equal` null
-        subjectInfo.securityLevel `should equal` null
+        subjectInfo.authenticated `should be equal to` false
+        subjectInfo.name `should be equal to` null
+        subjectInfo.securityLevel `should be equal to` null
     }
 
     @Test
@@ -182,9 +182,9 @@ internal class AuthTokenServiceTest {
 
         val subjectInfo = runBlocking { authTokenService.getAuthenticatedUserInfo(call) }
 
-        subjectInfo.authenticated `should equal` false
-        subjectInfo.name `should equal` null
-        subjectInfo.securityLevel `should equal` null
+        subjectInfo.authenticated `should be equal to` false
+        subjectInfo.name `should be equal to` null
+        subjectInfo.securityLevel `should be equal to` null
     }
 
     @Test
@@ -203,9 +203,9 @@ internal class AuthTokenServiceTest {
 
         val subjectInfo = runBlocking { authTokenService.getAuthenticatedUserInfo(call) }
 
-        subjectInfo.authenticated `should equal` false
-        subjectInfo.name `should equal` null
-        subjectInfo.securityLevel `should equal` null
+        subjectInfo.authenticated `should be equal to` false
+        subjectInfo.name `should be equal to` null
+        subjectInfo.securityLevel `should be equal to` null
     }
 
 }

@@ -5,7 +5,7 @@ import io.ktor.util.KtorExperimentalAPI
 import io.mockk.every
 import io.mockk.mockk
 import no.nav.personbruker.innloggingsstatus.config.Environment
-import org.amshove.kluent.`should equal`
+import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should throw`
 import org.amshove.kluent.invoking
 import org.junit.jupiter.api.Test
@@ -37,10 +37,10 @@ internal class OidcTokenServiceTest {
 
         val oidcTokenInfo = oidcTokenService.getOidcToken(call)
 
-        oidcTokenInfo?.subject `should equal` subject
-        oidcTokenInfo?.authLevel `should equal` level
-        oidcTokenInfo?.issueTime?.toEpochSecond(ZoneOffset.UTC) `should equal` issueTime.toEpochSecond(ZoneOffset.UTC)
-        oidcTokenInfo?.expiryTime?.toEpochSecond(ZoneOffset.UTC) `should equal` expiryTime.toEpochSecond(ZoneOffset.UTC)
+        oidcTokenInfo?.subject `should be equal to` subject
+        oidcTokenInfo?.authLevel `should be equal to` level
+        oidcTokenInfo?.issueTime?.toEpochSecond(ZoneOffset.UTC) `should be equal to` issueTime.toEpochSecond(ZoneOffset.UTC)
+        oidcTokenInfo?.expiryTime?.toEpochSecond(ZoneOffset.UTC) `should be equal to` expiryTime.toEpochSecond(ZoneOffset.UTC)
     }
 
     @Test
@@ -57,10 +57,10 @@ internal class OidcTokenServiceTest {
 
         val oidcTokenInfo = oidcTokenService.getOidcToken(call)
 
-        oidcTokenInfo?.subject `should equal` subject
-        oidcTokenInfo?.authLevel `should equal` level
-        oidcTokenInfo?.issueTime?.toEpochSecond(ZoneOffset.UTC) `should equal` issueTime.toEpochSecond(ZoneOffset.UTC)
-        oidcTokenInfo?.expiryTime?.toEpochSecond(ZoneOffset.UTC) `should equal` expiryTime.toEpochSecond(ZoneOffset.UTC)
+        oidcTokenInfo?.subject `should be equal to` subject
+        oidcTokenInfo?.authLevel `should be equal to` level
+        oidcTokenInfo?.issueTime?.toEpochSecond(ZoneOffset.UTC) `should be equal to` issueTime.toEpochSecond(ZoneOffset.UTC)
+        oidcTokenInfo?.expiryTime?.toEpochSecond(ZoneOffset.UTC) `should be equal to` expiryTime.toEpochSecond(ZoneOffset.UTC)
     }
 
 

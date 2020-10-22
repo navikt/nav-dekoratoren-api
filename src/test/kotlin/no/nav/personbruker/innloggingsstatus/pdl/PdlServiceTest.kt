@@ -6,7 +6,7 @@ import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import no.nav.personbruker.innloggingsstatus.sts.STSException
 import no.nav.personbruker.innloggingsstatus.sts.StsService
-import org.amshove.kluent.`should equal`
+import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.Test
 
 internal class PdlServiceTest {
@@ -29,7 +29,7 @@ internal class PdlServiceTest {
 
         val response = runBlocking { pdlService.getSubjectName(ident) }
 
-        response `should equal` null
+        response `should be equal to` null
     }
 
     @Test
@@ -40,7 +40,7 @@ internal class PdlServiceTest {
 
         val response = runBlocking { pdlService.getSubjectName(ident) }
 
-        response `should equal` null
+        response `should be equal to` null
         coVerify(exactly = 1) { stsService.invalidateToken() }
     }
 
@@ -51,7 +51,7 @@ internal class PdlServiceTest {
 
         val response = runBlocking { pdlService.getSubjectName(ident) }
 
-        response `should equal` null
+        response `should be equal to` null
         coVerify(exactly = 0) { stsService.invalidateToken() }
     }
 
@@ -64,8 +64,8 @@ internal class PdlServiceTest {
 
         val response = runBlocking { pdlService.getSubjectName(ident) }
 
-        response?.fornavn `should equal` fornavn
-        response?.mellomnavn `should equal` mellomnavn
-        response?.etternavn `should equal` etternavn
+        response?.fornavn `should be equal to` fornavn
+        response?.mellomnavn `should be equal to` mellomnavn
+        response?.etternavn `should be equal to` etternavn
     }
 }

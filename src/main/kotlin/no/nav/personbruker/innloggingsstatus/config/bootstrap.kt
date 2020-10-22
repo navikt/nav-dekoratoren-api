@@ -26,6 +26,13 @@ fun Application.mainModule() {
 
     val environment = applicationContext.environment
 
+    install(MaskOriginSubDomain) {
+        host(
+            host = environment.corsAllowedOrigins,
+            schemes = environment.corsAllowedSchemes
+        )
+    }
+
     install(CORS) {
         host(
             host = environment.corsAllowedOrigins,

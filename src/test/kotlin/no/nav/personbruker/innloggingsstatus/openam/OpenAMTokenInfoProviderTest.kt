@@ -3,7 +3,7 @@ package no.nav.personbruker.innloggingsstatus.openam
 import io.mockk.*
 import kotlinx.coroutines.runBlocking
 import no.nav.personbruker.innloggingsstatus.cache.MockedEvictingCacheFactory
-import org.amshove.kluent.`should equal`
+import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 
@@ -32,8 +32,8 @@ internal class OpenAMTokenInfoProviderTest {
 
         val result = runBlocking { nonCachingProvider.getTokenInfo(essoToken) }
 
-        result?.subject `should equal` subject
-        result?.authLevel `should equal` authLevel
+        result?.subject `should be equal to` subject
+        result?.authLevel `should be equal to` authLevel
     }
 
     @Test
@@ -43,8 +43,8 @@ internal class OpenAMTokenInfoProviderTest {
 
         val result = runBlocking { cachingProvider.getTokenInfo(essoToken) }
 
-        result?.subject `should equal` subject
-        result?.authLevel `should equal` authLevel
+        result?.subject `should be equal to` subject
+        result?.authLevel `should be equal to` authLevel
 
         coVerifyOrder {
             shallowCache.getEntry(essoToken, any())
@@ -58,7 +58,7 @@ internal class OpenAMTokenInfoProviderTest {
 
         val result = runBlocking { nonCachingProvider.getTokenInfo(essoToken) }
 
-        result `should equal` null
+        result `should be equal to` null
     }
 
     @Test
@@ -67,7 +67,7 @@ internal class OpenAMTokenInfoProviderTest {
 
         val result = runBlocking { cachingProvider.getTokenInfo(essoToken) }
 
-        result `should equal` null
+        result `should be equal to` null
 
         coVerifyOrder {
             shallowCache.getEntry(essoToken, any())

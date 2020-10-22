@@ -7,7 +7,7 @@ import no.nav.personbruker.dittnav.common.util.cache.EvictingCache
 import no.nav.personbruker.innloggingsstatus.cache.MockedEvictingCacheFactory
 import no.nav.personbruker.innloggingsstatus.pdl.PdlService
 import no.nav.personbruker.innloggingsstatus.pdl.query.PdlNavn
-import org.amshove.kluent.`should equal`
+import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.Test
 
 internal class SubjectNameServiceTest {
@@ -29,7 +29,7 @@ internal class SubjectNameServiceTest {
 
         val result = runBlocking { subjectNameService.getSubjectName(subject) }
 
-        result `should equal` subject
+        result `should be equal to` subject
     }
 
     @Test
@@ -40,7 +40,7 @@ internal class SubjectNameServiceTest {
 
         val result = runBlocking { subjectNameService.getSubjectName(subject) }
 
-        result `should equal` "$fornavn $mellomnavn $etternavn"
+        result `should be equal to` "$fornavn $mellomnavn $etternavn"
     }
 
     @Test
@@ -51,7 +51,7 @@ internal class SubjectNameServiceTest {
 
         val result = runBlocking { subjectNameService.getSubjectName(subject) }
 
-        result `should equal` "$fornavn $etternavn"
+        result `should be equal to` "$fornavn $etternavn"
     }
 
     @Test
@@ -62,7 +62,7 @@ internal class SubjectNameServiceTest {
 
         val result = runBlocking { subjectNameService.getSubjectName(subject) }
 
-        result `should equal` "$fornavn $etternavn"
+        result `should be equal to` "$fornavn $etternavn"
     }
 
 }
