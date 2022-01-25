@@ -29,11 +29,13 @@ internal class OidcTokenServiceTest {
         val level = 3
         val issueTime = LocalDateTime.now()
         val expiryTime = issueTime.plusHours(1)
+        val issuer = "issuer"
 
         val jwtToken = JwtTokenObjectMother.createJwtToken(subject, level, issueTime, expiryTime, identityClaim = "sub")
 
         every { environment.identityClaim } returns "sub"
-        every { oidcTokenValidator.getValidToken(call) } returns jwtToken
+        every { environment.oidcIssuer } returns issuer
+        every { oidcTokenValidator.getValidToken(call, issuer) } returns jwtToken
 
         val oidcTokenInfo = oidcTokenService.getOidcToken(call)
 
@@ -49,11 +51,13 @@ internal class OidcTokenServiceTest {
         val level = 3
         val issueTime = LocalDateTime.now()
         val expiryTime = issueTime.plusHours(1)
+        val issuer = "issuer"
 
         val jwtToken = JwtTokenObjectMother.createJwtToken(subject, level, issueTime, expiryTime, identityClaim = "pid")
 
         every { environment.identityClaim } returns "pid"
-        every { oidcTokenValidator.getValidToken(call) } returns jwtToken
+        every { environment.oidcIssuer } returns issuer
+        every { oidcTokenValidator.getValidToken(call, issuer) } returns jwtToken
 
         val oidcTokenInfo = oidcTokenService.getOidcToken(call)
 
@@ -70,11 +74,13 @@ internal class OidcTokenServiceTest {
         val level = 3
         val issueTime = LocalDateTime.now()
         val expiryTime = issueTime.plusHours(1)
+        val issuer = "issuer"
 
         val jwtToken = JwtTokenObjectMother.createJwtToken(subject, level, issueTime, expiryTime, identityClaim = "sub")
 
         every { environment.identityClaim } returns "pid"
-        every { oidcTokenValidator.getValidToken(call) } returns jwtToken
+        every { environment.oidcIssuer } returns issuer
+        every { oidcTokenValidator.getValidToken(call, issuer) } returns jwtToken
 
         invoking { oidcTokenService.getOidcToken(call) } `should throw` RuntimeException::class
     }

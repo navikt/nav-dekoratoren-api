@@ -6,9 +6,11 @@ import io.ktor.response.respond
 import io.ktor.routing.Route
 import io.ktor.routing.get
 import io.ktor.util.KtorExperimentalAPI
+import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenResponse
+import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenService
 
 @KtorExperimentalAPI
-fun Route.authApi(authService: AuthTokenService) {
+fun Route.authApi(authService: AuthTokenService, selfIssuedTokenService: SelfIssuedTokenService) {
 
     get("/auth") {
         authService.getAuthenticatedUserInfo(call).let { userInfo ->
@@ -21,8 +23,15 @@ fun Route.authApi(authService: AuthTokenService) {
             authService.getAuthSummary(call).let { authInfo ->
                 call.respond(HttpStatusCode.OK, authInfo)
             }
-        } catch(exception: Exception) {
+        } catch (exception: Exception) {
             call.respond(HttpStatusCode.InternalServerError)
+        }
+    }
+
+    get("/token") {
+        when (val response: SelfIssuedTokenResponse = selfIssuedTokenService.exchangeToken(call)) {
+            is SelfIssuedTokenResponse.OK -> call.respond(HttpStatusCode.OK, response.token.tokenAsString)
+            is SelfIssuedTokenResponse.Invalid -> call.respond(HttpStatusCode.Unauthorized, response.error.description)
         }
     }
 }

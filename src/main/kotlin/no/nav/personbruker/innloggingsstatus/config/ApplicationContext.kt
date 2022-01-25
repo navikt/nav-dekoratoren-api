@@ -15,6 +15,9 @@ import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenValidator
 import no.nav.personbruker.innloggingsstatus.openam.*
 import no.nav.personbruker.innloggingsstatus.pdl.PdlConsumer
 import no.nav.personbruker.innloggingsstatus.pdl.PdlService
+import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenIssuer
+import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenService
+import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenValidator
 import no.nav.personbruker.innloggingsstatus.sts.CachingStsService
 import no.nav.personbruker.innloggingsstatus.sts.NonCachingStsService
 import no.nav.personbruker.innloggingsstatus.sts.STSConsumer
@@ -47,7 +50,11 @@ class ApplicationContext(config: ApplicationConfig) {
     val metricsReporter = resolveMetricsReporter(environment)
     val metricsCollector = MetricsCollector(metricsReporter)
 
-    val authTokenService = AuthTokenService(oidcValidationService, openAMValidationService, subjectNameService, metricsCollector)
+    val selfIssuedTokenValidator = SelfIssuedTokenValidator(environment)
+    val selfIssuedTokenIssuer = SelfIssuedTokenIssuer(environment)
+    val selfIssuedTokenService = SelfIssuedTokenService(selfIssuedTokenValidator, selfIssuedTokenIssuer, oidcTokenValidator, environment)
+
+    val authTokenService = AuthTokenService(oidcValidationService, openAMValidationService, subjectNameService, selfIssuedTokenService, metricsCollector)
 
     val selfTests = listOf(openAMConsumer, stsConsumer, pdlConsumer)
 }

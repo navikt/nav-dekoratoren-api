@@ -46,7 +46,7 @@ fun Application.mainModule() {
 
     routing {
         healthApi(applicationContext.selfTests)
-        authApi(applicationContext.authTokenService)
+        authApi(applicationContext.authTokenService, applicationContext.selfIssuedTokenService)
     }
 }
 
