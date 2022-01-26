@@ -3,11 +3,11 @@ plugins {
 }
 
 repositories {
-    jcenter()
     maven("https://jitpack.io")
+    mavenCentral()
 }
 
-val dittNavDependenciesVersion = "2022.01.13-08.31-581d3f963a95"
+val dittNavDependenciesVersion = "2022.01.25-11.54-e80d38e26f13"
 
 dependencies {
     implementation("com.github.navikt:dittnav-dependencies:$dittNavDependenciesVersion")
