@@ -1,7 +1,6 @@
 package no.nav.personbruker.innloggingsstatus.config
 
 import io.ktor.config.ApplicationConfig
-import io.ktor.util.KtorExperimentalAPI
 import no.nav.personbruker.dittnav.common.metrics.MetricsReporter
 import no.nav.personbruker.dittnav.common.metrics.StubMetricsReporter
 import no.nav.personbruker.dittnav.common.metrics.influx.InfluxMetricsReporter
@@ -25,7 +24,6 @@ import no.nav.personbruker.innloggingsstatus.sts.StsService
 import no.nav.personbruker.innloggingsstatus.sts.cache.StsTokenCache
 import no.nav.personbruker.innloggingsstatus.user.SubjectNameService
 
-@KtorExperimentalAPI
 class ApplicationContext(config: ApplicationConfig) {
 
     val environment = Environment()

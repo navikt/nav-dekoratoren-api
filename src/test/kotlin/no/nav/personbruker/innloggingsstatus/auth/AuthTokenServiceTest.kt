@@ -1,7 +1,6 @@
 package no.nav.personbruker.innloggingsstatus.auth
 
 import io.ktor.application.ApplicationCall
-import io.ktor.util.KtorExperimentalAPI
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
@@ -16,7 +15,6 @@ import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 
-@KtorExperimentalAPI
 internal class AuthTokenServiceTest {
 
     private val subject1 = "123"

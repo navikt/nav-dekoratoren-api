@@ -1,7 +1,6 @@
 package no.nav.personbruker.innloggingsstatus.oidc
 
 import io.ktor.application.ApplicationCall
-import io.ktor.util.KtorExperimentalAPI
 import io.mockk.every
 import io.mockk.mockk
 import no.nav.personbruker.innloggingsstatus.config.Environment
@@ -13,7 +12,6 @@ import java.lang.RuntimeException
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
-@KtorExperimentalAPI
 internal class OidcTokenServiceTest {
 
     val oidcTokenValidator: OidcTokenValidator = mockk()

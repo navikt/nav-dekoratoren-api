@@ -2,7 +2,6 @@ package no.nav.personbruker.innloggingsstatus.oidc
 
 import io.ktor.application.ApplicationCall
 import io.ktor.config.ApplicationConfig
-import io.ktor.util.KtorExperimentalAPI
 import no.nav.security.token.support.core.configuration.IssuerProperties
 import no.nav.security.token.support.core.configuration.MultiIssuerConfiguration
 import no.nav.security.token.support.core.configuration.ProxyAwareResourceRetriever
@@ -10,7 +9,6 @@ import no.nav.security.token.support.core.jwt.JwtToken
 import no.nav.security.token.support.core.validation.JwtTokenValidationHandler
 import java.net.URL
 
-@KtorExperimentalAPI
 class OidcTokenValidator constructor(applicationConfig: ApplicationConfig) {
 
     private val resourceRetriever: ProxyAwareResourceRetriever = ProxyAwareResourceRetriever()

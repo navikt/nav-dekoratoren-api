@@ -2,14 +2,12 @@ package no.nav.personbruker.innloggingsstatus.selfissued
 
 import com.nimbusds.oauth2.sdk.OAuth2Error
 import io.ktor.application.ApplicationCall
-import io.ktor.util.KtorExperimentalAPI
 import no.nav.personbruker.innloggingsstatus.config.Environment
 import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenInfo
 import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenInfoFactory
 import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenValidator
 import no.nav.security.token.support.core.jwt.JwtToken
 
-@KtorExperimentalAPI
 class SelfIssuedTokenService(
     private val selfIssuedTokenValidator: SelfIssuedTokenValidator,
     private val selfIssuedTokenIssuer: SelfIssuedTokenIssuer,

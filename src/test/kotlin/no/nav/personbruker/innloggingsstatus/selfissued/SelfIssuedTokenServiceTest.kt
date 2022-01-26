@@ -3,7 +3,6 @@ package no.nav.personbruker.innloggingsstatus.selfissued
 import com.nimbusds.oauth2.sdk.ErrorObject
 import io.ktor.application.ApplicationCall
 import io.ktor.http.HttpStatusCode
-import io.ktor.util.KtorExperimentalAPI
 import io.mockk.every
 import io.mockk.mockk
 import no.nav.personbruker.innloggingsstatus.common.toUtcDateTime
@@ -20,7 +19,6 @@ import org.amshove.kluent.fail
 import org.junit.jupiter.api.Test
 import java.time.LocalDateTime
 
-@KtorExperimentalAPI
 class SelfIssuedTokenServiceTest {
 
     private val selfIssuedTokenIssuer: SelfIssuedTokenIssuer = mockk()

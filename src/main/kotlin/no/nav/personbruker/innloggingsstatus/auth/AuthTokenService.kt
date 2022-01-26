@@ -1,7 +1,6 @@
 package no.nav.personbruker.innloggingsstatus.auth
 
 import io.ktor.application.ApplicationCall
-import io.ktor.util.KtorExperimentalAPI
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import no.nav.personbruker.innloggingsstatus.common.metrics.MetricsCollector
@@ -12,7 +11,6 @@ import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenService
 import no.nav.personbruker.innloggingsstatus.user.SubjectNameService
 import org.slf4j.LoggerFactory
 
-@KtorExperimentalAPI
 class AuthTokenService(
     private val oidcTokenService: OidcTokenService,
     private val openAMTokenService: OpenAMTokenService,
