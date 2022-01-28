@@ -1,22 +1,23 @@
 package no.nav.personbruker.innloggingsstatus.auth
 
 import io.ktor.application.ApplicationCall
-import io.ktor.util.KtorExperimentalAPI
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.withContext
 import no.nav.personbruker.innloggingsstatus.common.metrics.MetricsCollector
+import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenInfo
 import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenService
 import no.nav.personbruker.innloggingsstatus.openam.OpenAMTokenService
+import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenService
 import no.nav.personbruker.innloggingsstatus.user.SubjectNameService
 import org.slf4j.LoggerFactory
-import kotlin.coroutines.CoroutineContext
 
-@KtorExperimentalAPI
-class AuthTokenService(private val oidcTokenService: OidcTokenService,
-                       private val openAMTokenService: OpenAMTokenService,
-                       private val subjectNameService: SubjectNameService,
-                       private val metricsCollector: MetricsCollector) {
+class AuthTokenService(
+    private val oidcTokenService: OidcTokenService,
+    private val openAMTokenService: OpenAMTokenService,
+    private val subjectNameService: SubjectNameService,
+    private val selfIssuedTokenService: SelfIssuedTokenService,
+    private val metricsCollector: MetricsCollector
+) {
 
     val log = LoggerFactory.getLogger(AuthTokenService::class.java)
 
@@ -36,7 +37,7 @@ class AuthTokenService(private val oidcTokenService: OidcTokenService,
     }
 
     private suspend fun fetchAndParseAuthenticatedUserInfo(call: ApplicationCall): UserInfo = coroutineScope {
-        val oidcToken = async { oidcTokenService.getOidcToken(call) }
+        val oidcToken = async { getNewestOidcToken(call) }
         val openAMToken = async { openAMTokenService.getOpenAMToken(call) }
 
         val authInfo = AuthInfo(oidcToken.await(), openAMToken.await())
@@ -45,12 +46,11 @@ class AuthTokenService(private val oidcTokenService: OidcTokenService,
 
         metricsCollector.recordAuthMetrics(authInfo, userInfo, call)
 
-
         userInfo
     }
 
     private suspend fun fetchAndParseAuthInfo(call: ApplicationCall): AuthInfo = coroutineScope {
-        val oidcToken = async { oidcTokenService.getOidcToken(call) }
+        val oidcToken = async { getNewestOidcToken(call) }
         val openAMToken = async { openAMTokenService.getOpenAMToken(call) }
 
         AuthInfo(oidcToken.await(), openAMToken.await())
@@ -62,6 +62,18 @@ class AuthTokenService(private val oidcTokenService: OidcTokenService,
             UserInfo.authenticated(subjectName, authInfo.authLevel!!)
         } else {
             UserInfo.unAuthenticated()
+        }
+    }
+
+    private fun getNewestOidcToken(call: ApplicationCall): OidcTokenInfo? {
+        val oidcToken = oidcTokenService.getOidcToken(call)
+        val selfIssuedToken = selfIssuedTokenService.getSelfIssuedToken(call)
+
+        return when {
+            oidcToken == null && selfIssuedToken != null -> selfIssuedToken
+            oidcToken != null && selfIssuedToken == null -> oidcToken
+            oidcToken != null && selfIssuedToken != null -> oidcToken.mostRecentlyIssued(selfIssuedToken)
+            else -> null
         }
     }
 }

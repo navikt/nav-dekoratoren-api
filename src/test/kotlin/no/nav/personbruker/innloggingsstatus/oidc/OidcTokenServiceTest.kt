@@ -1,7 +1,6 @@
 package no.nav.personbruker.innloggingsstatus.oidc
 
 import io.ktor.application.ApplicationCall
-import io.ktor.util.KtorExperimentalAPI
 import io.mockk.every
 import io.mockk.mockk
 import no.nav.personbruker.innloggingsstatus.config.Environment
@@ -13,7 +12,6 @@ import java.lang.RuntimeException
 import java.time.LocalDateTime
 import java.time.ZoneOffset
 
-@KtorExperimentalAPI
 internal class OidcTokenServiceTest {
 
     val oidcTokenValidator: OidcTokenValidator = mockk()
@@ -29,11 +27,13 @@ internal class OidcTokenServiceTest {
         val level = 3
         val issueTime = LocalDateTime.now()
         val expiryTime = issueTime.plusHours(1)
+        val issuer = "issuer"
 
         val jwtToken = JwtTokenObjectMother.createJwtToken(subject, level, issueTime, expiryTime, identityClaim = "sub")
 
         every { environment.identityClaim } returns "sub"
-        every { oidcTokenValidator.getValidToken(call) } returns jwtToken
+        every { environment.oidcIssuer } returns issuer
+        every { oidcTokenValidator.getValidToken(call, issuer) } returns jwtToken
 
         val oidcTokenInfo = oidcTokenService.getOidcToken(call)
 
@@ -49,11 +49,13 @@ internal class OidcTokenServiceTest {
         val level = 3
         val issueTime = LocalDateTime.now()
         val expiryTime = issueTime.plusHours(1)
+        val issuer = "issuer"
 
         val jwtToken = JwtTokenObjectMother.createJwtToken(subject, level, issueTime, expiryTime, identityClaim = "pid")
 
         every { environment.identityClaim } returns "pid"
-        every { oidcTokenValidator.getValidToken(call) } returns jwtToken
+        every { environment.oidcIssuer } returns issuer
+        every { oidcTokenValidator.getValidToken(call, issuer) } returns jwtToken
 
         val oidcTokenInfo = oidcTokenService.getOidcToken(call)
 
@@ -70,11 +72,13 @@ internal class OidcTokenServiceTest {
         val level = 3
         val issueTime = LocalDateTime.now()
         val expiryTime = issueTime.plusHours(1)
+        val issuer = "issuer"
 
         val jwtToken = JwtTokenObjectMother.createJwtToken(subject, level, issueTime, expiryTime, identityClaim = "sub")
 
         every { environment.identityClaim } returns "pid"
-        every { oidcTokenValidator.getValidToken(call) } returns jwtToken
+        every { environment.oidcIssuer } returns issuer
+        every { oidcTokenValidator.getValidToken(call, issuer) } returns jwtToken
 
         invoking { oidcTokenService.getOidcToken(call) } `should throw` RuntimeException::class
     }

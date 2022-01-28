@@ -1,7 +1,6 @@
 package no.nav.personbruker.innloggingsstatus.config
 
 import io.ktor.config.ApplicationConfig
-import io.ktor.util.KtorExperimentalAPI
 import no.nav.personbruker.dittnav.common.metrics.MetricsReporter
 import no.nav.personbruker.dittnav.common.metrics.StubMetricsReporter
 import no.nav.personbruker.dittnav.common.metrics.influx.InfluxMetricsReporter
@@ -15,6 +14,9 @@ import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenValidator
 import no.nav.personbruker.innloggingsstatus.openam.*
 import no.nav.personbruker.innloggingsstatus.pdl.PdlConsumer
 import no.nav.personbruker.innloggingsstatus.pdl.PdlService
+import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenIssuer
+import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenService
+import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenValidator
 import no.nav.personbruker.innloggingsstatus.sts.CachingStsService
 import no.nav.personbruker.innloggingsstatus.sts.NonCachingStsService
 import no.nav.personbruker.innloggingsstatus.sts.STSConsumer
@@ -22,7 +24,6 @@ import no.nav.personbruker.innloggingsstatus.sts.StsService
 import no.nav.personbruker.innloggingsstatus.sts.cache.StsTokenCache
 import no.nav.personbruker.innloggingsstatus.user.SubjectNameService
 
-@KtorExperimentalAPI
 class ApplicationContext(config: ApplicationConfig) {
 
     val environment = Environment()
@@ -47,7 +48,11 @@ class ApplicationContext(config: ApplicationConfig) {
     val metricsReporter = resolveMetricsReporter(environment)
     val metricsCollector = MetricsCollector(metricsReporter)
 
-    val authTokenService = AuthTokenService(oidcValidationService, openAMValidationService, subjectNameService, metricsCollector)
+    val selfIssuedTokenValidator = SelfIssuedTokenValidator(environment)
+    val selfIssuedTokenIssuer = SelfIssuedTokenIssuer(environment)
+    val selfIssuedTokenService = SelfIssuedTokenService(selfIssuedTokenValidator, selfIssuedTokenIssuer, oidcTokenValidator, environment)
+
+    val authTokenService = AuthTokenService(oidcValidationService, openAMValidationService, subjectNameService, selfIssuedTokenService, metricsCollector)
 
     val selfTests = listOf(openAMConsumer, stsConsumer, pdlConsumer)
 }
