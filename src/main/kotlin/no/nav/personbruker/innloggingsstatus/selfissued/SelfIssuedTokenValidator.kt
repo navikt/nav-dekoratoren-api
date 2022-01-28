@@ -37,7 +37,7 @@ class SelfIssuedTokenValidator(private val environment: Environment) {
 
             JwtToken(cookieValue)
         } catch (e: Exception) {
-            log.warn("Kunne ikke validere token: ${e.message}", e)
+            log.info("Kunne ikke validere token: ${e.message}", e)
             null
         }
     }
