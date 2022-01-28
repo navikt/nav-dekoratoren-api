@@ -1,8 +1,6 @@
 package no.nav.personbruker.innloggingsstatus.selfissued
 
-import com.nimbusds.oauth2.sdk.ErrorObject
 import io.ktor.application.ApplicationCall
-import io.ktor.http.HttpStatusCode
 import io.mockk.every
 import io.mockk.mockk
 import no.nav.personbruker.innloggingsstatus.common.toUtcDateTime
@@ -12,7 +10,7 @@ import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenValidator
 import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenObjectMother.claims
 import org.amshove.kluent.`should be before`
 import org.amshove.kluent.`should be equal to`
-import org.amshove.kluent.`should be instance of`
+import org.amshove.kluent.`should be in range`
 import org.amshove.kluent.`should be null`
 import org.amshove.kluent.`should not be null`
 import org.amshove.kluent.fail
@@ -80,9 +78,13 @@ class SelfIssuedTokenServiceTest {
         every { oidcTokenValidator.getValidToken(call, idportenIssuer) } returns idportenToken
         every { selfIssuedTokenIssuer.issueToken(idportenToken) } returns selfIssuedToken
 
-        val response = selfIssuedTokenService.exchangeToken(call)
-
-        response `should be instance of` SelfIssuedTokenResponse.OK::class
+        when (val response = selfIssuedTokenService.exchangeToken(call)) {
+            is SelfIssuedTokenResponse.Invalid -> fail("Expected $response to be an instance of ${SelfIssuedTokenResponse.OK::class}")
+            is SelfIssuedTokenResponse.OK -> {
+                response.token `should be equal to` selfIssuedToken.tokenAsString
+                response.expiresIn `should be in range` (1730..1800)
+            }
+        }
     }
 
     @Test
@@ -94,10 +96,8 @@ class SelfIssuedTokenServiceTest {
         when (val response = selfIssuedTokenService.exchangeToken(call)) {
             is SelfIssuedTokenResponse.OK -> fail("Expected $response to be an instance of ${SelfIssuedTokenResponse.Invalid::class}")
             is SelfIssuedTokenResponse.Invalid -> {
-                response.error `should be instance of` ErrorObject::class
-                response.error.code `should be equal to` "access_denied"
-                response.error.description `should be equal to` "Authorization header does not contain a valid ID-porten token."
-                response.error.httpStatusCode `should be equal to` HttpStatusCode.Forbidden.value
+                response.error `should be equal to` "access_denied"
+                response.errorDescription `should be equal to` "Authorization header does not contain a valid ID-porten token."
             }
         }
     }

@@ -7,6 +7,8 @@ import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenInfo
 import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenInfoFactory
 import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenValidator
 import no.nav.security.token.support.core.jwt.JwtToken
+import java.time.Duration
+import java.time.Instant
 
 class SelfIssuedTokenService(
     private val selfIssuedTokenValidator: SelfIssuedTokenValidator,
@@ -28,11 +30,13 @@ class SelfIssuedTokenService(
 
         if (idportenToken == null) {
             val description = "Authorization header does not contain a valid ID-porten token."
-            val error = OAuth2Error.ACCESS_DENIED.setDescription(description)
-            return SelfIssuedTokenResponse.Invalid(error)
+            return SelfIssuedTokenResponse.Invalid(OAuth2Error.ACCESS_DENIED_CODE, description)
         }
 
         val issuedToken = selfIssuedTokenIssuer.issueToken(idportenToken)
-        return SelfIssuedTokenResponse.OK(issuedToken)
+        val expiresInSeconds = Duration.between(
+            Instant.now(), issuedToken.jwtTokenClaims.expirationTime.toInstant()
+        ).seconds.toInt()
+        return SelfIssuedTokenResponse.OK(issuedToken.tokenAsString, expiresInSeconds)
     }
 }

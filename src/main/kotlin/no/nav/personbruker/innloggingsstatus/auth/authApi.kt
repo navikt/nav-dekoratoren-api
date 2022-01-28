@@ -28,8 +28,8 @@ fun Route.authApi(authService: AuthTokenService, selfIssuedTokenService: SelfIss
 
     get("/token") {
         when (val response: SelfIssuedTokenResponse = selfIssuedTokenService.exchangeToken(call)) {
-            is SelfIssuedTokenResponse.OK -> call.respond(HttpStatusCode.OK, response.token.tokenAsString)
-            is SelfIssuedTokenResponse.Invalid -> call.respond(HttpStatusCode.Unauthorized, response.error.description)
+            is SelfIssuedTokenResponse.OK -> call.respond(HttpStatusCode.OK, response)
+            is SelfIssuedTokenResponse.Invalid -> call.respond(HttpStatusCode.Unauthorized, response)
         }
     }
 }
