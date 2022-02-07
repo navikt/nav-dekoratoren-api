@@ -38,11 +38,11 @@ jobs:
         run: |
           docker build -t ${{ env.version }} .
           docker push ${{ env.version }}
-      - name: Deploy to prod-sbs
+      - name: Deploy to prod-gcp
         uses: nais/deploy/actions/deploy@master
         env:
-          CLUSTER: prod-sbs
+          CLUSTER: prod-gcp
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           RESOURCE: ./nais/nais.yaml
           VAR: version=${{ env.version }}
-          VARS: ./nais/prod-sbs/personbruker.json
+          VARS: ./nais/prod-gcp/personbruker.json

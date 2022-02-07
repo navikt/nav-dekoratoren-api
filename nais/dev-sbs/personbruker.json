@@ -1,8 +1,0 @@
-{
-  "vault_namespace": "dev",
-  "vault_secrets_root": "preprod",
-  "vault_consumer_name": "innloggingsstatus_q1",
-  "ingresses": [
-    "https://innloggingsstatus.dev.nav.no/person/innloggingsstatus"
-  ]
-}

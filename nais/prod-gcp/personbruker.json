@@ -1,0 +1,6 @@
+{
+  "ingresses": [
+    "https://www.nav.no/person/innloggingsstatus",
+    "https://innloggingsstatus.intern.nav.no/person/innloggingsstatus"
+  ]
+}

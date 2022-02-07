@@ -20,24 +20,13 @@ spec:
   replicas:
     min: 2
     max: 4
-  webproxy: true
   ingresses:
   {{#each ingresses}}
     - "{{this}}"
   {{/each}}
-  vault:
-    enabled: true
-    paths:
-      - kvPath: /kv/{{vault_secrets_root}}/sbs/innloggingsstatus/personbruker
-        mountPath: /var/run/secrets/nais.io/vault
-      - kvPath: /serviceuser/data/{{vault_namespace}}/srvinnloggstatus
-        mountPath: /secret/serviceuser
-      - kvPath: /apikey/apigw/{{vault_namespace}}/pdl-api/{{vault_consumer_name}}
-        mountPath: /secret/pdl_apiKey
-      - kvPath: /apikey/apigw/{{vault_namespace}}/security-token-service-token/{{vault_consumer_name}}
-        mountPath: /secret/sts_apiKey
   envFrom:
     - configmap: loginservice-idporten
+    - secret: innloggingsstatus-env
   resources:
     limits:
       cpu: "3"
@@ -45,4 +34,3 @@ spec:
     requests:
       cpu: "500m"
       memory: 384Mi
-
