@@ -6,7 +6,6 @@ import io.ktor.application.ApplicationCall
 import io.mockk.every
 import io.mockk.mockk
 import no.nav.personbruker.innloggingsstatus.config.Environment
-import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenObjectMother.DEFAULT_IDP
 import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenObjectMother.DEFAULT_ISSUER
 import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenObjectMother.DEFAULT_SECURITY_LEVEL
 import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenObjectMother.DEFAULT_SUBJECT
@@ -48,7 +47,6 @@ class SelfIssuedTokenValidatorTest {
             subject `should be equal to` DEFAULT_SUBJECT
             audience `should contain` DEFAULT_ISSUER
 
-            getStringClaim(SelfIssuedTokenIssuer.CLAIM_IDP) `should be equal to` DEFAULT_IDP
             getStringClaim(SelfIssuedTokenIssuer.CLAIM_SECURITY_LEVEL) `should be equal to` DEFAULT_SECURITY_LEVEL
 
             issueTime.before(now).`should be true`()

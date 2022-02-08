@@ -11,7 +11,6 @@ import no.nav.security.token.support.core.jwt.JwtToken
 import no.nav.security.token.support.core.jwt.JwtTokenClaims
 import java.time.Instant
 import java.util.Date
-import java.util.UUID
 
 class SelfIssuedTokenIssuer(private val environment: Environment) {
     private val signer: JWSSigner = MACSigner(environment.selfIssuedSecretKey)
@@ -45,17 +44,14 @@ class SelfIssuedTokenIssuer(private val environment: Environment) {
             .issuer(issuer)
             .expirationTime(expiry)
             .issueTime(Date.from(now))
-            .jwtID(UUID.randomUUID().toString())
             .audience(targetAudience)
             .claim(CLAIM_IDENTITY, subject)
-            .claim(CLAIM_IDP, subjectTokenClaims.issuer)
             .claim(CLAIM_SECURITY_LEVEL, securityLevel)
             .build()
     }
 
     companion object {
         val signatureAlgorithm: JWSAlgorithm = JWSAlgorithm.HS512
-        const val CLAIM_IDP = "idp"
         const val CLAIM_IDENTITY = "sub"
         const val CLAIM_SECURITY_LEVEL = "acr"
     }

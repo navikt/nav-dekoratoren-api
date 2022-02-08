@@ -15,7 +15,6 @@ object SelfIssuedTokenObjectMother {
 
     const val DEFAULT_ISSUER = "issuer"
     const val DEFAULT_SUBJECT = "12345689"
-    const val DEFAULT_IDP = "https://trusted-issuer"
     const val DEFAULT_SECURITY_LEVEL = "Level4"
 
     fun generate(secret: String, claims: JWTClaimsSet): JwtToken {
@@ -32,17 +31,14 @@ object SelfIssuedTokenObjectMother {
         expiry: Date = Date.from(Instant.now().plus(30, ChronoUnit.MINUTES)),
         issueTime: Date = Date.from(Instant.now()),
         subject: String = DEFAULT_SUBJECT,
-        idp: String = DEFAULT_IDP,
         securityLevel: String = DEFAULT_SECURITY_LEVEL,
     ): JWTClaimsSet {
         return JWTClaimsSet.Builder()
             .issuer(issuer)
             .expirationTime(expiry)
             .issueTime(issueTime)
-            .jwtID(UUID.randomUUID().toString())
             .audience(audience)
             .claim(SelfIssuedTokenIssuer.CLAIM_IDENTITY, subject)
-            .claim(SelfIssuedTokenIssuer.CLAIM_IDP, idp)
             .claim(SelfIssuedTokenIssuer.CLAIM_SECURITY_LEVEL, securityLevel)
             .build()
     }

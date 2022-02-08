@@ -41,7 +41,6 @@ class SelfIssuedTokenIssuerTest {
             audience `should be equal to` listOf(selfIssuedIssuer)
 
             getStringClaim(SelfIssuedTokenIssuer.CLAIM_SECURITY_LEVEL) `should be equal to` "Level4"
-            getStringClaim(SelfIssuedTokenIssuer.CLAIM_IDP) `should be equal to` subjectToken.issuer
 
             issueTime.before(now).`should be true`()
             expirationTime.`should be equal to`(subjectToken.jwtTokenClaims.expirationTime)
