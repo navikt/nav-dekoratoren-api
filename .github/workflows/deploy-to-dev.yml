@@ -5,7 +5,7 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: dev-sbs:personbruker
+    environment: dev-gcp:personbruker
     env:
       version: ghcr.io/${{ github.repository }}:${{ github.sha }}
     steps:
