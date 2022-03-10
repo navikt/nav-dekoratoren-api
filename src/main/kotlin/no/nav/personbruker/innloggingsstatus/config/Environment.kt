@@ -9,7 +9,7 @@ import no.nav.personbruker.dittnav.common.util.config.StringEnvVar.getEnvVarAsLi
 data class Environment(
     val applicationName: String = "innloggingsstatus",
     val openAMServiceUrl: String = getEnvVar("OPEN_AM_REST_SERVICE_URL"),
-    val identityClaim: String = getEnvVar("OIDC_CLAIM_CONTAINING_THE_IDENTITY", "sub"),
+    val identityClaim: String = getEnvVar("OIDC_CLAIM_CONTAINING_THE_IDENTITY", "pid"),
     val oidcIssuer: String = getEnvVar("OIDC_ISSUER"),
     val oidcDiscoveryUrl: String = getEnvVar("LOGINSERVICE_IDPORTEN_DISCOVERY_URL"),
     val oidcAcceptetAudience: String = getEnvVar("LOGINSERVICE_IDPORTEN_AUDIENCE"),
