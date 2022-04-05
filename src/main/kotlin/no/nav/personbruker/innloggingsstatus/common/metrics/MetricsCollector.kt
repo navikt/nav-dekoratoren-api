@@ -1,7 +1,7 @@
 package no.nav.personbruker.innloggingsstatus.common.metrics
 
-import io.ktor.application.*
-import io.ktor.http.*
+import io.ktor.application.ApplicationCall
+import io.ktor.http.HttpHeaders
 import no.nav.personbruker.dittnav.common.metrics.MetricsReporter
 import no.nav.personbruker.innloggingsstatus.auth.AuthInfo
 import no.nav.personbruker.innloggingsstatus.auth.UserInfo
@@ -21,11 +21,9 @@ class MetricsCollector(private val metricsReporter: MetricsReporter) {
     private fun buildMetricsAggregate(authInfo: AuthInfo, userInfo: UserInfo, call: ApplicationCall): MetricsAggregate {
         return MetricsAggregate(
             authenticated = authInfo.authenticated,
-            stable = authInfo.stable,
             foundSubjectName = userInfo.name != null,
             operatingAuthLevel = authInfo.authLevel ?: -1,
             oidcMetrics = OidcMetrics.fromAuthInfo(authInfo),
-            openAMMetrics = OpenAMMetrics.fromAuthInfo(authInfo),
             requestDomain = getRequestDomain(call),
         )
     }
@@ -38,8 +36,6 @@ class MetricsCollector(private val metricsReporter: MetricsReporter) {
             "oidcAuthLevel" to metrics.oidcMetrics.authLevel,
             "oidcTokenAgeSeconds" to metrics.oidcMetrics.tokenAgeSeconds,
             "oidcTokenTimeToExpirySeconds" to metrics.oidcMetrics.tokenTimeToExpirySeconds,
-            "authenticatedWithOpenAM" to metrics.openAMMetrics.authenticated,
-            "openAMAuthLevel" to metrics.openAMMetrics.authLevel
         ).toMap()
 
         val tagMap = listOf(
