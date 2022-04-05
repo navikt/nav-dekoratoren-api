@@ -3,23 +3,22 @@ package no.nav.personbruker.innloggingsstatus.oidc
 import io.ktor.application.ApplicationCall
 import io.mockk.every
 import io.mockk.mockk
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 import no.nav.personbruker.innloggingsstatus.config.Environment
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should throw`
 import org.amshove.kluent.invoking
 import org.junit.jupiter.api.Test
-import java.lang.RuntimeException
-import java.time.LocalDateTime
-import java.time.ZoneOffset
 
 internal class OidcTokenServiceTest {
 
-    val oidcTokenValidator: OidcTokenValidator = mockk()
-    val environment: Environment = mockk()
+    private val oidcTokenValidator: OidcTokenValidator = mockk()
+    private val environment: Environment = mockk()
 
-    val oidcTokenService = OidcTokenService(oidcTokenValidator, environment)
+    private val oidcTokenService = OidcTokenService(oidcTokenValidator, environment)
 
-    val call: ApplicationCall = mockk()
+    private val call: ApplicationCall = mockk()
 
     @Test
     fun `should extract correct information from a jwt token when identity is in 'sub'`() {

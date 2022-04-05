@@ -1,11 +1,16 @@
 package no.nav.personbruker.innloggingsstatus.pdl
 
 import io.ktor.client.HttpClient
-import io.ktor.client.request.*
+import io.ktor.client.request.header
+import io.ktor.client.request.options
+import io.ktor.client.request.post
+import io.ktor.client.request.url
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
+import java.net.URI
+import java.net.URL
 import no.nav.personbruker.innloggingsstatus.common.apiKeyHeader
 import no.nav.personbruker.innloggingsstatus.common.bearerHeader
 import no.nav.personbruker.innloggingsstatus.common.readObject
@@ -13,21 +18,23 @@ import no.nav.personbruker.innloggingsstatus.config.Environment
 import no.nav.personbruker.innloggingsstatus.config.JsonDeserialize.objectMapper
 import no.nav.personbruker.innloggingsstatus.health.SelfTest
 import no.nav.personbruker.innloggingsstatus.health.ServiceStatus
-import no.nav.personbruker.innloggingsstatus.pdl.query.*
+import no.nav.personbruker.innloggingsstatus.pdl.query.PDLErrorType
+import no.nav.personbruker.innloggingsstatus.pdl.query.PdlErrorResponse
+import no.nav.personbruker.innloggingsstatus.pdl.query.PdlPersonInfo
+import no.nav.personbruker.innloggingsstatus.pdl.query.PdlResponse
+import no.nav.personbruker.innloggingsstatus.pdl.query.SubjectNameRequest
+import no.nav.personbruker.innloggingsstatus.pdl.query.createSubjectNameRequest
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.net.URI
-import java.net.URL
-import kotlin.Exception
+
+private const val CONSUMER_ID = "innloggingsstatus"
+private const val GENERELL = "GEN"
 
 class PdlConsumer(private val client: HttpClient, environment: Environment): SelfTest {
+    private val endpoint = URI(environment.pdlApiUrl)
+    private val apiKey = environment.pdlApiGWKey
 
-    val CONSUMER_ID = "innloggingsstatus"
-    val GENERELL = "GEN"
-
-    val endpoint = URI(environment.pdlApiUrl)
-    val apiKey = environment.pdlApiGWKey
-
-    val log = LoggerFactory.getLogger(PdlConsumer::class.java)
+    private val log: Logger = LoggerFactory.getLogger(PdlConsumer::class.java)
 
     override val externalServiceName: String get() = "PDL-api"
 
@@ -35,9 +42,7 @@ class PdlConsumer(private val client: HttpClient, environment: Environment): Sel
 
         val request = createSubjectNameRequest(ident)
 
-        return postPersonQuery(request, stsToken).let { responseBody ->
-            parsePdlResponse(responseBody)
-        }
+        return parsePdlResponse(postPersonQuery(request, stsToken))
     }
 
     private suspend fun postPersonQuery(request: SubjectNameRequest, stsToken: String): String {
@@ -87,9 +92,7 @@ class PdlConsumer(private val client: HttpClient, environment: Environment): Sel
     }
 
     private fun logErrorResponse(response: PdlErrorResponse) {
-        val firstError = response.errors.first().errorType
-
-        when (firstError) {
+        when (response.errors.first().errorType) {
             PDLErrorType.NOT_FOUND -> log.warn("Fant ikke bruker i PDL.")
             PDLErrorType.NOT_AUTHENTICATED -> log.warn("Autentiseringsfeil mot PDL. Feil i brukertoken eller systemtoken.")
             PDLErrorType.ABAC_ERROR -> log.warn("Systembruker har ikke tilgang til opplysning")

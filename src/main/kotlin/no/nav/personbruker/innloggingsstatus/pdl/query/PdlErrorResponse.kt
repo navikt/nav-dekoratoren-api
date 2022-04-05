@@ -1,4 +1,4 @@
-package no.nav.personbruker.innloggingsstatus.pdl.query;
+package no.nav.personbruker.innloggingsstatus.pdl.query
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty

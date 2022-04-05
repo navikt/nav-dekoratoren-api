@@ -14,8 +14,7 @@ object PrometheusMetricsCollector {
     private const val AUTHENTICATED_WITH_OIDC_NAME = "auth_authenticated_with_oidc"
     private const val AUTH_LEVEL_OIDC_THREE_NAME = "auth_level_oidc_3"
     private const val AUTH_LEVEL_OIDC_FOUR_NAME = "auth_level_oidc_4"
-    private const val AUTH_STEP_UP_OIDC_NAME = "auth_step_up_oidc"
-    
+
     private val AUTH_REQUESTS_HANDLED: Counter = Counter.build()
         .name(AUTH_REQUESTS_HANDLED_NAME)
         .namespace(NAMESPACE)

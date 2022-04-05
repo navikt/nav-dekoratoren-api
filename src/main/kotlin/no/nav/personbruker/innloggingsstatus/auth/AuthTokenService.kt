@@ -8,6 +8,7 @@ import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenInfo
 import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenService
 import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenService
 import no.nav.personbruker.innloggingsstatus.user.SubjectNameService
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class AuthTokenService(
@@ -17,7 +18,7 @@ class AuthTokenService(
     private val metricsCollector: MetricsCollector
 ) {
 
-    val log = LoggerFactory.getLogger(AuthTokenService::class.java)
+    private val log: Logger = LoggerFactory.getLogger(AuthTokenService::class.java)
 
     suspend fun getAuthenticatedUserInfo(call: ApplicationCall): UserInfo {
         return try {

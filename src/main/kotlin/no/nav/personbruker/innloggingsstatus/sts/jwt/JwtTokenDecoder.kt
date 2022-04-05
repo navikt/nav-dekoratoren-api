@@ -4,16 +4,16 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.core.JsonParseException
 import com.fasterxml.jackson.databind.JsonMappingException
+import java.time.Instant
 import no.nav.personbruker.innloggingsstatus.common.fromBase64
 import no.nav.personbruker.innloggingsstatus.common.readObject
 import no.nav.personbruker.innloggingsstatus.config.JsonDeserialize.objectMapper
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.lang.Exception
-import java.time.Instant
 
 object JwtTokenDecoder {
 
-    val log = LoggerFactory.getLogger(JwtTokenDecoder::class.java)
+    private val log: Logger = LoggerFactory.getLogger(JwtTokenDecoder::class.java)
 
     fun decodeExpiryTime(jwtToken: String): Instant {
         return try {
