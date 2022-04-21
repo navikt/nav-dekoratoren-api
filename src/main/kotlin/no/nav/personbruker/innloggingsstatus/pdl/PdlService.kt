@@ -3,11 +3,12 @@ package no.nav.personbruker.innloggingsstatus.pdl
 import no.nav.personbruker.innloggingsstatus.pdl.query.PdlNavn
 import no.nav.personbruker.innloggingsstatus.sts.STSException
 import no.nav.personbruker.innloggingsstatus.sts.StsService
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class PdlService(private val pdlConsumer: PdlConsumer, private val stsService: StsService) {
 
-    val log = LoggerFactory.getLogger(PdlService::class.java)
+    private val log: Logger = LoggerFactory.getLogger(PdlService::class.java)
 
     suspend fun getSubjectName(ident: String): PdlNavn? {
         return try {

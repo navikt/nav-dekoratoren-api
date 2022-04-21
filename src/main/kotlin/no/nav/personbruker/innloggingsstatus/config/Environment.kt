@@ -8,7 +8,6 @@ import no.nav.personbruker.dittnav.common.util.config.StringEnvVar.getEnvVarAsLi
 
 data class Environment(
     val applicationName: String = "innloggingsstatus",
-    val openAMServiceUrl: String = getEnvVar("OPEN_AM_REST_SERVICE_URL"),
     val identityClaim: String = getEnvVar("OIDC_CLAIM_CONTAINING_THE_IDENTITY", "pid"),
     val oidcIssuer: String = getEnvVar("OIDC_ISSUER"),
     val oidcDiscoveryUrl: String = getEnvVar("LOGINSERVICE_IDPORTEN_DISCOVERY_URL"),
@@ -33,9 +32,6 @@ data class Environment(
     val corsAdditionalAllowedOrigins: List<String> = getEnvVarAsList("CORS_ADDITIONAL_ALLOWED_ORIGINS", emptyList()),
     val subjectNameCacheThreshold: Int = getEnvVarAsInt("SUBJECT_NAME_CACHE_THRESHOLD",  4096),
     val subjectNameCacheExpiryMinutes: Long = getEnvVarAsLong("SUBJECT_NAME_CACHE_EXPIRY_MINUTES", 30),
-    val openAmTokenInfoCacheEnabled: Boolean = getEnvVarAsBoolean("OPEN_AM_TOKEN_INFO_CACHE_ENABLED", false),
-    val openAmTokenInfoCacheThreshold: Int = getEnvVarAsInt("OPEN_AM_TOKEN_INFO_CACHE_THRESHOLD", 1024),
-    val openAmTokenInfoCacheExpiryMinutes: Long = getEnvVarAsLong("OPEN_AM_TOKEN_INFO_CACHE_EXPIRY_MINUTES", 1),
     val selfIssuedIssuer: String = getEnvVar("SELF_ISSUED_ISSUER"),
     val selfIssuedSecretKey: String = getEnvVar("SELF_ISSUED_SECRET_KEY"),
     val selfIssuedCookieName: String = getEnvVar("SELF_ISSUED_COOKIE_NAME", "innloggingsstatus-token"),

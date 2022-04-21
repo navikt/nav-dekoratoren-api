@@ -7,7 +7,7 @@ repositories {
     mavenCentral()
 }
 
-val dittNavDependenciesVersion = "2022.01.25-11.54-e80d38e26f13"
+val dittNavDependenciesVersion = "2022.03.07-09.11-113dabef3447"
 
 dependencies {
     implementation("com.github.navikt:dittnav-dependencies:$dittNavDependenciesVersion")

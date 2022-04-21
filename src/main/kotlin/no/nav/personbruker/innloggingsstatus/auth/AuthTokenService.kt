@@ -6,20 +6,19 @@ import kotlinx.coroutines.coroutineScope
 import no.nav.personbruker.innloggingsstatus.common.metrics.MetricsCollector
 import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenInfo
 import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenService
-import no.nav.personbruker.innloggingsstatus.openam.OpenAMTokenService
 import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenService
 import no.nav.personbruker.innloggingsstatus.user.SubjectNameService
+import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 class AuthTokenService(
     private val oidcTokenService: OidcTokenService,
-    private val openAMTokenService: OpenAMTokenService,
     private val subjectNameService: SubjectNameService,
     private val selfIssuedTokenService: SelfIssuedTokenService,
     private val metricsCollector: MetricsCollector
 ) {
 
-    val log = LoggerFactory.getLogger(AuthTokenService::class.java)
+    private val log: Logger = LoggerFactory.getLogger(AuthTokenService::class.java)
 
     suspend fun getAuthenticatedUserInfo(call: ApplicationCall): UserInfo {
         return try {
@@ -37,10 +36,7 @@ class AuthTokenService(
     }
 
     private suspend fun fetchAndParseAuthenticatedUserInfo(call: ApplicationCall): UserInfo = coroutineScope {
-        val oidcToken = async { getNewestOidcToken(call) }
-        val openAMToken = async { openAMTokenService.getOpenAMToken(call) }
-
-        val authInfo = AuthInfo(oidcToken.await(), openAMToken.await())
+        val authInfo = fetchAndParseAuthInfo(call)
 
         val userInfo = getUserInfo(authInfo)
 
@@ -51,13 +47,12 @@ class AuthTokenService(
 
     private suspend fun fetchAndParseAuthInfo(call: ApplicationCall): AuthInfo = coroutineScope {
         val oidcToken = async { getNewestOidcToken(call) }
-        val openAMToken = async { openAMTokenService.getOpenAMToken(call) }
 
-        AuthInfo(oidcToken.await(), openAMToken.await())
+        AuthInfo(oidcToken.await())
     }
 
     private suspend fun getUserInfo(authInfo: AuthInfo): UserInfo {
-        return if (authInfo.subject != null && authInfo.stable) {
+        return if (authInfo.subject != null) {
             val subjectName = subjectNameService.getSubjectName(authInfo.subject!!)
             UserInfo.authenticated(subjectName, authInfo.authLevel!!)
         } else {

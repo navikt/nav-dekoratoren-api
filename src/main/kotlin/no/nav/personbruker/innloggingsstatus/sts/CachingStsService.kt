@@ -3,7 +3,7 @@ package no.nav.personbruker.innloggingsstatus.sts
 import no.nav.personbruker.innloggingsstatus.sts.cache.StsTokenCache
 import org.slf4j.LoggerFactory
 
-class CachingStsService(val stsTokenCache: StsTokenCache): StsService {
+class CachingStsService(private val stsTokenCache: StsTokenCache): StsService {
 
     private val log = LoggerFactory.getLogger(CachingStsService::class.java)
 

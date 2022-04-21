@@ -4,7 +4,17 @@ import io.ktor.application.ApplicationCall
 import io.ktor.html.respondHtml
 import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.coroutineScope
-import kotlinx.html.*
+import kotlinx.html.body
+import kotlinx.html.h1
+import kotlinx.html.head
+import kotlinx.html.style
+import kotlinx.html.table
+import kotlinx.html.tbody
+import kotlinx.html.td
+import kotlinx.html.th
+import kotlinx.html.thead
+import kotlinx.html.title
+import kotlinx.html.tr
 
 suspend fun ApplicationCall.buildSelftestPage(selfTests: List<SelfTest>) = coroutineScope {
 
@@ -24,7 +34,7 @@ suspend fun ApplicationCall.buildSelftestPage(selfTests: List<SelfTest>) = corou
             title { +"Selftest innloggingsstatus" }
         }
         body {
-            var text = if (hasFailedChecks) {
+            val text = if (hasFailedChecks) {
                 "FEIL"
             } else {
                 "Service-status: OK"

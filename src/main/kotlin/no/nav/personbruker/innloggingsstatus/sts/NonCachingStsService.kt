@@ -2,7 +2,7 @@ package no.nav.personbruker.innloggingsstatus.sts
 
 import org.slf4j.LoggerFactory
 
-class NonCachingStsService (val stsConsumer: STSConsumer): StsService {
+class NonCachingStsService (private val stsConsumer: STSConsumer): StsService {
 
     private val log = LoggerFactory.getLogger(NonCachingStsService::class.java)
 

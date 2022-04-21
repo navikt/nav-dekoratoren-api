@@ -1,17 +1,16 @@
 package no.nav.personbruker.innloggingsstatus.config
 
 import io.ktor.config.ApplicationConfig
+import no.nav.personbruker.dittnav.common.cache.EvictingCache
+import no.nav.personbruker.dittnav.common.cache.EvictingCacheConfig
 import no.nav.personbruker.dittnav.common.metrics.MetricsReporter
 import no.nav.personbruker.dittnav.common.metrics.StubMetricsReporter
 import no.nav.personbruker.dittnav.common.metrics.influx.InfluxMetricsReporter
 import no.nav.personbruker.dittnav.common.metrics.influx.SensuConfig
-import no.nav.personbruker.dittnav.common.cache.EvictingCache
-import no.nav.personbruker.dittnav.common.cache.EvictingCacheConfig
 import no.nav.personbruker.innloggingsstatus.auth.AuthTokenService
 import no.nav.personbruker.innloggingsstatus.common.metrics.MetricsCollector
 import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenService
 import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenValidator
-import no.nav.personbruker.innloggingsstatus.openam.*
 import no.nav.personbruker.innloggingsstatus.pdl.PdlConsumer
 import no.nav.personbruker.innloggingsstatus.pdl.PdlService
 import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenIssuer
@@ -33,10 +32,6 @@ class ApplicationContext(config: ApplicationConfig) {
     val oidcTokenValidator = OidcTokenValidator(config)
     val oidcValidationService = OidcTokenService(oidcTokenValidator, environment)
 
-    val openAMConsumer = OpenAMConsumer(httpClient, environment)
-    val openAMTokenInfoProvider = setupOpenAmTokenInfoProvider(openAMConsumer, environment)
-    val openAMValidationService = OpenAMTokenService(openAMTokenInfoProvider)
-
     val stsConsumer = STSConsumer(httpClient, environment)
     val pdlConsumer = PdlConsumer(httpClient, environment)
     val stsService = resolveStsService(stsConsumer, environment)
@@ -52,9 +47,9 @@ class ApplicationContext(config: ApplicationConfig) {
     val selfIssuedTokenIssuer = SelfIssuedTokenIssuer(environment)
     val selfIssuedTokenService = SelfIssuedTokenService(selfIssuedTokenValidator, selfIssuedTokenIssuer, oidcTokenValidator, environment)
 
-    val authTokenService = AuthTokenService(oidcValidationService, openAMValidationService, subjectNameService, selfIssuedTokenService, metricsCollector)
+    val authTokenService = AuthTokenService(oidcValidationService, subjectNameService, selfIssuedTokenService, metricsCollector)
 
-    val selfTests = listOf(openAMConsumer, stsConsumer, pdlConsumer)
+    val selfTests = listOf(stsConsumer, pdlConsumer)
 }
 
 private fun resolveMetricsReporter(environment: Environment): MetricsReporter {
@@ -89,27 +84,6 @@ private fun resolveStsService(stsConsumer: STSConsumer, environment: Environment
 private fun setupSubjectNameCache(environment: Environment): EvictingCache<String, String> {
     val cacheThreshold = environment.subjectNameCacheThreshold
     val cacheExpiryMinutes = environment.subjectNameCacheExpiryMinutes
-
-    val evictingCacheConfig = EvictingCacheConfig(
-        evictionThreshold = cacheThreshold,
-        entryLifetimeMinutes = cacheExpiryMinutes
-    )
-
-    return EvictingCache(evictingCacheConfig)
-}
-
-private fun setupOpenAmTokenInfoProvider(openAMConsumer: OpenAMConsumer, environment: Environment): OpenAMTokenInfoProvider {
-    return if (environment.openAmTokenInfoCacheEnabled) {
-        val openAmTokenInfoCache = setupOpenAMTokenInfoCache(environment)
-        CachingOpenAmTokenInfoProvider(openAMConsumer, openAmTokenInfoCache)
-    } else {
-        NonCachingOpenAmTokenInfoProvider(openAMConsumer)
-    }
-}
-
-private fun setupOpenAMTokenInfoCache(environment: Environment): EvictingCache<String, OpenAMTokenInfo> {
-    val cacheThreshold = environment.openAmTokenInfoCacheThreshold
-    val cacheExpiryMinutes = environment.openAmTokenInfoCacheExpiryMinutes
 
     val evictingCacheConfig = EvictingCacheConfig(
         evictionThreshold = cacheThreshold,

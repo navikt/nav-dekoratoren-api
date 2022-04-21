@@ -5,11 +5,10 @@ import com.nimbusds.jose.JWSSigner
 import com.nimbusds.jose.crypto.MACSigner
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
-import no.nav.security.token.support.core.jwt.JwtToken
 import java.time.Instant
 import java.time.temporal.ChronoUnit
-import java.util.Date
-import java.util.UUID
+import java.util.*
+import no.nav.security.token.support.core.jwt.JwtToken
 
 object SelfIssuedTokenObjectMother {
 
