@@ -1,12 +1,12 @@
 package no.nav.personbruker.innloggingsstatus.sts.cache
 
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import no.nav.personbruker.innloggingsstatus.config.Environment
 import no.nav.personbruker.innloggingsstatus.sts.STSConsumer
 import org.slf4j.LoggerFactory
-import java.time.Instant
-import java.time.temporal.ChronoUnit
 
 class StsTokenCache (private val stsConsumer: STSConsumer, environment: Environment) {
 
@@ -52,16 +52,20 @@ class StsTokenCache (private val stsConsumer: STSConsumer, environment: Environm
 
 private class TokenSlot(val expiryMargin: Long) {
     private var token: StsTokenWithClaims? = null
+    private val log = LoggerFactory.getLogger(TokenSlot::class.java)
 
     fun clear() {
+        log.info("Clearing tokenSlot value")
         token = null
     }
 
     fun set(newToken: String) {
+        log.info("Setting tokenSlot value")
         token = StsTokenWithClaims(newToken)
     }
 
     fun get(): String {
+        log.info("Fetching token from tokenSlot")
         return token?.tokenString ?: throw RuntimeException("Called 'get' on empty token slot")
     }
 
