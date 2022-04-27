@@ -1,8 +1,6 @@
 package no.nav.personbruker.innloggingsstatus.config
 
 import io.ktor.config.ApplicationConfig
-import no.nav.personbruker.dittnav.common.cache.EvictingCache
-import no.nav.personbruker.dittnav.common.cache.EvictingCacheConfig
 import no.nav.personbruker.dittnav.common.metrics.MetricsReporter
 import no.nav.personbruker.dittnav.common.metrics.StubMetricsReporter
 import no.nav.personbruker.dittnav.common.metrics.influx.InfluxMetricsReporter
@@ -36,8 +34,7 @@ class ApplicationContext(config: ApplicationConfig) {
     val stsService = StsService(stsTokenCache)
     val pdlService = PdlService(pdlConsumer, stsService)
 
-    val subjectNameCache = setupSubjectNameCache(environment)
-    val subjectNameService = SubjectNameService(pdlService, subjectNameCache)
+    val subjectNameService = SubjectNameService(pdlService)
 
     val metricsReporter = resolveMetricsReporter(environment)
     val metricsCollector = MetricsCollector(metricsReporter)
@@ -68,16 +65,4 @@ private fun resolveMetricsReporter(environment: Environment): MetricsReporter {
 
         InfluxMetricsReporter(sensuConfig)
     }
-}
-
-private fun setupSubjectNameCache(environment: Environment): EvictingCache<String, String> {
-    val cacheThreshold = environment.subjectNameCacheThreshold
-    val cacheExpiryMinutes = environment.subjectNameCacheExpiryMinutes
-
-    val evictingCacheConfig = EvictingCacheConfig(
-        evictionThreshold = cacheThreshold,
-        entryLifetimeMinutes = cacheExpiryMinutes
-    )
-
-    return EvictingCache(evictingCacheConfig)
 }

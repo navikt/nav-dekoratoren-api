@@ -1,13 +1,20 @@
 package no.nav.personbruker.innloggingsstatus.user
 
-import no.nav.personbruker.dittnav.common.cache.EvictingCache
+import com.github.benmanes.caffeine.cache.Cache
+import com.github.benmanes.caffeine.cache.Caffeine
+import kotlinx.coroutines.runBlocking
 import no.nav.personbruker.innloggingsstatus.pdl.PdlService
 
-class SubjectNameService(private val pdlService: PdlService, private val cache: EvictingCache<String, String>) {
+class SubjectNameService(private val pdlService: PdlService) {
+
+    private val cache: Cache<String, String> = Caffeine.newBuilder().build()
 
     suspend fun getSubjectName(subject: String): String {
-        return cache.getEntry(subject, this::fetchNameFromPdlAndConcatenate)
-            ?: subject
+        return cache.get(subject) {
+            runBlocking {
+                fetchNameFromPdlAndConcatenate(subject) ?: subject
+            }
+        }
     }
 
     private suspend fun fetchNameFromPdlAndConcatenate(subject: String): String? {

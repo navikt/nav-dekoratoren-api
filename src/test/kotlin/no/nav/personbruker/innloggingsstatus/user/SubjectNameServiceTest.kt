@@ -3,8 +3,6 @@ package no.nav.personbruker.innloggingsstatus.user
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
-import no.nav.personbruker.dittnav.common.cache.EvictingCache
-import no.nav.personbruker.innloggingsstatus.cache.MockedEvictingCacheFactory
 import no.nav.personbruker.innloggingsstatus.pdl.PdlService
 import no.nav.personbruker.innloggingsstatus.pdl.query.PdlNavn
 import org.amshove.kluent.`should be equal to`
@@ -12,7 +10,6 @@ import org.junit.jupiter.api.Test
 
 internal class SubjectNameServiceTest {
 
-    val nameCache: EvictingCache<String, String> = MockedEvictingCacheFactory.createShallowCache()
     val pdlService: PdlService = mockk()
 
     val subject = "123465"
@@ -20,7 +17,7 @@ internal class SubjectNameServiceTest {
     val mellomnavn = "Mellomnavn"
     val etternavn = "Etternavn"
 
-    val subjectNameService = SubjectNameService(pdlService, nameCache)
+    val subjectNameService = SubjectNameService(pdlService)
 
     @Test
     fun `should return subject if name was not found`() {
