@@ -16,8 +16,6 @@ import no.nav.personbruker.innloggingsstatus.pdl.PdlService
 import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenIssuer
 import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenService
 import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenValidator
-import no.nav.personbruker.innloggingsstatus.sts.CachingStsService
-import no.nav.personbruker.innloggingsstatus.sts.NonCachingStsService
 import no.nav.personbruker.innloggingsstatus.sts.STSConsumer
 import no.nav.personbruker.innloggingsstatus.sts.StsService
 import no.nav.personbruker.innloggingsstatus.sts.cache.StsTokenCache
@@ -34,7 +32,8 @@ class ApplicationContext(config: ApplicationConfig) {
 
     val stsConsumer = STSConsumer(httpClient, environment)
     val pdlConsumer = PdlConsumer(httpClient, environment)
-    val stsService = resolveStsService(stsConsumer, environment)
+    val stsTokenCache = StsTokenCache(stsConsumer, environment)
+    val stsService = StsService(stsTokenCache)
     val pdlService = PdlService(pdlConsumer, stsService)
 
     val subjectNameCache = setupSubjectNameCache(environment)
@@ -68,16 +67,6 @@ private fun resolveMetricsReporter(environment: Environment): MetricsReporter {
         )
 
         InfluxMetricsReporter(sensuConfig)
-    }
-}
-
-private fun resolveStsService(stsConsumer: STSConsumer, environment: Environment): StsService {
-
-    return if (environment.stsCacheEnabled) {
-        val stsTokenCache = StsTokenCache(stsConsumer, environment)
-        CachingStsService(stsTokenCache)
-    } else {
-        NonCachingStsService(stsConsumer)
     }
 }
 
