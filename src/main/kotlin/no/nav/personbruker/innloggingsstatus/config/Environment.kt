@@ -35,7 +35,6 @@ data class Environment(
     val selfIssuedIssuer: String = getEnvVar("SELF_ISSUED_ISSUER"),
     val selfIssuedSecretKey: String = getEnvVar("SELF_ISSUED_SECRET_KEY"),
     val selfIssuedCookieName: String = getEnvVar("SELF_ISSUED_COOKIE_NAME", "innloggingsstatus-token"),
-    val idportenIssuer: String = getEnvVar("IDPORTEN_ISSUER"),
     val idportenAcceptedAudience: String = getEnvVar("IDPORTEN_ACCEPTED_AUDIENCE", "https://nav.no"),
     val idportenWellKnownUrl: String = getEnvVar("IDPORTEN_WELL_KNOWN_URL"),
     val idportenIdentityClaim: String = getEnvVar("IDPORTEN_IDENTITY_CLAIM", "pid")
