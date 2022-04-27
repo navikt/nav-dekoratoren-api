@@ -73,7 +73,7 @@ class SelfIssuedTokenServiceTest {
         val idportenIssuer = "idporten"
         val idportenIdentityClaim = "pid"
 
-        every { environment.idportenIssuer } returns idportenIssuer
+        every { environment.oidcIssuer } returns idportenIssuer
         every { environment.idportenIdentityClaim } returns idportenIdentityClaim
         every { oidcTokenValidator.getValidToken(call, idportenIssuer) } returns idportenToken
         every { selfIssuedTokenIssuer.issueToken(idportenToken) } returns selfIssuedToken
@@ -90,7 +90,7 @@ class SelfIssuedTokenServiceTest {
     @Test
     fun `should return access denied if attempting to exchange invalid ID-porten token`() {
         val issuer = "idporten"
-        every { environment.idportenIssuer } returns issuer
+        every { environment.oidcIssuer } returns issuer
         every { oidcTokenValidator.getValidToken(call, issuer) } returns null
 
         when (val response = selfIssuedTokenService.exchangeToken(call)) {

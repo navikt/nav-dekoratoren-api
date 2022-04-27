@@ -26,7 +26,7 @@ class SelfIssuedTokenService(
 
     // exchanges an inbound ID-porten token with a self-issued token containing custom claims based on the input token
     fun exchangeToken(call: ApplicationCall): SelfIssuedTokenResponse {
-        val idportenToken: JwtToken? = oidcTokenValidator.getValidToken(call, environment.idportenIssuer)
+        val idportenToken: JwtToken? = oidcTokenValidator.getValidToken(call, environment.oidcIssuer)
 
         if (idportenToken == null) {
             val description = "Authorization header does not contain a valid ID-porten token."
