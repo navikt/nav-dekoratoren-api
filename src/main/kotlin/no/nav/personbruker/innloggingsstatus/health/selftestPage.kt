@@ -1,8 +1,8 @@
 package no.nav.personbruker.innloggingsstatus.health
 
-import io.ktor.application.ApplicationCall
-import io.ktor.html.respondHtml
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.application.ApplicationCall
+import io.ktor.server.html.respondHtml
 import kotlinx.coroutines.coroutineScope
 import kotlinx.html.body
 import kotlinx.html.h1

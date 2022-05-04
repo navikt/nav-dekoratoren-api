@@ -1,6 +1,6 @@
 package no.nav.personbruker.innloggingsstatus.auth
 
-import io.ktor.application.ApplicationCall
+import io.ktor.server.application.ApplicationCall
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
 import no.nav.personbruker.innloggingsstatus.common.metrics.MetricsCollector

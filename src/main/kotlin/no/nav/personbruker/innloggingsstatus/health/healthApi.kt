@@ -1,15 +1,18 @@
 package no.nav.personbruker.innloggingsstatus.health
 
-import io.ktor.application.call
 import io.ktor.http.ContentType
-import io.ktor.response.respondText
-import io.ktor.response.respondTextWriter
-import io.ktor.routing.Routing
-import io.ktor.routing.get
+import io.ktor.server.application.call
+import io.ktor.server.response.respondText
+import io.ktor.server.response.respondTextWriter
+import io.ktor.server.routing.Routing
+import io.ktor.server.routing.get
 import io.prometheus.client.CollectorRegistry
 import io.prometheus.client.exporter.common.TextFormat
 
-fun Routing.healthApi(selfTests: List<SelfTest>, collectorRegistry: CollectorRegistry = CollectorRegistry.defaultRegistry) {
+fun Routing.healthApi(
+    selfTests: List<SelfTest>,
+    collectorRegistry: CollectorRegistry = CollectorRegistry.defaultRegistry
+) {
 
     val pingJsonResponse = """{"ping": "pong"}"""
 
@@ -18,7 +21,7 @@ fun Routing.healthApi(selfTests: List<SelfTest>, collectorRegistry: CollectorReg
     }
 
     get("/internal/isReady") {
-            call.respondText(text = "READY", contentType = ContentType.Text.Plain)
+        call.respondText(text = "READY", contentType = ContentType.Text.Plain)
     }
 
     get("/internal/ping") {

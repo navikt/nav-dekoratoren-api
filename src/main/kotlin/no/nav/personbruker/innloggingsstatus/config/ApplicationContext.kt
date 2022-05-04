@@ -1,6 +1,6 @@
 package no.nav.personbruker.innloggingsstatus.config
 
-import io.ktor.config.ApplicationConfig
+import io.ktor.server.config.ApplicationConfig
 import no.nav.personbruker.dittnav.common.metrics.MetricsReporter
 import no.nav.personbruker.dittnav.common.metrics.StubMetricsReporter
 import no.nav.personbruker.dittnav.common.metrics.influx.InfluxMetricsReporter

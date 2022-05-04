@@ -1,8 +1,9 @@
 package no.nav.personbruker.innloggingsstatus.selfissued
 
-import io.ktor.application.ApplicationCall
+import io.ktor.server.application.ApplicationCall
 import io.mockk.every
 import io.mockk.mockk
+import java.time.LocalDateTime
 import no.nav.personbruker.innloggingsstatus.common.toUtcDateTime
 import no.nav.personbruker.innloggingsstatus.config.Environment
 import no.nav.personbruker.innloggingsstatus.oidc.JwtTokenObjectMother
@@ -15,7 +16,6 @@ import org.amshove.kluent.`should be null`
 import org.amshove.kluent.`should not be null`
 import org.amshove.kluent.fail
 import org.junit.jupiter.api.Test
-import java.time.LocalDateTime
 
 class SelfIssuedTokenServiceTest {
 
