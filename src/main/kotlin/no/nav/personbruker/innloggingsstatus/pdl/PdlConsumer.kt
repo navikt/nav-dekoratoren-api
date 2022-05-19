@@ -54,7 +54,6 @@ class PdlConsumer(private val client: HttpClient, environment: Environment): Sel
                 body = request
             }
         } catch (e: Exception) {
-            log.info(accessToken)
             throw PdlException("Feil ved kontakt mot pdl-api", e)
         }
     }
