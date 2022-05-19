@@ -14,10 +14,8 @@ import no.nav.personbruker.innloggingsstatus.pdl.PdlService
 import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenIssuer
 import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenService
 import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenValidator
-import no.nav.personbruker.innloggingsstatus.sts.STSConsumer
-import no.nav.personbruker.innloggingsstatus.sts.StsService
-import no.nav.personbruker.innloggingsstatus.sts.cache.StsTokenCache
 import no.nav.personbruker.innloggingsstatus.user.SubjectNameService
+import no.nav.tms.token.support.azure.exchange.AzureServiceBuilder
 
 class ApplicationContext(config: ApplicationConfig) {
 
@@ -28,11 +26,13 @@ class ApplicationContext(config: ApplicationConfig) {
     val oidcTokenValidator = OidcTokenValidator(config)
     val oidcValidationService = OidcTokenService(oidcTokenValidator, environment)
 
-    val stsConsumer = STSConsumer(httpClient, environment)
+    val azureService = AzureServiceBuilder.buildAzureService(
+        cachingEnabled = true,
+        enableDefaultProxy = false,
+    )
+
     val pdlConsumer = PdlConsumer(httpClient, environment)
-    val stsTokenCache = StsTokenCache(stsConsumer, environment)
-    val stsService = StsService(stsTokenCache)
-    val pdlService = PdlService(pdlConsumer, stsService)
+    val pdlService = PdlService(pdlConsumer, azureService, environment)
 
     val subjectNameService = SubjectNameService(pdlService)
 
@@ -41,11 +41,13 @@ class ApplicationContext(config: ApplicationConfig) {
 
     val selfIssuedTokenValidator = SelfIssuedTokenValidator(environment)
     val selfIssuedTokenIssuer = SelfIssuedTokenIssuer(environment)
-    val selfIssuedTokenService = SelfIssuedTokenService(selfIssuedTokenValidator, selfIssuedTokenIssuer, oidcTokenValidator, environment)
+    val selfIssuedTokenService =
+        SelfIssuedTokenService(selfIssuedTokenValidator, selfIssuedTokenIssuer, oidcTokenValidator, environment)
 
-    val authTokenService = AuthTokenService(oidcValidationService, subjectNameService, selfIssuedTokenService, metricsCollector)
+    val authTokenService =
+        AuthTokenService(oidcValidationService, subjectNameService, selfIssuedTokenService, metricsCollector)
 
-    val selfTests = listOf(stsConsumer, pdlConsumer)
+    val selfTests = listOf(pdlConsumer)
 }
 
 private fun resolveMetricsReporter(environment: Environment): MetricsReporter {

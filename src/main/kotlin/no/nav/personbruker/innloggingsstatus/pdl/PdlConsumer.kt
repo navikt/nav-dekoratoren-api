@@ -13,7 +13,6 @@ import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import java.net.URI
 import java.net.URL
-import no.nav.personbruker.innloggingsstatus.common.apiKeyHeader
 import no.nav.personbruker.innloggingsstatus.common.bearerHeader
 import no.nav.personbruker.innloggingsstatus.common.readObject
 import no.nav.personbruker.innloggingsstatus.config.Environment
@@ -34,27 +33,24 @@ private const val GENERELL = "GEN"
 
 class PdlConsumer(private val client: HttpClient, environment: Environment): SelfTest {
     private val endpoint = URI(environment.pdlApiUrl)
-    private val apiKey = environment.pdlApiGWKey
 
     private val log: Logger = LoggerFactory.getLogger(PdlConsumer::class.java)
 
     override val externalServiceName: String get() = "PDL-api"
 
-    suspend fun getPersonInfo(ident: String, stsToken: String): PdlPersonInfo {
+    suspend fun getPersonInfo(ident: String, accessToken: String): PdlPersonInfo {
 
         val request = createSubjectNameRequest(ident)
 
-        return parsePdlResponse(postPersonQuery(request, stsToken))
+        return parsePdlResponse(postPersonQuery(request, accessToken))
     }
 
-    private suspend fun postPersonQuery(request: SubjectNameRequest, stsToken: String): String {
+    private suspend fun postPersonQuery(request: SubjectNameRequest, accessToken: String): String {
         return try {
             client.post {
                 url(URL("$endpoint/graphql"))
                 contentType(ContentType.Application.Json)
-                apiKeyHeader(apiKey)
-                bearerHeader(stsToken)
-                bearerHeader(stsToken, headerKey = "Nav-Consumer-Token")
+                bearerHeader(accessToken)
                 header("Nav-Consumer-Id", CONSUMER_ID)
                 header("Tema", GENERELL)
                 setBody(request)
@@ -117,7 +113,6 @@ class PdlConsumer(private val client: HttpClient, environment: Environment): Sel
     private suspend fun getLivenessResponse(): HttpResponse {
         return client.options {
             url(URL("$endpoint/graphql"))
-            apiKeyHeader(apiKey)
         }
     }
 }

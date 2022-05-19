@@ -34,3 +34,6 @@ spec:
     requests:
       cpu: "500m"
       memory: 384Mi
+  azure:
+    application:
+      enabled: true
