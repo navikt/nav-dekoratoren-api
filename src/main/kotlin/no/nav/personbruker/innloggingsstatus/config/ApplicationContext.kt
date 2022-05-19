@@ -1,6 +1,9 @@
 package no.nav.personbruker.innloggingsstatus.config
 
+import com.github.benmanes.caffeine.cache.Cache
+import com.github.benmanes.caffeine.cache.Caffeine
 import io.ktor.server.config.ApplicationConfig
+import java.util.concurrent.TimeUnit
 import no.nav.personbruker.dittnav.common.metrics.MetricsReporter
 import no.nav.personbruker.dittnav.common.metrics.StubMetricsReporter
 import no.nav.personbruker.dittnav.common.metrics.influx.InfluxMetricsReporter
@@ -34,18 +37,27 @@ class ApplicationContext(config: ApplicationConfig) {
     val stsService = StsService(stsTokenCache)
     val pdlService = PdlService(pdlConsumer, stsService)
 
-    val subjectNameService = SubjectNameService(pdlService)
+    val subjectNameService = SubjectNameService(pdlService, setupSubjectNameCache(environment))
 
     val metricsReporter = resolveMetricsReporter(environment)
     val metricsCollector = MetricsCollector(metricsReporter)
 
     val selfIssuedTokenValidator = SelfIssuedTokenValidator(environment)
     val selfIssuedTokenIssuer = SelfIssuedTokenIssuer(environment)
-    val selfIssuedTokenService = SelfIssuedTokenService(selfIssuedTokenValidator, selfIssuedTokenIssuer, oidcTokenValidator, environment)
+    val selfIssuedTokenService =
+        SelfIssuedTokenService(selfIssuedTokenValidator, selfIssuedTokenIssuer, oidcTokenValidator, environment)
 
-    val authTokenService = AuthTokenService(oidcValidationService, subjectNameService, selfIssuedTokenService, metricsCollector)
+    val authTokenService =
+        AuthTokenService(oidcValidationService, subjectNameService, selfIssuedTokenService, metricsCollector)
 
     val selfTests = listOf(stsConsumer, pdlConsumer)
+}
+
+private fun setupSubjectNameCache(environment: Environment): Cache<String, String> {
+    return Caffeine.newBuilder()
+        .maximumSize(environment.subjectNameCacheThreshold.toLong())
+        .expireAfterWrite(environment.subjectNameCacheExpiryMinutes, TimeUnit.MINUTES)
+        .build()
 }
 
 private fun resolveMetricsReporter(environment: Environment): MetricsReporter {

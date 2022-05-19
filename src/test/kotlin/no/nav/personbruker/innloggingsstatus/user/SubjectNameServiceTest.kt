@@ -1,23 +1,34 @@
 package no.nav.personbruker.innloggingsstatus.user
 
+import com.github.benmanes.caffeine.cache.Cache
+import com.github.benmanes.caffeine.cache.Caffeine
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import no.nav.personbruker.innloggingsstatus.pdl.PdlService
 import no.nav.personbruker.innloggingsstatus.pdl.query.PdlNavn
 import org.amshove.kluent.`should be equal to`
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.TestInstance
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 internal class SubjectNameServiceTest {
 
     val pdlService: PdlService = mockk()
+    val cache: Cache<String, String> = Caffeine.newBuilder().build()
 
     val subject = "123465"
     val fornavn = "Fornavn"
     val mellomnavn = "Mellomnavn"
     val etternavn = "Etternavn"
 
-    val subjectNameService = SubjectNameService(pdlService)
+    val subjectNameService = SubjectNameService(pdlService, cache)
+
+    @BeforeEach
+    fun setup() {
+        cache.invalidateAll()
+    }
 
     @Test
     fun `should return subject if name was not found`() {
