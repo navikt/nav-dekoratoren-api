@@ -25,10 +25,6 @@ spec:
     - "{{this}}"
   {{/each}}
   accessPolicy:
-    rules:
-      - application: pdl-api
-        namespace: pdl
-        cluster: dev-fss
     outbound:
       external:
         - host: {{ pdl-api-host }}
