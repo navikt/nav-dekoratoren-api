@@ -4,5 +4,6 @@
     "https://innloggingsstatus.dev.intern.nav.no/person/innloggingsstatus",
     "https://www.dev.nav.no/person/innloggingsstatus",
     "https://www.dev.intern.nav.no/person/innloggingsstatus"
-  ]
+  ],
+  "pdl-api-host": "https://pdl-api.dev-fss-pub.nais.io"
 }

@@ -24,6 +24,10 @@ spec:
   {{#each ingresses}}
     - "{{this}}"
   {{/each}}
+  accessPolicy:
+    outbound:
+      external:
+        - host: {{ pdl-api-host }}
   envFrom:
     - configmap: loginservice-idporten
     - secret: innloggingsstatus-env
