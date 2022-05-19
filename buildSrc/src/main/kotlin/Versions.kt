@@ -49,7 +49,7 @@ object Kotlinx {
 }
 
 object Ktor {
-    private const val version = "2.0.1"
+    private const val version = "1.6.8"
     private const val groupId = "io.ktor"
 
     const val serverNetty = "$groupId:ktor-server-netty:$version"
@@ -61,12 +61,8 @@ object Ktor {
     const val clientLoggingJvm = "$groupId:ktor-client-logging-jvm:$version"
     const val clientMock = "$groupId:ktor-client-mock:$version"
     const val clientMockJvm = "$groupId:ktor-client-mock-jvm:$version"
-    const val clientContentNegotiation = "$groupId:ktor-client-content-negotiation:$version"
-    const val serverContentNegotiation = "$groupId:ktor-server-content-negotiation:$version"
-    const val htmlBuilder = "$groupId:ktor-server-html-builder:$version"
-    const val jackson = "$groupId:ktor-serialization-jackson:$version"
-    const val defaultHeaders = "$groupId:ktor-server-default-headers:$version"
-    const val cors = "$groupId:ktor-server-cors:$version"
+    const val htmlBuilder = "$groupId:ktor-html-builder:$version"
+    const val jackson = "$groupId:ktor-jackson:$version"
 }
 
 object Logback {

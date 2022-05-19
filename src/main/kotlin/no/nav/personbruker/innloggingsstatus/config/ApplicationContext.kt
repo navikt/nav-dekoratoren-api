@@ -2,7 +2,7 @@ package no.nav.personbruker.innloggingsstatus.config
 
 import com.github.benmanes.caffeine.cache.Cache
 import com.github.benmanes.caffeine.cache.Caffeine
-import io.ktor.server.config.ApplicationConfig
+import io.ktor.config.ApplicationConfig
 import java.util.concurrent.TimeUnit
 import no.nav.personbruker.dittnav.common.metrics.MetricsReporter
 import no.nav.personbruker.dittnav.common.metrics.StubMetricsReporter

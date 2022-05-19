@@ -1,7 +1,7 @@
 package no.nav.personbruker.innloggingsstatus.common.metrics
 
+import io.ktor.application.ApplicationCall
 import io.ktor.http.HttpHeaders
-import io.ktor.server.application.ApplicationCall
 import no.nav.personbruker.dittnav.common.metrics.MetricsReporter
 import no.nav.personbruker.innloggingsstatus.auth.AuthInfo
 import no.nav.personbruker.innloggingsstatus.auth.UserInfo

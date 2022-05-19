@@ -1,7 +1,6 @@
 package no.nav.personbruker.innloggingsstatus.sts
 
 import io.ktor.client.HttpClient
-import io.ktor.client.call.body
 import io.ktor.client.request.get
 import io.ktor.client.request.options
 import io.ktor.client.request.parameter
@@ -41,7 +40,7 @@ class STSConsumer(private val client: HttpClient, environment: Environment): Sel
             parameter("scope", "openid")
             apiKeyHeader(apiKey)
             basicAuth(username, password)
-        }.body()
+        }
     }
 
     override suspend fun externalServiceStatus(): ServiceStatus {

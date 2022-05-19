@@ -4,10 +4,8 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.header
 import io.ktor.client.request.options
 import io.ktor.client.request.post
-import io.ktor.client.request.setBody
 import io.ktor.client.request.url
 import io.ktor.client.statement.HttpResponse
-import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
@@ -57,8 +55,8 @@ class PdlConsumer(private val client: HttpClient, environment: Environment): Sel
                 bearerHeader(stsToken, headerKey = "Nav-Consumer-Token")
                 header("Nav-Consumer-Id", CONSUMER_ID)
                 header("Tema", GENERELL)
-                setBody(request)
-            }.bodyAsText()
+                body = request
+            }
         } catch (e: Exception) {
             throw PdlException("Feil ved kontakt mot pdl-api", e)
         }
