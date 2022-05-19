@@ -5,7 +5,7 @@ import com.nimbusds.oauth2.sdk.auth.Secret
 import com.nimbusds.oauth2.sdk.id.ClientID
 import com.nimbusds.oauth2.sdk.id.Issuer
 import com.nimbusds.openid.connect.sdk.validators.IDTokenValidator
-import io.ktor.server.application.ApplicationCall
+import io.ktor.application.ApplicationCall
 import no.nav.personbruker.innloggingsstatus.config.Environment
 import no.nav.security.token.support.core.jwt.JwtToken
 import org.slf4j.LoggerFactory
