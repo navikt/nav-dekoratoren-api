@@ -30,7 +30,7 @@ spec:
         - host: {{ pdl-api-host }}
   envFrom:
     - configmap: loginservice-idporten
-    - secret: innloggingsstatus-env
+    - secret: innloggingsstatus-secret
   resources:
     limits:
       cpu: "3"
