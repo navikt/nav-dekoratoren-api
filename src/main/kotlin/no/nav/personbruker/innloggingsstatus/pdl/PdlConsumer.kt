@@ -46,7 +46,7 @@ class PdlConsumer(private val client: HttpClient, environment: Environment): Sel
     private suspend fun postPersonQuery(request: SubjectNameRequest, accessToken: String): String {
         return try {
             client.post {
-                url(URL("$endpoint/graphql"))
+                url(URL("$endpoint"))
                 contentType(ContentType.Application.Json)
                 bearerHeader(accessToken)
                 header("Nav-Consumer-Id", CONSUMER_ID)
