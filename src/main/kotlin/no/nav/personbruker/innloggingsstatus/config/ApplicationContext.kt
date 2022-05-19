@@ -1,6 +1,9 @@
 package no.nav.personbruker.innloggingsstatus.config
 
+import com.github.benmanes.caffeine.cache.Cache
+import com.github.benmanes.caffeine.cache.Caffeine
 import io.ktor.server.config.ApplicationConfig
+import java.util.concurrent.TimeUnit
 import no.nav.personbruker.dittnav.common.metrics.MetricsReporter
 import no.nav.personbruker.dittnav.common.metrics.StubMetricsReporter
 import no.nav.personbruker.dittnav.common.metrics.influx.InfluxMetricsReporter
@@ -34,7 +37,7 @@ class ApplicationContext(config: ApplicationConfig) {
     val pdlConsumer = PdlConsumer(httpClient, environment)
     val pdlService = PdlService(pdlConsumer, azureService, environment)
 
-    val subjectNameService = SubjectNameService(pdlService)
+    val subjectNameService = SubjectNameService(pdlService, setupSubjectNameCache(environment))
 
     val metricsReporter = resolveMetricsReporter(environment)
     val metricsCollector = MetricsCollector(metricsReporter)
@@ -48,6 +51,13 @@ class ApplicationContext(config: ApplicationConfig) {
         AuthTokenService(oidcValidationService, subjectNameService, selfIssuedTokenService, metricsCollector)
 
     val selfTests = listOf(pdlConsumer)
+}
+
+private fun setupSubjectNameCache(environment: Environment): Cache<String, String> {
+    return Caffeine.newBuilder()
+        .maximumSize(environment.subjectNameCacheThreshold.toLong())
+        .expireAfterWrite(environment.subjectNameCacheExpiryMinutes, TimeUnit.MINUTES)
+        .build()
 }
 
 private fun resolveMetricsReporter(environment: Environment): MetricsReporter {
