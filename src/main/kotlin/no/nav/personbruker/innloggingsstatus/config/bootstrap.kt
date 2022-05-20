@@ -4,7 +4,6 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import io.ktor.application.Application
 import io.ktor.application.install
-import io.ktor.features.CORS
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.DefaultHeaders
 import io.ktor.http.HttpHeaders
@@ -13,6 +12,7 @@ import io.ktor.routing.routing
 import io.prometheus.client.hotspot.DefaultExports
 import no.nav.personbruker.innloggingsstatus.auth.authApi
 import no.nav.personbruker.innloggingsstatus.health.healthApi
+import no.nav.personbruker.ktor.features.NonStandardCORS
 
 fun Application.mainModule() {
 
@@ -24,15 +24,13 @@ fun Application.mainModule() {
 
     val environment = applicationContext.environment
 
-    install(CORS) {
+    install(NonStandardCORS) {
         host(
             host = environment.corsAllowedHost,
             schemes = environment.corsAllowedSchemes,
             subDomains = environment.corsAllowedSubdomains
         )
-        environment.corsAdditionalAllowedOrigins.forEach {
-            host(host = it, schemes = environment.corsAllowedSchemes)
-        }
+        registerAdditionalOrigins(environment.corsAdditionalAllowedOrigins, environment.corsAllowedSchemes)
         allowCredentials = true
         header(HttpHeaders.ContentType)
     }
@@ -47,5 +45,11 @@ fun Application.mainModule() {
     routing {
         healthApi(applicationContext.selfTests)
         authApi(applicationContext.authTokenService, applicationContext.selfIssuedTokenService)
+    }
+}
+
+fun NonStandardCORS.Configuration.registerAdditionalOrigins(origins: List<String>, schemes: List<String>) {
+    origins.forEach { origin ->
+        host(origin, schemes)
     }
 }
