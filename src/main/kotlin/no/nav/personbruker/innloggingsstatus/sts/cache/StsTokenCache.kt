@@ -1,12 +1,12 @@
 package no.nav.personbruker.innloggingsstatus.sts.cache
 
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 import no.nav.personbruker.innloggingsstatus.config.Environment
 import no.nav.personbruker.innloggingsstatus.sts.STSConsumer
 import org.slf4j.LoggerFactory
-import java.time.Instant
-import java.time.temporal.ChronoUnit
 
 class StsTokenCache (private val stsConsumer: STSConsumer, environment: Environment) {
 

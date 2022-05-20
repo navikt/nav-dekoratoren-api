@@ -1,8 +1,9 @@
 package no.nav.personbruker.innloggingsstatus.config
 
+import com.github.benmanes.caffeine.cache.Cache
+import com.github.benmanes.caffeine.cache.Caffeine
 import io.ktor.config.ApplicationConfig
-import no.nav.personbruker.dittnav.common.cache.EvictingCache
-import no.nav.personbruker.dittnav.common.cache.EvictingCacheConfig
+import java.util.concurrent.TimeUnit
 import no.nav.personbruker.dittnav.common.metrics.MetricsReporter
 import no.nav.personbruker.dittnav.common.metrics.StubMetricsReporter
 import no.nav.personbruker.dittnav.common.metrics.influx.InfluxMetricsReporter
@@ -16,8 +17,6 @@ import no.nav.personbruker.innloggingsstatus.pdl.PdlService
 import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenIssuer
 import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenService
 import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenValidator
-import no.nav.personbruker.innloggingsstatus.sts.CachingStsService
-import no.nav.personbruker.innloggingsstatus.sts.NonCachingStsService
 import no.nav.personbruker.innloggingsstatus.sts.STSConsumer
 import no.nav.personbruker.innloggingsstatus.sts.StsService
 import no.nav.personbruker.innloggingsstatus.sts.cache.StsTokenCache
@@ -34,22 +33,31 @@ class ApplicationContext(config: ApplicationConfig) {
 
     val stsConsumer = STSConsumer(httpClient, environment)
     val pdlConsumer = PdlConsumer(httpClient, environment)
-    val stsService = resolveStsService(stsConsumer, environment)
+    val stsTokenCache = StsTokenCache(stsConsumer, environment)
+    val stsService = StsService(stsTokenCache)
     val pdlService = PdlService(pdlConsumer, stsService)
 
-    val subjectNameCache = setupSubjectNameCache(environment)
-    val subjectNameService = SubjectNameService(pdlService, subjectNameCache)
+    val subjectNameService = SubjectNameService(pdlService, setupSubjectNameCache(environment))
 
     val metricsReporter = resolveMetricsReporter(environment)
     val metricsCollector = MetricsCollector(metricsReporter)
 
     val selfIssuedTokenValidator = SelfIssuedTokenValidator(environment)
     val selfIssuedTokenIssuer = SelfIssuedTokenIssuer(environment)
-    val selfIssuedTokenService = SelfIssuedTokenService(selfIssuedTokenValidator, selfIssuedTokenIssuer, oidcTokenValidator, environment)
+    val selfIssuedTokenService =
+        SelfIssuedTokenService(selfIssuedTokenValidator, selfIssuedTokenIssuer, oidcTokenValidator, environment)
 
-    val authTokenService = AuthTokenService(oidcValidationService, subjectNameService, selfIssuedTokenService, metricsCollector)
+    val authTokenService =
+        AuthTokenService(oidcValidationService, subjectNameService, selfIssuedTokenService, metricsCollector)
 
     val selfTests = listOf(stsConsumer, pdlConsumer)
+}
+
+private fun setupSubjectNameCache(environment: Environment): Cache<String, String> {
+    return Caffeine.newBuilder()
+        .maximumSize(environment.subjectNameCacheThreshold.toLong())
+        .expireAfterWrite(environment.subjectNameCacheExpiryMinutes, TimeUnit.MINUTES)
+        .build()
 }
 
 private fun resolveMetricsReporter(environment: Environment): MetricsReporter {
@@ -69,26 +77,4 @@ private fun resolveMetricsReporter(environment: Environment): MetricsReporter {
 
         InfluxMetricsReporter(sensuConfig)
     }
-}
-
-private fun resolveStsService(stsConsumer: STSConsumer, environment: Environment): StsService {
-
-    return if (environment.stsCacheEnabled) {
-        val stsTokenCache = StsTokenCache(stsConsumer, environment)
-        CachingStsService(stsTokenCache)
-    } else {
-        NonCachingStsService(stsConsumer)
-    }
-}
-
-private fun setupSubjectNameCache(environment: Environment): EvictingCache<String, String> {
-    val cacheThreshold = environment.subjectNameCacheThreshold
-    val cacheExpiryMinutes = environment.subjectNameCacheExpiryMinutes
-
-    val evictingCacheConfig = EvictingCacheConfig(
-        evictionThreshold = cacheThreshold,
-        entryLifetimeMinutes = cacheExpiryMinutes
-    )
-
-    return EvictingCache(evictingCacheConfig)
 }

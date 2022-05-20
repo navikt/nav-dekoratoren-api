@@ -16,7 +16,7 @@ dependencies {
     implementation(DittNAV.Common.logging)
     implementation(DittNAV.Common.utils)
     implementation(DittNAV.Common.influx)
-    implementation(DittNAV.Common.evictingCache)
+    implementation("com.github.ben-manes.caffeine:caffeine:3.0.6")
     implementation(Jackson.dataTypeJsr310)
     implementation(Jackson.moduleKotlin)
     implementation(Kotlinx.coroutines)
