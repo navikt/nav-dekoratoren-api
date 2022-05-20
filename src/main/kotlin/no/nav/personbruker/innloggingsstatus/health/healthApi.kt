@@ -9,7 +9,10 @@ import io.ktor.routing.get
 import io.prometheus.client.CollectorRegistry
 import io.prometheus.client.exporter.common.TextFormat
 
-fun Routing.healthApi(selfTests: List<SelfTest>, collectorRegistry: CollectorRegistry = CollectorRegistry.defaultRegistry) {
+fun Routing.healthApi(
+    selfTests: List<SelfTest>,
+    collectorRegistry: CollectorRegistry = CollectorRegistry.defaultRegistry
+) {
 
     val pingJsonResponse = """{"ping": "pong"}"""
 
@@ -18,7 +21,7 @@ fun Routing.healthApi(selfTests: List<SelfTest>, collectorRegistry: CollectorReg
     }
 
     get("/internal/isReady") {
-            call.respondText(text = "READY", contentType = ContentType.Text.Plain)
+        call.respondText(text = "READY", contentType = ContentType.Text.Plain)
     }
 
     get("/internal/ping") {

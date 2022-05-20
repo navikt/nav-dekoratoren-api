@@ -2,13 +2,13 @@ package no.nav.personbruker.innloggingsstatus.selfissued
 
 import com.nimbusds.oauth2.sdk.OAuth2Error
 import io.ktor.application.ApplicationCall
+import java.time.Duration
+import java.time.Instant
 import no.nav.personbruker.innloggingsstatus.config.Environment
 import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenInfo
 import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenInfoFactory
 import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenValidator
 import no.nav.security.token.support.core.jwt.JwtToken
-import java.time.Duration
-import java.time.Instant
 
 class SelfIssuedTokenService(
     private val selfIssuedTokenValidator: SelfIssuedTokenValidator,

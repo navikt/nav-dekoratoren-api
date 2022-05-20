@@ -3,7 +3,7 @@ plugins {
     kotlin("plugin.allopen") version Kotlin.version
 
     id(Shadow.pluginId) version Shadow.version
-
+    id(Versions.pluginId) version Versions.version // ./gradlew dependencyUpdates to check for new versions
     application
 }
 
@@ -16,7 +16,7 @@ dependencies {
     implementation(DittNAV.Common.logging)
     implementation(DittNAV.Common.utils)
     implementation(DittNAV.Common.influx)
-    implementation("com.github.ben-manes.caffeine:caffeine:3.0.6")
+    implementation(Caffeine.caffeine)
     implementation(Jackson.dataTypeJsr310)
     implementation(Jackson.moduleKotlin)
     implementation(Kotlinx.coroutines)
@@ -36,7 +36,6 @@ dependencies {
     implementation(Prometheus.common)
     implementation(Prometheus.hotspot)
     implementation(Prometheus.logback)
-    implementation(NAV.customKtorCorsFeature)
     testImplementation(Junit.api)
     testImplementation(Junit.engine)
     testImplementation(Kluent.kluent)
@@ -46,7 +45,7 @@ dependencies {
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    kotlinOptions.jvmTarget = "11"
+    kotlinOptions.jvmTarget = "17"
 }
 
 application {

@@ -5,6 +5,9 @@ import com.nimbusds.jwt.SignedJWT
 import io.ktor.application.ApplicationCall
 import io.mockk.every
 import io.mockk.mockk
+import java.time.Instant
+import java.time.temporal.ChronoUnit
+import java.util.*
 import no.nav.personbruker.innloggingsstatus.config.Environment
 import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenObjectMother.DEFAULT_ISSUER
 import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenObjectMother.DEFAULT_SECURITY_LEVEL
@@ -15,9 +18,6 @@ import org.amshove.kluent.`should be true`
 import org.amshove.kluent.`should contain`
 import org.amshove.kluent.`should not be null`
 import org.junit.jupiter.api.Test
-import java.time.Instant
-import java.time.temporal.ChronoUnit
-import java.util.Date
 
 private const val DEFAULT_COOKIE_NAME = "some-cookie"
 
