@@ -99,6 +99,13 @@ object Shadow {
     const val pluginId = "com.github.johnrengelman.shadow"
 }
 
+object TmsKtorTokenSupport {
+    private const val version = "2022.04.26-14.50-c040e8834caa"
+    private const val groupId = "com.github.navikt.tms-ktor-token-support"
+
+    const val azureExchange = "$groupId:token-support-azure-exchange:$version"
+}
+
 object Versions {
     const val version = "0.42.0"
     const val pluginId = "com.github.ben-manes.versions"
