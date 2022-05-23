@@ -82,6 +82,7 @@ object Mockk {
 
 object NAV {
     const val tokenValidatorKtor = "no.nav.security:token-validation-ktor:2.0.15"
+    const val customKtorCorsFeature = "com.github.navikt:wildcard-subdomain-ktor-cors-feature:2022.04.12-15.55-2d3cb5bd6a72"
 }
 
 object Prometheus {

@@ -34,6 +34,7 @@ dependencies {
     implementation(Logback.classic)
     implementation(Logstash.logbackEncoder)
     implementation(NAV.tokenValidatorKtor)
+    implementation(NAV.customKtorCorsFeature)
     implementation(Prometheus.common)
     implementation(Prometheus.hotspot)
     implementation(Prometheus.logback)
