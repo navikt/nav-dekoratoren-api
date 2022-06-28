@@ -2,7 +2,7 @@ package no.nav.personbruker.innloggingsstatus.selfissued
 
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
-import io.ktor.application.ApplicationCall
+import io.ktor.server.application.ApplicationCall
 import io.mockk.every
 import io.mockk.mockk
 import java.time.Instant
