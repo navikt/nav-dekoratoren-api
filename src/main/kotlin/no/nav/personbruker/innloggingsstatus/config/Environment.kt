@@ -20,8 +20,6 @@ data class Environment(
     val sensuBatchesPerSecond: Int = getEnvVarAsInt("SENSU_BATCHING_ENABLED", 3),
     val corsAllowedHost: String = getEnvVar("CORS_ALLOWED_HOST"),
     val corsAllowedSchemes: List<String> = getEnvVarAsList("CORS_ALLOWED_SCHEMES", listOf("https")),
-    val corsAllowedSubdomains: List<String> = getEnvVarAsList("CORS_ALLOWED_SUBDOMAINS", emptyList()),
-    val corsAdditionalAllowedOrigins: List<String> = getEnvVarAsList("CORS_ADDITIONAL_ALLOWED_ORIGINS", emptyList()),
     val subjectNameCacheThreshold: Int = getEnvVarAsInt("SUBJECT_NAME_CACHE_THRESHOLD",  4096),
     val subjectNameCacheExpiryMinutes: Long = getEnvVarAsLong("SUBJECT_NAME_CACHE_EXPIRY_MINUTES", 30),
     val selfIssuedIssuer: String = getEnvVar("SELF_ISSUED_ISSUER"),
