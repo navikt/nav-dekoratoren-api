@@ -26,13 +26,9 @@ fun Application.mainModule() {
 
     install(CORS) {
         allowHost(
-            host = environment.corsAllowedHost,
+            host = "*.nav.no",
             schemes = environment.corsAllowedSchemes,
-            subDomains = environment.corsAllowedSubdomains
         )
-        environment.corsAdditionalAllowedOrigins.forEach {
-            allowHost(host = it, schemes = environment.corsAllowedSchemes)
-        }
         allowCredentials = true
         allowHeader(HttpHeaders.ContentType)
     }
