@@ -25,7 +25,7 @@ object Jackson {
 }
 
 object Junit {
-    private const val version = "5.8.2"
+    private const val version = "5.9.0"
     private const val groupId = "org.junit.jupiter"
 
     const val api = "$groupId:junit-jupiter-api:$version"
@@ -44,12 +44,12 @@ object Kotlin {
 object Kotlinx {
     private const val groupId = "org.jetbrains.kotlinx"
 
-    const val coroutines = "$groupId:kotlinx-coroutines-core:1.6.3"
-    const val htmlJvm = "$groupId:kotlinx-html-jvm:0.7.5"
+    const val coroutines = "$groupId:kotlinx-coroutines-core:1.6.4"
+    const val htmlJvm = "$groupId:kotlinx-html-jvm:0.8.0"
 }
 
 object Ktor {
-    private const val version = "2.0.2"
+    private const val version = "2.0.3"
     private const val groupId = "io.ktor"
 
     const val serverNetty = "$groupId:ktor-server-netty:$version"
@@ -80,12 +80,12 @@ object Logstash {
 }
 
 object Mockk {
-    private const val version = "1.12.4"
+    private const val version = "1.12.5"
     const val mockk = "io.mockk:mockk:$version"
 }
 
 object NAV {
-    const val tokenValidatorKtor = "no.nav.security:token-validation-ktor-v2:2.1.1"
+    const val tokenValidatorKtor = "no.nav.security:token-validation-ktor-v2:2.1.3"
 }
 
 object Prometheus {
@@ -103,7 +103,7 @@ object Shadow {
 }
 
 object TmsKtorTokenSupport {
-    private const val version = "2022.05.19-09.32-5076b2435b0a"
+    private const val version = "2.0.0"
     private const val groupId = "com.github.navikt.tms-ktor-token-support"
 
     const val azureExchange = "$groupId:token-support-azure-exchange:$version"
