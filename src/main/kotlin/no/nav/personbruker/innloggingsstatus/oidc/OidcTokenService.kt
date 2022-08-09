@@ -1,6 +1,6 @@
 package no.nav.personbruker.innloggingsstatus.oidc
 
-import io.ktor.application.ApplicationCall
+import io.ktor.server.application.ApplicationCall
 import no.nav.personbruker.innloggingsstatus.config.Environment
 
 class OidcTokenService(private val oidcTokenValidator: OidcTokenValidator,

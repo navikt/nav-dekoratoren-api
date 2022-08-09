@@ -1,6 +1,6 @@
 package no.nav.personbruker.innloggingsstatus.oidc
 
-import io.ktor.application.ApplicationCall
+import io.ktor.server.application.ApplicationCall
 import io.mockk.every
 import io.mockk.mockk
 import java.time.LocalDateTime

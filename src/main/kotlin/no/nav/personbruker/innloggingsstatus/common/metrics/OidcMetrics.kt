@@ -5,7 +5,7 @@ import no.nav.personbruker.innloggingsstatus.common.epochSecondUtc
 import no.nav.personbruker.innloggingsstatus.common.getSecondsSinceUtcEpoch
 import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenInfo
 
-data class OidcMetrics private constructor (
+data class OidcMetrics constructor (
     val authenticated: Boolean,
     val authLevel: Int,
     val tokenAgeSeconds: Long,

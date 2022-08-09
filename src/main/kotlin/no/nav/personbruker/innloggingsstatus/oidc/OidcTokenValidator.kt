@@ -1,13 +1,13 @@
 package no.nav.personbruker.innloggingsstatus.oidc
 
-import io.ktor.application.ApplicationCall
-import io.ktor.config.ApplicationConfig
+import io.ktor.server.application.ApplicationCall
+import io.ktor.server.config.ApplicationConfig
 import no.nav.security.token.support.core.configuration.IssuerProperties
 import no.nav.security.token.support.core.configuration.MultiIssuerConfiguration
 import no.nav.security.token.support.core.configuration.ProxyAwareResourceRetriever
 import no.nav.security.token.support.core.jwt.JwtToken
 import no.nav.security.token.support.core.validation.JwtTokenValidationHandler
-import no.nav.security.token.support.ktor.asIssuerProps
+import no.nav.security.token.support.v2.asIssuerProps
 
 class OidcTokenValidator constructor(applicationConfig: ApplicationConfig) {
 
