@@ -26,7 +26,7 @@ fun Application.mainModule() {
 
     install(CORS) {
         allowHost(
-            host = "*.nav.no",
+            host = environment.corsAllowedHost,
             schemes = environment.corsAllowedSchemes,
         )
         allowCredentials = true
