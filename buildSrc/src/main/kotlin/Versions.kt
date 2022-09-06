@@ -12,7 +12,6 @@ object DittNAV {
         private const val groupId = "com.github.navikt.dittnav-common-lib"
 
         const val logging = "$groupId:dittnav-common-logging:$version"
-        const val influx = "$groupId:dittnav-common-influx:$version"
         const val utils = "$groupId:dittnav-common-utils:$version"
     }
 }
