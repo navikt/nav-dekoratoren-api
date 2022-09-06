@@ -11,13 +11,10 @@ import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.plugins.defaultheaders.DefaultHeaders
 import io.ktor.server.routing.routing
-import io.prometheus.client.hotspot.DefaultExports
 import no.nav.personbruker.innloggingsstatus.auth.authApi
 import no.nav.personbruker.innloggingsstatus.health.healthApi
 
 fun Application.mainModule() {
-
-    DefaultExports.initialize()
 
     install(DefaultHeaders)
 
