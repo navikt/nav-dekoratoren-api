@@ -6,6 +6,7 @@ import io.ktor.http.HttpHeaders
 import io.ktor.serialization.jackson.jackson
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
+import io.ktor.server.metrics.micrometer.MicrometerMetrics
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.plugins.defaultheaders.DefaultHeaders
@@ -24,6 +25,10 @@ fun Application.mainModule() {
 
     val environment = applicationContext.environment
 
+    install(MicrometerMetrics) {
+        registry = applicationContext.appMicrometerRegistry
+    }
+
     install(CORS) {
         allowHost(
             host = environment.corsAllowedHost,
@@ -41,7 +46,7 @@ fun Application.mainModule() {
     }
 
     routing {
-        healthApi(applicationContext.selfTests)
+        healthApi(applicationContext.selfTests, applicationContext.appMicrometerRegistry)
         authApi(applicationContext.authTokenService, applicationContext.selfIssuedTokenService)
     }
 }

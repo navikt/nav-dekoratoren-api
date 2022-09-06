@@ -52,6 +52,7 @@ object Ktor {
     private const val version = "2.0.3"
     private const val groupId = "io.ktor"
 
+    const val metricsMicrometer = "$groupId:ktor-server-metrics-micrometer:$version"
     const val serverNetty = "$groupId:ktor-server-netty:$version"
     const val clientApache = "$groupId:ktor-client-apache:$version"
     const val clientJson = "$groupId:ktor-client-json:$version"
@@ -79,6 +80,11 @@ object Logstash {
     const val logbackEncoder = "net.logstash.logback:logstash-logback-encoder:$version"
 }
 
+object Micrometer {
+    private const val version = "1.9.2"
+    const val registryPrometheus = "io.micrometer:micrometer-registry-prometheus:$version"
+}
+
 object Mockk {
     private const val version = "1.12.5"
     const val mockk = "io.mockk:mockk:$version"
@@ -86,15 +92,6 @@ object Mockk {
 
 object NAV {
     const val tokenValidatorKtor = "no.nav.security:token-validation-ktor-v2:2.1.3"
-}
-
-object Prometheus {
-    private const val version = "0.16.0"
-    private const val groupId = "io.prometheus"
-
-    const val common = "$groupId:simpleclient_common:$version"
-    const val hotspot = "$groupId:simpleclient_hotspot:$version"
-    const val logback = "$groupId:simpleclient_logback:$version"
 }
 
 object Shadow {

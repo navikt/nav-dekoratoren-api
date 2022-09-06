@@ -3,6 +3,8 @@ package no.nav.personbruker.innloggingsstatus.config
 import com.github.benmanes.caffeine.cache.Cache
 import com.github.benmanes.caffeine.cache.Caffeine
 import io.ktor.server.config.ApplicationConfig
+import io.micrometer.prometheus.PrometheusConfig
+import io.micrometer.prometheus.PrometheusMeterRegistry
 import java.util.concurrent.TimeUnit
 import no.nav.personbruker.dittnav.common.metrics.MetricsReporter
 import no.nav.personbruker.dittnav.common.metrics.StubMetricsReporter
@@ -23,8 +25,9 @@ import no.nav.tms.token.support.azure.exchange.AzureServiceBuilder
 class ApplicationContext(config: ApplicationConfig) {
 
     val environment = Environment()
-
     val httpClient = HttpClientBuilder.build()
+
+    val appMicrometerRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
 
     val oidcTokenValidator = OidcTokenValidator(config)
     val oidcValidationService = OidcTokenService(oidcTokenValidator, environment)
