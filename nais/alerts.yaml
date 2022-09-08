@@ -28,10 +28,10 @@ spec:
       severity: danger
       expr: (100 * (sum by (backend) (rate(response_total{status_code=~"^5\\d\\d", namespace="personbruker", app="innloggingsstatus"}[3m])) / sum by (backend) (rate(response_total{namespace="personbruker", app="innloggingsstatus"}[3m])))) > 1
       for: 3m
-      action: "Sjekk loggene for å se hvorfor {{ $labels.backend }} returnerer HTTP feilresponser"
+      action: "Sjekk loggene for å se hvorfor innloggingsstatus returnerer HTTP feilresponser"
     - alert: Høy andel HTTP klientfeil (4xx responser)
       severity: warning
       expr: (100 * (sum by (backend) (rate(response_total{status_code=~"^4\\d\\d", namespace="personbruker", app="innloggingsstatus"}[3m])) / sum by (backend) (rate(response_total{namespace="personbruker", app="innloggingsstatus"}[3m])))) > 10
       for: 3m
-      action: "Sjekk loggene for å se hvorfor {{ $labels.backend }} returnerer HTTP feilresponser"
+      action: "Sjekk loggene for å se hvorfor innloggingsstatus returnerer HTTP feilresponser"
 
