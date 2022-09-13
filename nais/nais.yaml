@@ -19,7 +19,7 @@ spec:
     path: /person/innloggingsstatus/internal/metrics
   replicas:
     min: 2
-    max: 4
+    max: 8
   ingresses:
   {{#each ingresses}}
     - "{{this}}"
