@@ -17,7 +17,7 @@ object DittNAV {
 }
 
 object Jackson {
-    private const val version = "2.13.3"
+    private const val version = "2.13.4"
 
     const val dataTypeJsr310 = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$version"
     const val moduleKotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:$version"
@@ -48,7 +48,7 @@ object Kotlinx {
 }
 
 object Ktor {
-    private const val version = "2.0.3"
+    private const val version = "2.1.1"
     private const val groupId = "io.ktor"
 
     const val metricsMicrometer = "$groupId:ktor-server-metrics-micrometer:$version"
@@ -80,17 +80,17 @@ object Logstash {
 }
 
 object Micrometer {
-    private const val version = "1.9.2"
+    private const val version = "1.9.4"
     const val registryPrometheus = "io.micrometer:micrometer-registry-prometheus:$version"
 }
 
 object Mockk {
-    private const val version = "1.12.5"
+    private const val version = "1.12.7"
     const val mockk = "io.mockk:mockk:$version"
 }
 
 object NAV {
-    const val tokenValidatorKtor = "no.nav.security:token-validation-ktor-v2:2.1.3"
+    const val tokenValidatorKtor = "no.nav.security:token-validation-ktor-v2:2.1.4"
 }
 
 object Shadow {
