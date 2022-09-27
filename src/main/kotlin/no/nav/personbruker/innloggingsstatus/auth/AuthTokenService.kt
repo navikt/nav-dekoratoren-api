@@ -1,8 +1,6 @@
 package no.nav.personbruker.innloggingsstatus.auth
 
 import io.ktor.server.application.ApplicationCall
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
 import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenInfo
 import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenService
 import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenService
@@ -15,7 +13,6 @@ class AuthTokenService(
     private val subjectNameService: SubjectNameService,
     private val selfIssuedTokenService: SelfIssuedTokenService,
 ) {
-
     private val log: Logger = LoggerFactory.getLogger(AuthTokenService::class.java)
 
     suspend fun getAuthenticatedUserInfo(call: ApplicationCall): UserInfo {
@@ -27,24 +24,20 @@ class AuthTokenService(
         }
     }
 
-    suspend fun getAuthSummary(call: ApplicationCall): AuthSummary {
+    fun getAuthSummary(call: ApplicationCall): AuthSummary {
         return fetchAndParseAuthInfo(call).let { authInfo ->
             AuthSummary.fromAuthInfo(authInfo)
         }
     }
 
-    private suspend fun fetchAndParseAuthenticatedUserInfo(call: ApplicationCall): UserInfo = coroutineScope {
+    private suspend fun fetchAndParseAuthenticatedUserInfo(call: ApplicationCall): UserInfo {
         val authInfo = fetchAndParseAuthInfo(call)
-
-        val userInfo = getUserInfo(authInfo)
-
-        userInfo
+        return getUserInfo(authInfo)
     }
 
-    private suspend fun fetchAndParseAuthInfo(call: ApplicationCall): AuthInfo = coroutineScope {
-        val oidcToken = async { getNewestOidcToken(call) }
-
-        AuthInfo(oidcToken.await())
+    private fun fetchAndParseAuthInfo(call: ApplicationCall): AuthInfo {
+        val oidcToken = getNewestOidcToken(call)
+        return AuthInfo(oidcToken)
     }
 
     private suspend fun getUserInfo(authInfo: AuthInfo): UserInfo {
