@@ -2,23 +2,19 @@ package no.nav.personbruker.innloggingsstatus.config
 
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import io.ktor.application.Application
-import io.ktor.application.ApplicationStopping
-import io.ktor.application.install
-import io.ktor.client.HttpClient
-import io.ktor.features.ContentNegotiation
-import io.ktor.features.DefaultHeaders
 import io.ktor.http.HttpHeaders
-import io.ktor.jackson.jackson
-import io.ktor.routing.routing
-import io.prometheus.client.hotspot.DefaultExports
+import io.ktor.serialization.jackson.jackson
+import io.ktor.server.application.Application
+import io.ktor.server.application.install
+import io.ktor.server.metrics.micrometer.MicrometerMetrics
+import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.server.plugins.cors.routing.CORS
+import io.ktor.server.plugins.defaultheaders.DefaultHeaders
+import io.ktor.server.routing.routing
 import no.nav.personbruker.innloggingsstatus.auth.authApi
 import no.nav.personbruker.innloggingsstatus.health.healthApi
-import no.nav.personbruker.ktor.features.NonStandardCORS
 
 fun Application.mainModule() {
-
-    DefaultExports.initialize()
 
     install(DefaultHeaders)
 
@@ -26,15 +22,17 @@ fun Application.mainModule() {
 
     val environment = applicationContext.environment
 
-    install(NonStandardCORS) {
-        host(
+    install(MicrometerMetrics) {
+        registry = applicationContext.appMicrometerRegistry
+    }
+
+    install(CORS) {
+        allowHost(
             host = environment.corsAllowedHost,
             schemes = environment.corsAllowedSchemes,
-            subDomains = environment.corsAllowedSubdomains
         )
-        registerAdditionalOrigins(environment.corsAdditionalAllowedOrigins, environment.corsAllowedSchemes)
         allowCredentials = true
-        header(HttpHeaders.ContentType)
+        allowHeader(HttpHeaders.ContentType)
     }
 
     install(ContentNegotiation) {
@@ -45,7 +43,7 @@ fun Application.mainModule() {
     }
 
     routing {
-        healthApi(applicationContext.selfTests)
+        healthApi(applicationContext.selfTests, applicationContext.appMicrometerRegistry)
         authApi(applicationContext.authTokenService, applicationContext.selfIssuedTokenService)
     }
 
@@ -55,11 +53,5 @@ fun Application.mainModule() {
 private fun Application.configureShutdownHook(httpClient: HttpClient) {
     environment.monitor.subscribe(ApplicationStopping) {
         httpClient.close()
-    }
-}
-
-fun NonStandardCORS.Configuration.registerAdditionalOrigins(origins: List<String>, schemes: List<String>) {
-    origins.forEach { origin ->
-        host(origin, schemes)
     }
 }

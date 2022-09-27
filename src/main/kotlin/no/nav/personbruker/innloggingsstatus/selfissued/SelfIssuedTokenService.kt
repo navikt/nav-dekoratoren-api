@@ -1,7 +1,7 @@
 package no.nav.personbruker.innloggingsstatus.selfissued
 
 import com.nimbusds.oauth2.sdk.OAuth2Error
-import io.ktor.application.ApplicationCall
+import io.ktor.server.application.ApplicationCall
 import java.time.Duration
 import java.time.Instant
 import no.nav.personbruker.innloggingsstatus.config.Environment

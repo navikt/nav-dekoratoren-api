@@ -1,9 +1,8 @@
 package no.nav.personbruker.innloggingsstatus.auth
 
-import io.ktor.application.ApplicationCall
+import io.ktor.server.application.ApplicationCall
 import kotlinx.coroutines.async
 import kotlinx.coroutines.coroutineScope
-import no.nav.personbruker.innloggingsstatus.common.metrics.MetricsCollector
 import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenInfo
 import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenService
 import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenService
@@ -15,7 +14,6 @@ class AuthTokenService(
     private val oidcTokenService: OidcTokenService,
     private val subjectNameService: SubjectNameService,
     private val selfIssuedTokenService: SelfIssuedTokenService,
-    private val metricsCollector: MetricsCollector
 ) {
 
     private val log: Logger = LoggerFactory.getLogger(AuthTokenService::class.java)
@@ -39,8 +37,6 @@ class AuthTokenService(
         val authInfo = fetchAndParseAuthInfo(call)
 
         val userInfo = getUserInfo(authInfo)
-
-        metricsCollector.recordAuthMetrics(authInfo, userInfo, call)
 
         userInfo
     }
