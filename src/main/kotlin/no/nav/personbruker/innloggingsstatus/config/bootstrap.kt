@@ -3,7 +3,9 @@ package no.nav.personbruker.innloggingsstatus.config
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import io.ktor.application.Application
+import io.ktor.application.ApplicationStopping
 import io.ktor.application.install
+import io.ktor.client.HttpClient
 import io.ktor.features.ContentNegotiation
 import io.ktor.features.DefaultHeaders
 import io.ktor.http.HttpHeaders
@@ -45,6 +47,14 @@ fun Application.mainModule() {
     routing {
         healthApi(applicationContext.selfTests)
         authApi(applicationContext.authTokenService, applicationContext.selfIssuedTokenService)
+    }
+
+    configureShutdownHook(applicationContext.httpClient)
+}
+
+private fun Application.configureShutdownHook(httpClient: HttpClient) {
+    environment.monitor.subscribe(ApplicationStopping) {
+        httpClient.close()
     }
 }
 
