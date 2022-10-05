@@ -24,7 +24,7 @@ object Jackson {
 }
 
 object Junit {
-    private const val version = "5.9.0"
+    private const val version = "5.9.1"
     private const val groupId = "org.junit.jupiter"
 
     const val api = "$groupId:junit-jupiter-api:$version"
@@ -37,7 +37,7 @@ object Kluent {
 }
 
 object Kotlin {
-    const val version = "1.7.0"
+    const val version = "1.7.20"
 }
 
 object Kotlinx {
@@ -48,7 +48,7 @@ object Kotlinx {
 }
 
 object Ktor {
-    private const val version = "2.1.1"
+    private const val version = "2.1.2"
     private const val groupId = "io.ktor"
 
     const val metricsMicrometer = "$groupId:ktor-server-metrics-micrometer:$version"
@@ -85,12 +85,12 @@ object Micrometer {
 }
 
 object Mockk {
-    private const val version = "1.12.7"
+    private const val version = "1.13.2"
     const val mockk = "io.mockk:mockk:$version"
 }
 
 object NAV {
-    const val tokenValidatorKtor = "no.nav.security:token-validation-ktor-v2:2.1.4"
+    const val tokenValidatorKtor = "no.nav.security:token-validation-ktor-v2:2.1.6"
 }
 
 object Shadow {
