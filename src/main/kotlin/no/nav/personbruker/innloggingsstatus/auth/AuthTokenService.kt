@@ -35,7 +35,7 @@ class AuthTokenService(
         return getUserInfo(authInfo)
     }
 
-    private fun fetchAndParseAuthInfo(call: ApplicationCall): AuthInfo {
+    fun fetchAndParseAuthInfo(call: ApplicationCall): AuthInfo {
         val oidcToken = getNewestOidcToken(call)
         return AuthInfo(oidcToken)
     }

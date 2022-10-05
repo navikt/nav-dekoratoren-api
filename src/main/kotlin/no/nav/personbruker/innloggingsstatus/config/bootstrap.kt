@@ -15,6 +15,7 @@ import io.ktor.server.plugins.defaultheaders.DefaultHeaders
 import io.ktor.server.routing.routing
 import no.nav.personbruker.innloggingsstatus.auth.authApi
 import no.nav.personbruker.innloggingsstatus.health.healthApi
+import no.nav.personbruker.innloggingsstatus.varsel.varselApi
 
 fun Application.mainModule() {
 
@@ -47,6 +48,7 @@ fun Application.mainModule() {
     routing {
         healthApi(applicationContext.selfTests, applicationContext.appMicrometerRegistry)
         authApi(applicationContext.authTokenService, applicationContext.selfIssuedTokenService)
+        varselApi(applicationContext.authTokenService, applicationContext.varselbjelleConsumer)
     }
 
     configureShutdownHook(applicationContext.httpClient)
