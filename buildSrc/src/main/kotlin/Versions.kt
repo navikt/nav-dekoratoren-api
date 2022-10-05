@@ -11,7 +11,6 @@ object DittNAV {
         private const val version = "2022.04.19-11.11-1043a85c4f6f"
         private const val groupId = "com.github.navikt.dittnav-common-lib"
 
-        const val logging = "$groupId:dittnav-common-logging:$version"
         const val utils = "$groupId:dittnav-common-utils:$version"
     }
 }
@@ -70,7 +69,7 @@ object Ktor {
 }
 
 object Logback {
-    private const val version = "1.2.11"
+    private const val version = "1.4.3"
     const val classic = "ch.qos.logback:logback-classic:$version"
 }
 
