@@ -5,4 +5,5 @@
     <root level="info">
         <appender-ref ref="stdout_json" />
     </root>
+    <logger name="no.nav.security.token.support.core.validation.JwtTokenValidationHandler" level="INFO" additivity="false"/>
 </configuration>
