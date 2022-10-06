@@ -49,6 +49,7 @@ dependencies {
     testImplementation(Kluent.kluent)
     testImplementation(Ktor.clientMock)
     testImplementation(Ktor.clientMockJvm)
+    testImplementation(Ktor.testHostJvm)
     testImplementation(Mockk.mockk)
 }
 

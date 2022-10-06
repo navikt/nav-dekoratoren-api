@@ -27,23 +27,31 @@ fun Route.varselApi(authService: AuthTokenService, varselbjelleConsumer: Varselb
         }
     }
 
-    get("/varsel/proxy/{path}") {
+    get("/varsel/proxy/{proxyPath...}") {
         doIfAuthenticated(authService) { ident, authLevel ->
-            val path = call.parameters["path"]?: ""
+            val path = call.getParametersAsPath("proxyPath")
 
             val response = varselbjelleConsumer.makeGetProxyCall(path, ident, authLevel)
 
-            call.respond(response.status, response.readBytes())
+            if (response.status == HttpStatusCode.NotFound) {
+                call.respond(HttpStatusCode.BadRequest, "Endepunkt [$path] fantes ikke hos tms-varselbjelle-api")
+            } else {
+                call.respond(response.status, response.readBytes())
+            }
         }
     }
 
-    post("/varsel/proxy/{path}") {
+    post("/varsel/proxy/{proxyPath...}") {
         doIfAuthenticated(authService) { ident, authLevel ->
-            val path = call.parameters["path"]?: ""
+            val path = call.getParametersAsPath("proxyPath")
 
             val response = varselbjelleConsumer.makePostProxyCall(path, ident, authLevel)
 
-            call.respond(response.status, response.readBytes())
+            if (response.status == HttpStatusCode.NotFound) {
+                call.respond(HttpStatusCode.BadRequest, "Endepunkt [$path] fantes ikke hos tms-varselbjelle-api")
+            } else {
+                call.respond(response.status, response.readBytes())
+            }
         }
     }
 }
@@ -59,4 +67,10 @@ suspend fun PipelineContext<Unit, ApplicationCall>.doIfAuthenticated(
     } else {
         call.respond(HttpStatusCode.Unauthorized)
     }
+}
+
+private fun ApplicationCall.getParametersAsPath(pathParam: String): String {
+    return parameters.getAll(pathParam)
+        ?.joinToString("/")
+        ?: ""
 }
