@@ -11,7 +11,6 @@ object DittNAV {
         private const val version = "2022.04.19-11.11-1043a85c4f6f"
         private const val groupId = "com.github.navikt.dittnav-common-lib"
 
-        const val logging = "$groupId:dittnav-common-logging:$version"
         const val utils = "$groupId:dittnav-common-utils:$version"
     }
 }
@@ -24,7 +23,7 @@ object Jackson {
 }
 
 object Junit {
-    private const val version = "5.9.0"
+    private const val version = "5.9.1"
     private const val groupId = "org.junit.jupiter"
 
     const val api = "$groupId:junit-jupiter-api:$version"
@@ -37,7 +36,7 @@ object Kluent {
 }
 
 object Kotlin {
-    const val version = "1.7.0"
+    const val version = "1.7.20"
 }
 
 object Kotlinx {
@@ -48,7 +47,7 @@ object Kotlinx {
 }
 
 object Ktor {
-    private const val version = "2.1.1"
+    private const val version = "2.1.2"
     private const val groupId = "io.ktor"
 
     const val metricsMicrometer = "$groupId:ktor-server-metrics-micrometer:$version"
@@ -70,7 +69,7 @@ object Ktor {
 }
 
 object Logback {
-    private const val version = "1.2.11"
+    private const val version = "1.4.3"
     const val classic = "ch.qos.logback:logback-classic:$version"
 }
 
@@ -85,12 +84,12 @@ object Micrometer {
 }
 
 object Mockk {
-    private const val version = "1.12.7"
+    private const val version = "1.13.2"
     const val mockk = "io.mockk:mockk:$version"
 }
 
 object NAV {
-    const val tokenValidatorKtor = "no.nav.security:token-validation-ktor-v2:2.1.4"
+    const val tokenValidatorKtor = "no.nav.security:token-validation-ktor-v2:2.1.6"
 }
 
 object Shadow {

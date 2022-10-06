@@ -19,7 +19,6 @@ repositories {
 }
 
 dependencies {
-    implementation(DittNAV.Common.logging)
     implementation(DittNAV.Common.utils)
     implementation(TmsKtorTokenSupport.azureExchange)
     implementation(Caffeine.caffeine)
