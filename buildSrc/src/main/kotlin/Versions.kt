@@ -66,6 +66,7 @@ object Ktor {
     const val jackson = "$groupId:ktor-serialization-jackson:$version"
     const val defaultHeaders = "$groupId:ktor-server-default-headers:$version"
     const val cors = "$groupId:ktor-server-cors:$version"
+    const val testHostJvm = "$groupId:ktor-server-test-host-jvm:$version"
 }
 
 object Logback {

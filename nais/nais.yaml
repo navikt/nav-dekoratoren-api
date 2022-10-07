@@ -26,6 +26,9 @@ spec:
   {{/each}}
   accessPolicy:
     outbound:
+      rules:
+        - namespace: min-side
+          application: tms-varselbjelle-api
       external:
         - host: {{ pdl-api-host }}
   envFrom:

@@ -15,6 +15,8 @@ import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenIssuer
 import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenService
 import no.nav.personbruker.innloggingsstatus.selfissued.SelfIssuedTokenValidator
 import no.nav.personbruker.innloggingsstatus.user.SubjectNameService
+import no.nav.personbruker.innloggingsstatus.varsel.VarselbjelleConsumer
+import no.nav.personbruker.innloggingsstatus.varsel.VarselbjelleTokenFetcher
 import no.nav.tms.token.support.azure.exchange.AzureServiceBuilder
 
 class ApplicationContext(config: ApplicationConfig) {
@@ -44,6 +46,9 @@ class ApplicationContext(config: ApplicationConfig) {
 
     val authTokenService =
         AuthTokenService(oidcValidationService, subjectNameService, selfIssuedTokenService)
+
+    val varselbjelleTokenFetcher = VarselbjelleTokenFetcher(azureService, environment.varselbjelleApiClientId)
+    val varselbjelleConsumer = VarselbjelleConsumer(environment.varselbjelleApiUrl, httpClient, varselbjelleTokenFetcher)
 
     val selfTests = listOf(pdlConsumer)
 }
