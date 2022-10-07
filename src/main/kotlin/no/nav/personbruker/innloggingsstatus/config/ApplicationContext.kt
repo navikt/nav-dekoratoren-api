@@ -5,8 +5,15 @@ import com.github.benmanes.caffeine.cache.Caffeine
 import io.ktor.server.config.ApplicationConfig
 import io.micrometer.prometheus.PrometheusConfig
 import io.micrometer.prometheus.PrometheusMeterRegistry
+import java.util.*
 import java.util.concurrent.TimeUnit
+import no.finn.unleash.strategy.Strategy
+import no.nav.common.featuretoggle.UnleashClient
+import no.nav.common.featuretoggle.UnleashClientImpl
+import no.nav.common.featuretoggle.UnleashUtils
+import no.nav.common.utils.EnvironmentUtils
 import no.nav.personbruker.innloggingsstatus.auth.AuthTokenService
+import no.nav.personbruker.innloggingsstatus.featuretoggles.ByApplicationStrategy
 import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenService
 import no.nav.personbruker.innloggingsstatus.oidc.OidcTokenValidator
 import no.nav.personbruker.innloggingsstatus.pdl.PdlConsumer
@@ -34,6 +41,8 @@ class ApplicationContext(config: ApplicationConfig) {
         enableDefaultProxy = false,
     )
 
+    val unleashClient = unleashClient()
+
     val pdlConsumer = PdlConsumer(httpClient, environment)
     val pdlService = PdlService(pdlConsumer, azureService, environment)
 
@@ -58,4 +67,13 @@ private fun setupSubjectNameCache(environment: Environment): Cache<String, Strin
         .maximumSize(environment.subjectNameCacheThreshold.toLong())
         .expireAfterWrite(environment.subjectNameCacheExpiryMinutes, TimeUnit.MINUTES)
         .build()
+}
+
+private fun unleashClient(): UnleashClient {
+    return UnleashClientImpl(
+        EnvironmentUtils.getOptionalProperty(UnleashUtils.UNLEASH_URL_ENV_NAME)
+            .orElse("https://unleash.nais.io/api/"),
+        EnvironmentUtils.getRequiredProperty("NAIS_APP_NAME"),
+        Collections.singletonList(ByApplicationStrategy()) as List<Strategy>?
+    )
 }

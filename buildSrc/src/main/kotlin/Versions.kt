@@ -8,11 +8,18 @@ object Caffeine {
 
 object DittNAV {
     object Common {
-        private const val version = "2022.04.19-11.11-1043a85c4f6f"
+        private const val version = "2022.09.30-12.41-aa46d2d75788"
         private const val groupId = "com.github.navikt.dittnav-common-lib"
 
         const val utils = "$groupId:dittnav-common-utils:$version"
     }
+}
+
+object Finn {
+    private const val version = "4.4.1"
+    private const val groupId = "no.finn.unleash"
+
+    const val unleashClient = "$groupId:unleash-client-java:$version"
 }
 
 object Jackson {
@@ -90,7 +97,18 @@ object Mockk {
 }
 
 object NAV {
-    const val tokenValidatorKtor = "no.nav.security:token-validation-ktor-v2:2.1.6"
+    object Security {
+        private const val version = "2.1.6"
+        private const val groupId = "no.nav.security"
+
+        const val tokenValidationKtor = "$groupId:token-validation-ktor-v2:$version"
+    }
+
+    object Common {
+        private const val version = "2.2022.09.26_07.11-78a5190823bd"
+        private const val groupId = "no.nav.common"
+        const val featureToggle = "$groupId:feature-toggle:$version"
+    }
 }
 
 object Shadow {
