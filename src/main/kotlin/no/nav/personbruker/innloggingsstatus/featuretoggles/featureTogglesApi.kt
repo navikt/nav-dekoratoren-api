@@ -36,7 +36,7 @@ fun Route.featureToggles(unleashClient: UnleashClient) {
 
             call.respond(evaluation)
         } catch (e: Exception) {
-            logger.error("Noe gikk galt ved henting av navn", e)
+            logger.error("Noe gikk galt ved henting av feature-toggles", e)
             call.respond(HttpStatusCode.InternalServerError, HttpStatusCode.InternalServerError.description)
         }
     }

@@ -8,7 +8,7 @@ object Caffeine {
 
 object DittNAV {
     object Common {
-        private const val version = "2022.04.19-11.11-1043a85c4f6f"
+        private const val version = "2022.09.30-12.41-aa46d2d75788"
         private const val groupId = "com.github.navikt.dittnav-common-lib"
 
         const val utils = "$groupId:dittnav-common-utils:$version"
