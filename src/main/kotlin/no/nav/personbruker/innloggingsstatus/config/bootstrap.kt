@@ -14,6 +14,7 @@ import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.plugins.defaultheaders.DefaultHeaders
 import io.ktor.server.routing.routing
 import no.nav.personbruker.innloggingsstatus.auth.authApi
+import no.nav.personbruker.innloggingsstatus.featuretoggles.featureToggles
 import no.nav.personbruker.innloggingsstatus.health.healthApi
 import no.nav.personbruker.innloggingsstatus.varsel.varselApi
 
@@ -47,6 +48,7 @@ fun Application.mainModule() {
 
     routing {
         healthApi(applicationContext.selfTests, applicationContext.appMicrometerRegistry)
+        featureToggles(applicationContext.unleashClient)
         authApi(applicationContext.authTokenService, applicationContext.selfIssuedTokenService)
         varselApi(applicationContext.authTokenService, applicationContext.varselbjelleConsumer)
     }
