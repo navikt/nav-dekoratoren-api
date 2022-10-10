@@ -8,7 +8,7 @@ import io.ktor.server.routing.get
 import no.nav.dekoratoren.api.selfissued.SelfIssuedTokenResponse
 import no.nav.dekoratoren.api.selfissued.SelfIssuedTokenService
 
-fun Route.authApi(authService: no.nav.dekoratoren.api.auth.AuthTokenService, selfIssuedTokenService: SelfIssuedTokenService) {
+fun Route.authApi(authService: AuthTokenService, selfIssuedTokenService: SelfIssuedTokenService) {
 
     get("/auth") {
         authService.getAuthenticatedUserInfo(call).let { userInfo ->

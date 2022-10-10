@@ -7,15 +7,15 @@ import java.time.LocalDateTime
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonAutoDetect(fieldVisibility = ANY)
-class AuthSummary private constructor(authInfo: no.nav.dekoratoren.api.auth.AuthInfo) {
+class AuthSummary private constructor(authInfo: AuthInfo) {
     private val authenticated: Boolean = authInfo.authenticated
     private val authLevel: Int? = authInfo.authLevel
-    private val oidc: no.nav.dekoratoren.api.auth.OidcSummary? =
-        no.nav.dekoratoren.api.auth.OidcSummary.Companion.fromAuthInfo(authInfo)
+    private val oidc: OidcSummary? =
+        OidcSummary.fromAuthInfo(authInfo)
 
     companion object {
-        fun fromAuthInfo(authInfo: no.nav.dekoratoren.api.auth.AuthInfo): no.nav.dekoratoren.api.auth.AuthSummary =
-            no.nav.dekoratoren.api.auth.AuthSummary(authInfo)
+        fun fromAuthInfo(authInfo: AuthInfo): AuthSummary =
+            AuthSummary(authInfo)
     }
 }
 
@@ -25,9 +25,9 @@ private data class OidcSummary(
     val expiryTime: LocalDateTime
 ) {
     companion object {
-        fun fromAuthInfo(authInfo: no.nav.dekoratoren.api.auth.AuthInfo): no.nav.dekoratoren.api.auth.OidcSummary? {
+        fun fromAuthInfo(authInfo: AuthInfo): OidcSummary? {
             return authInfo.oidcToken?.let { oidc ->
-                no.nav.dekoratoren.api.auth.OidcSummary(
+                OidcSummary(
                     oidc.authLevel,
                     oidc.issueTime,
                     oidc.expiryTime

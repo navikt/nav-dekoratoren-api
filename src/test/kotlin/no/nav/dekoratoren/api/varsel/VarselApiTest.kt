@@ -20,6 +20,7 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import java.time.LocalDateTime
+import no.nav.dekoratoren.api.auth.AuthInfo
 import no.nav.dekoratoren.api.auth.AuthTokenService
 import no.nav.dekoratoren.api.oidc.OidcTokenInfo
 import org.amshove.kluent.`should be equal to`
@@ -155,10 +156,10 @@ internal class VarselApiTest {
             expiryTime = LocalDateTime.now().plusHours(1)
         )
 
-        return no.nav.dekoratoren.api.auth.AuthInfo(tokenInfo)
+        return AuthInfo(tokenInfo)
     }
 
-    private fun unauthenticated() = no.nav.dekoratoren.api.auth.AuthInfo(null)
+    private fun unauthenticated() = AuthInfo(null)
 
     @KtorDsl
     private fun testVarselApi(block: suspend ApplicationTestBuilder.(VarselbjelleConsumer) -> Unit) = testApplication {
