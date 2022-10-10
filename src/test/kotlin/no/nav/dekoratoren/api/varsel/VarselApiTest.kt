@@ -148,7 +148,7 @@ internal class VarselApiTest {
         result.status `should be equal to` HttpStatusCode.BadRequest
     }
 
-    private fun authenticated(ident: String, level: Int): no.nav.dekoratoren.api.auth.AuthInfo {
+    private fun authenticated(ident: String, level: Int): AuthInfo {
         val tokenInfo = OidcTokenInfo(
             subject = ident,
             authLevel = level,
