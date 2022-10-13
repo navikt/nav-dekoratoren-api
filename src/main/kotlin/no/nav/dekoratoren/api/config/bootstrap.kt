@@ -13,9 +13,9 @@ import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.plugins.defaultheaders.DefaultHeaders
 import io.ktor.server.routing.routing
-import no.nav.dekoratoren.api.auth.authApi
 import no.nav.dekoratoren.api.featuretoggles.featureToggles
 import no.nav.dekoratoren.api.health.healthApi
+import no.nav.dekoratoren.api.innloggingsstatus.authApi
 import no.nav.dekoratoren.api.varsel.varselApi
 
 fun Application.mainModule() {

@@ -20,9 +20,9 @@ import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
 import java.time.LocalDateTime
-import no.nav.dekoratoren.api.auth.AuthInfo
-import no.nav.dekoratoren.api.auth.AuthTokenService
-import no.nav.dekoratoren.api.oidc.OidcTokenInfo
+import no.nav.dekoratoren.api.innloggingsstatus.auth.AuthInfo
+import no.nav.dekoratoren.api.innloggingsstatus.auth.AuthTokenService
+import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenInfo
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.AfterEach

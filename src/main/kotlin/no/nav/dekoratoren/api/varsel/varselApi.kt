@@ -9,7 +9,7 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.util.pipeline.PipelineContext
-import no.nav.dekoratoren.api.auth.AuthTokenService
+import no.nav.dekoratoren.api.innloggingsstatus.auth.AuthTokenService
 
 fun Route.varselApi(authService: AuthTokenService, varselbjelleConsumer: VarselbjelleConsumer) {
     get("/rest/varsel/hentsiste") {
