@@ -1,7 +1,7 @@
 apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
-  name: innloggingsstatus
+  name: nav-dekoratoren-api
   namespace: personbruker
   labels:
     team: personbruker
@@ -9,14 +9,14 @@ spec:
   image: {{version}}
   port: 8080
   liveness:
-    path: /person/innloggingsstatus/internal/isAlive
+    path: /person/nav-dekoratoren-api/internal/isAlive
     initialDelay: 5
   readiness:
-    path: /person/innloggingsstatus/internal/isReady
+    path: /person/nav-dekoratoren-api/internal/isReady
     initialDelay: 5
   prometheus:
     enabled: true
-    path: /person/innloggingsstatus/internal/metrics
+    path: /person/nav-dekoratoren-api/internal/metrics
   replicas:
     min: 2
     max: 8
@@ -33,7 +33,7 @@ spec:
         - host: {{ pdl-api-host }}
   envFrom:
     - configmap: loginservice-idporten
-    - secret: innloggingsstatus-secret
+    - secret: nav-dekoratoren-api-secret
   resources:
     limits:
       cpu: "3"

@@ -1,5 +1,7 @@
 {
   "ingresses": [
+    "https://www.dev.nav.no/person/nav-dekoratoren-api",
+    "https://www.dev.intern.nav.no/person/nav-dekoratoren-api",
     "https://innloggingsstatus.dev.nav.no/person/innloggingsstatus",
     "https://innloggingsstatus.dev.intern.nav.no/person/innloggingsstatus",
     "https://www.dev.nav.no/person/innloggingsstatus",
