@@ -1,13 +1,15 @@
 package no.nav.dekoratoren.api.innloggingsstatus.user
 
 import com.github.benmanes.caffeine.cache.Cache
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 import no.nav.dekoratoren.api.innloggingsstatus.pdl.PdlService
 
 class SubjectNameService(private val pdlService: PdlService, private val cache: Cache<String, String>) {
 
-    suspend fun getSubjectName(subject: String): String {
-        return cache.get(subject) {
+    suspend fun getSubjectName(subject: String): String = withContext(Dispatchers.IO) {
+        cache.get(subject) {
             runBlocking {
                 fetchNameFromPdlAndConcatenate(subject) ?: subject
             }
