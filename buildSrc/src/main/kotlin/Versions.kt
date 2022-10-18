@@ -38,7 +38,7 @@ object Junit {
 }
 
 object Kluent {
-    private const val version = "1.68"
+    private const val version = "1.70"
     const val kluent = "org.amshove.kluent:kluent:$version"
 }
 
@@ -77,7 +77,7 @@ object Ktor {
 }
 
 object Logback {
-    private const val version = "1.4.3"
+    private const val version = "1.4.4"
     const val classic = "ch.qos.logback:logback-classic:$version"
 }
 
@@ -87,7 +87,7 @@ object Logstash {
 }
 
 object Micrometer {
-    private const val version = "1.9.4"
+    private const val version = "1.9.5"
     const val registryPrometheus = "io.micrometer:micrometer-registry-prometheus:$version"
 }
 
@@ -105,7 +105,7 @@ object NAV {
     }
 
     object Common {
-        private const val version = "2.2022.09.26_07.11-78a5190823bd"
+        private const val version = "2.2022.10.11_08.33-4f72c1840f61"
         private const val groupId = "no.nav.common"
         const val featureToggle = "$groupId:feature-toggle:$version"
     }
@@ -124,6 +124,6 @@ object TmsKtorTokenSupport {
 }
 
 object Versions {
-    const val version = "0.42.0"
+    const val version = "0.43.0"
     const val pluginId = "com.github.ben-manes.versions"
 }
