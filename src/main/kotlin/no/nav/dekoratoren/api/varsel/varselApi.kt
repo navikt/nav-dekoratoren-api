@@ -1,10 +1,10 @@
 package no.nav.dekoratoren.api.varsel
 
-import io.ktor.client.statement.readBytes
-import io.ktor.http.HttpStatusCode
+import io.ktor.client.statement.*
+import io.ktor.http.*
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.call
-import io.ktor.server.response.respond
+import io.ktor.server.response.*
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
@@ -16,7 +16,7 @@ fun Route.varselApi(authService: AuthTokenService, varselbjelleConsumer: Varselb
         doIfAuthenticated(authService) { ident, authLevel ->
             val response = varselbjelleConsumer.getVarselSummary(ident, authLevel)
 
-            call.respond(response.status, response.readBytes())
+            call.respondBytes(response.readBytes(), response.contentType(), response.status)
         }
     }
 
@@ -26,7 +26,7 @@ fun Route.varselApi(authService: AuthTokenService, varselbjelleConsumer: Varselb
 
             val response = varselbjelleConsumer.postErLest(ident, varselId)
 
-            call.respond(response.status, response.readBytes())
+            call.respondBytes(response.readBytes(), response.contentType(), response.status)
         }
     }
 
@@ -39,7 +39,7 @@ fun Route.varselApi(authService: AuthTokenService, varselbjelleConsumer: Varselb
             if (response.status == HttpStatusCode.NotFound) {
                 call.respond(HttpStatusCode.BadRequest, "Endepunkt [$path] fantes ikke hos tms-varselbjelle-api")
             } else {
-                call.respond(response.status, response.readBytes())
+                call.respondBytes(response.readBytes(), response.contentType(), response.status)
             }
         }
     }
@@ -53,7 +53,7 @@ fun Route.varselApi(authService: AuthTokenService, varselbjelleConsumer: Varselb
             if (response.status == HttpStatusCode.NotFound) {
                 call.respond(HttpStatusCode.BadRequest, "Endepunkt [$path] fantes ikke hos tms-varselbjelle-api")
             } else {
-                call.respond(response.status, response.readBytes())
+                call.respondBytes(response.readBytes(), response.contentType(), response.status)
             }
         }
     }
@@ -69,6 +69,16 @@ suspend fun PipelineContext<Unit, ApplicationCall>.doIfAuthenticated(
         block(authInfo.subject!!, authInfo.authLevel!!)
     } else {
         call.respond(HttpStatusCode.Unauthorized)
+    }
+}
+
+private fun HttpResponse.contentType(default: ContentType = ContentType.Application.Json): ContentType {
+    val contentTypeString = headers[HttpHeaders.ContentType]
+
+    return try {
+        ContentType.parse(contentTypeString!!)
+    } catch (e: Exception) {
+        default
     }
 }
 
