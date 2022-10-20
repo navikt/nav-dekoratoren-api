@@ -3,6 +3,7 @@ package no.nav.dekoratoren.api.config
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.apache.Apache
+import io.ktor.client.plugins.HttpRequestRetry
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.jackson.jackson
@@ -15,6 +16,9 @@ object HttpClientBuilder {
                 jackson {
                     registerModule(JavaTimeModule())
                 }
+            }
+            install(HttpRequestRetry) {
+                retryOnExceptionOrServerErrors(maxRetries = 5)
             }
             install(HttpTimeout)
         }

@@ -38,7 +38,7 @@ object Junit {
 }
 
 object Kluent {
-    private const val version = "1.70"
+    private const val version = "1.71"
     const val kluent = "org.amshove.kluent:kluent:$version"
 }
 
