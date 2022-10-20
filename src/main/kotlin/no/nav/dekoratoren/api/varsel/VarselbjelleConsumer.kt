@@ -1,9 +1,7 @@
 package no.nav.dekoratoren.api.varsel
 
 import io.ktor.client.HttpClient
-import io.ktor.client.request.header
-import io.ktor.client.request.request
-import io.ktor.client.request.url
+import io.ktor.client.request.*
 import io.ktor.client.statement.HttpResponse
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
@@ -51,13 +49,16 @@ class VarselbjelleConsumer(
         }
     }
 
-    suspend fun makePostProxyCall(path: String, ident: String, authLevel: Int): HttpResponse {
+    suspend fun makePostProxyCall(path: String, ident: String, authLevel: Int, content: RequestContent): HttpResponse {
         val accessToken = tokenFetcher.fetchToken()
 
         return httpClient.request {
             url("$varselbjelleUrl/$path")
             method = HttpMethod.Post
 
+            setBody(content.rawContent)
+
+            header(HttpHeaders.ContentType, content.contentType)
             header("fodselsnummer", ident)
             header("auth_level", authLevel)
             header(HttpHeaders.Authorization, "Bearer $accessToken")
