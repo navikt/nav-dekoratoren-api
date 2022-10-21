@@ -14,8 +14,8 @@ tasks.withType<KotlinCompile> {
 }
 
 repositories {
-    maven { url = uri("https://jitpack.io") }
     mavenCentral()
+    maven { url = uri("https://jitpack.io") }
 }
 
 dependencies {
