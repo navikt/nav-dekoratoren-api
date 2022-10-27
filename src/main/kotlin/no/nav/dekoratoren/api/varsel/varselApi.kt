@@ -4,6 +4,7 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.call
+import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
@@ -48,7 +49,9 @@ fun Route.varselApi(authService: AuthTokenService, varselbjelleConsumer: Varselb
         doIfAuthenticated(authService) { ident, authLevel ->
             val path = call.getParametersAsPath("proxyPath")
 
-            val response = varselbjelleConsumer.makePostProxyCall(path, ident, authLevel)
+            val content = call.request.receiveContent()
+
+            val response = varselbjelleConsumer.makePostProxyCall(path, ident, authLevel, content)
 
             if (response.status == HttpStatusCode.NotFound) {
                 call.respond(HttpStatusCode.BadRequest, "Endepunkt [$path] fantes ikke hos tms-varselbjelle-api")
@@ -80,6 +83,19 @@ private fun HttpResponse.contentType(default: ContentType = ContentType.Applicat
     } catch (e: Exception) {
         default
     }
+}
+
+private suspend fun ApplicationRequest.receiveContent(default: ContentType = ContentType.Text.Plain): RequestContent {
+
+    val rawContent = call.receive<ByteArray>()
+
+    val contentType = try {
+        ContentType.parse(headers[HttpHeaders.ContentType]!!)
+    } catch (e: Exception) {
+        default
+    }
+
+    return RequestContent(rawContent, contentType)
 }
 
 private fun ApplicationCall.getParametersAsPath(pathParam: String): String {
