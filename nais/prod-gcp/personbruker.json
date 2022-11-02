@@ -1,6 +1,8 @@
 {
   "ingresses": [
-    "https://www.nav.no/person/nav-dekoratoren-api"
+    "https://www.nav.no/person/nav-dekoratoren-api",
+    "https://www.nav.no/person/innloggingsstatus",
+    "https://innloggingsstatus.intern.nav.no/person/innloggingsstatus"
   ],
   "pdl-api-host": "https://pdl-api.prod-fss-pub.nais.io"
 }
