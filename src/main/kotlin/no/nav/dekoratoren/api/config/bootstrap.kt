@@ -54,6 +54,11 @@ fun Application.mainModule() {
             authApi(applicationContext.authTokenService, applicationContext.selfIssuedTokenService)
             varselApi(applicationContext.authTokenService, applicationContext.varselbjelleConsumer)
         }
+
+        // Nødvendig for å støtte gamle innloggingsstatus-ingresser
+        route("/person/innloggingsstatus") {
+            authApi(applicationContext.authTokenService, applicationContext.selfIssuedTokenService)
+        }
     }
 
     configureShutdownHook(applicationContext.httpClient)
