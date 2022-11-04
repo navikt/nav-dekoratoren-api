@@ -56,7 +56,7 @@ fun Application.mainModule() {
         }
 
         // Nødvendig for å støtte gamle innloggingsstatus-ingresser
-        route("/person/innloggingsstatus") {
+        route("/person/innloggingsstatus-test") {
             authApi(applicationContext.authTokenService, applicationContext.selfIssuedTokenService)
         }
     }
