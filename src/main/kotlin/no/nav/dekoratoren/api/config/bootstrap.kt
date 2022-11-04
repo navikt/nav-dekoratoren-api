@@ -12,6 +12,7 @@ import io.ktor.server.metrics.micrometer.MicrometerMetrics
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.plugins.defaultheaders.DefaultHeaders
+import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 import no.nav.dekoratoren.api.featuretoggles.featureToggles
 import no.nav.dekoratoren.api.health.healthApi
@@ -47,10 +48,12 @@ fun Application.mainModule() {
     }
 
     routing {
-        healthApi(applicationContext.selfTests, applicationContext.appMicrometerRegistry)
-        featureToggles(applicationContext.unleashClient)
-        authApi(applicationContext.authTokenService, applicationContext.selfIssuedTokenService)
-        varselApi(applicationContext.authTokenService, applicationContext.varselbjelleConsumer)
+        route("/person/nav-dekoratoren-api") {
+            healthApi(applicationContext.selfTests, applicationContext.appMicrometerRegistry)
+            featureToggles(applicationContext.unleashClient)
+            authApi(applicationContext.authTokenService, applicationContext.selfIssuedTokenService)
+            varselApi(applicationContext.authTokenService, applicationContext.varselbjelleConsumer)
+        }
     }
 
     configureShutdownHook(applicationContext.httpClient)
