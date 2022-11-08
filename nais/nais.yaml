@@ -37,9 +37,9 @@ spec:
   resources:
     limits:
       cpu: "3"
-      memory: 768Mi
+      memory: 1536Mi
     requests:
-      cpu: "500m"
+      cpu: "50m"
       memory: 384Mi
   azure:
     application:
