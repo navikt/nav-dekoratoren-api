@@ -60,6 +60,16 @@ fun Route.varselApi(authService: AuthTokenService, varselbjelleConsumer: Varselb
             }
         }
     }
+
+    post("/varsel/beskjed/done") {
+        doIfAuthenticated(authService) { ident, authLevel ->
+            val content = call.request.receiveContent()
+
+            varselbjelleConsumer.postBeskjedDoneAsync(ident, authLevel, content)
+
+            call.respond(HttpStatusCode.Accepted)
+        }
+    }
 }
 
 suspend fun PipelineContext<Unit, ApplicationCall>.doIfAuthenticated(
