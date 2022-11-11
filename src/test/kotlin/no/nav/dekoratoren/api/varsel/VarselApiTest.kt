@@ -3,7 +3,7 @@ package no.nav.dekoratoren.api.varsel
 import io.ktor.client.request.header
 import io.ktor.client.request.request
 import io.ktor.client.request.url
-import io.ktor.client.statement.readBytes
+import io.ktor.client.statement.*
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
@@ -19,14 +19,17 @@ import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
+import kotlinx.coroutines.delay
 import java.time.LocalDateTime
 import no.nav.dekoratoren.api.innloggingsstatus.auth.AuthInfo
 import no.nav.dekoratoren.api.innloggingsstatus.auth.AuthTokenService
 import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenInfo
 import org.amshove.kluent.`should be equal to`
+import org.amshove.kluent.`should be less than`
 import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
+import kotlin.system.measureTimeMillis
 
 internal class VarselApiTest {
 
@@ -37,6 +40,8 @@ internal class VarselApiTest {
     private val level = 4
     private val varselbjelleUrl = "http://varselbjelle-api"
     private val sammendrag = "sammendrag"
+
+    private val doneDelay = 3000L
 
     @AfterEach
     fun cleanup() {
@@ -148,6 +153,24 @@ internal class VarselApiTest {
         result.status `should be equal to` HttpStatusCode.BadRequest
     }
 
+    @Test
+    fun `Svarer umiddelbart ved kall til eget done-endepunkt`() = testVarselApi {
+        every { authService.fetchAndParseAuthInfo(any()) } returns authenticated(ident, level)
+        coEvery { tokenFetcher.fetchToken() } returns "token"
+
+        lateinit var response: HttpResponse
+
+        val elapsed = measureTimeMillis {
+            response = client.request {
+                url("/varsel/beskjed/done")
+                method = HttpMethod.Post
+            }
+        }
+
+        response.status `should be equal to` HttpStatusCode.Accepted
+        elapsed `should be less than` doneDelay
+    }
+
     private fun authenticated(ident: String, level: Int): AuthInfo {
         val tokenInfo = OidcTokenInfo(
             subject = ident,
@@ -188,6 +211,11 @@ internal class VarselApiTest {
 
                     post("/annet/endepunkt") {
                         call.respond(HttpStatusCode.OK, "ok")
+                    }
+
+                    post("/varsel/beskjed/done") {
+                        delay(doneDelay)
+                        call.respond(HttpStatusCode.OK)
                     }
                 }
             }
