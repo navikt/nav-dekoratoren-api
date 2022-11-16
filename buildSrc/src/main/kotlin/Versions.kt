@@ -87,7 +87,7 @@ object Logstash {
 }
 
 object Micrometer {
-    private const val version = "1.10.0"
+    private const val version = "1.9.5"
     const val registryPrometheus = "io.micrometer:micrometer-registry-prometheus:$version"
 }
 
