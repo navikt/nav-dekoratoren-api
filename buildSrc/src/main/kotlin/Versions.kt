@@ -23,7 +23,7 @@ object Finn {
 }
 
 object Jackson {
-    private const val version = "2.13.4"
+    private const val version = "2.14.0"
 
     const val dataTypeJsr310 = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$version"
     const val moduleKotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:$version"
@@ -38,7 +38,7 @@ object Junit {
 }
 
 object Kluent {
-    private const val version = "1.71"
+    private const val version = "1.72"
     const val kluent = "org.amshove.kluent:kluent:$version"
 }
 
@@ -54,7 +54,7 @@ object Kotlinx {
 }
 
 object Ktor {
-    private const val version = "2.1.2"
+    private const val version = "2.1.3"
     private const val groupId = "io.ktor"
 
     const val metricsMicrometer = "$groupId:ktor-server-metrics-micrometer:$version"
@@ -87,7 +87,7 @@ object Logstash {
 }
 
 object Micrometer {
-    private const val version = "1.9.5"
+    private const val version = "1.10.0"
     const val registryPrometheus = "io.micrometer:micrometer-registry-prometheus:$version"
 }
 
@@ -98,7 +98,7 @@ object Mockk {
 
 object NAV {
     object Security {
-        private const val version = "2.1.6"
+        private const val version = "2.1.8"
         private const val groupId = "no.nav.security"
 
         const val tokenValidationKtor = "$groupId:token-validation-ktor-v2:$version"
@@ -124,6 +124,6 @@ object TmsKtorTokenSupport {
 }
 
 object Versions {
-    const val version = "0.43.0"
+    const val version = "0.44.0"
     const val pluginId = "com.github.ben-manes.versions"
 }
