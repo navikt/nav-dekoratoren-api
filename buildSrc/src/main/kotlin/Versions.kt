@@ -53,7 +53,7 @@ object Kotlinx {
 }
 
 object Ktor {
-    private const val version = "2.1.3"
+    private const val version = "2.1.2"
     private const val groupId = "io.ktor"
 
     const val metricsMicrometer = "$groupId:ktor-server-metrics-micrometer:$version"
