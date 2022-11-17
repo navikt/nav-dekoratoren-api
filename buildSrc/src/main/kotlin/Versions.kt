@@ -1,5 +1,4 @@
 object Caffeine {
-
     private const val version = "3.1.1"
     private const val groupId = "com.github.ben-manes.caffeine"
 
@@ -87,7 +86,7 @@ object Logstash {
 }
 
 object Micrometer {
-    private const val version = "1.9.5"
+    private const val version = "1.10.0"
     const val registryPrometheus = "io.micrometer:micrometer-registry-prometheus:$version"
 }
 
@@ -105,7 +104,7 @@ object NAV {
     }
 
     object Common {
-        private const val version = "2.2022.10.11_08.33-4f72c1840f61"
+        private const val version = "2.2022.11.16_08.08-fdaecc4a9f94"
         private const val groupId = "no.nav.common"
         const val featureToggle = "$groupId:feature-toggle:$version"
     }
@@ -117,7 +116,7 @@ object Shadow {
 }
 
 object TmsKtorTokenSupport {
-    private const val version = "2.0.0"
+    private const val version = "2022.08.08-14.36-ac5034ce487b"
     private const val groupId = "com.github.navikt.tms-ktor-token-support"
 
     const val azureExchange = "$groupId:token-support-azure-exchange:$version"
