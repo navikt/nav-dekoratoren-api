@@ -1,5 +1,5 @@
 object Caffeine {
-    private const val version = "3.1.1"
+    private const val version = "3.1.2"
     private const val groupId = "com.github.ben-manes.caffeine"
 
     const val caffeine = "$groupId:caffeine:$version"
@@ -22,7 +22,7 @@ object Finn {
 }
 
 object Jackson {
-    private const val version = "2.14.0"
+    private const val version = "2.14.1"
 
     const val dataTypeJsr310 = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$version"
     const val moduleKotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:$version"
@@ -42,7 +42,7 @@ object Kluent {
 }
 
 object Kotlin {
-    const val version = "1.7.20"
+    const val version = "1.8.0"
 }
 
 object Kotlinx {
@@ -53,8 +53,7 @@ object Kotlinx {
 }
 
 object Ktor {
-    // 2.1.3 breaks
-    private const val version = "2.1.2"
+    private const val version = "2.2.2"
     private const val groupId = "io.ktor"
 
     const val metricsMicrometer = "$groupId:ktor-server-metrics-micrometer:$version"
@@ -77,7 +76,7 @@ object Ktor {
 }
 
 object Logback {
-    private const val version = "1.4.4"
+    private const val version = "1.4.5"
     const val classic = "ch.qos.logback:logback-classic:$version"
 }
 
@@ -87,26 +86,25 @@ object Logstash {
 }
 
 object Micrometer {
-    private const val version = "1.10.0"
+    private const val version = "1.10.2"
     const val registryPrometheus = "io.micrometer:micrometer-registry-prometheus:$version"
 }
 
 object Mockk {
-    private const val version = "1.13.2"
+    private const val version = "1.13.3"
     const val mockk = "io.mockk:mockk:$version"
 }
 
 object NAV {
     object Security {
-        // 2.1.8 breaks
-        private const val version = "2.1.6"
+        private const val version = "3.0.2"
         private const val groupId = "no.nav.security"
 
         const val tokenValidationKtor = "$groupId:token-validation-ktor-v2:$version"
     }
 
     object Common {
-        private const val version = "2.2022.11.16_08.08-fdaecc4a9f94"
+        private const val version = "2.2023.01.02_13.51-1c6adeb1653b"
         private const val groupId = "no.nav.common"
         const val featureToggle = "$groupId:feature-toggle:$version"
     }

@@ -18,9 +18,11 @@ object HttpClientBuilder {
                 }
             }
             install(HttpRequestRetry) {
-                retryOnExceptionOrServerErrors(maxRetries = 5)
+                retryOnExceptionOrServerErrors(maxRetries = 3)
             }
-            install(HttpTimeout)
+            install(HttpTimeout) {
+                requestTimeoutMillis = 3000
+            }
         }
     }
 }
