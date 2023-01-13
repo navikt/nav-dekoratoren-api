@@ -29,7 +29,7 @@ internal class PdlServiceTest {
     fun `should return null if we received an error response from pdl due to a bad token`() {
         coEvery { environment.pdlAppName } returns appName
         coEvery { azureService.getAccessToken(appName) } returns accessToken
-        coEvery { pdlConsumer.getPersonInfo(ident, accessToken) } throws PdlAuthenticationException()
+        coEvery { pdlConsumer.getPersonInfo(ident, accessToken) } throws PdlException()
 
         val response = runBlocking { pdlService.getSubjectName(ident) }
 
