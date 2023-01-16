@@ -19,9 +19,6 @@ class PdlService(
             azureService.getAccessToken(environment.pdlAppName).let { accessToken ->
                 pdlConsumer.getPersonInfo(ident, accessToken)
             }.navn.first()
-        } catch (e: PdlAuthenticationException) {
-            log.warn("Fikk autentiseringsfeil mot pdl.")
-            null
         } catch (e: PdlException) {
             log.warn("Fikk feil ved kontakt mot pdl.", e)
             null
