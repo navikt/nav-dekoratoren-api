@@ -116,7 +116,7 @@ object Shadow {
 }
 
 object TmsKtorTokenSupport {
-    private const val version = "2.1.0"
+    private const val version = "2.0.1"
     private const val groupId = "com.github.navikt.tms-ktor-token-support"
 
     const val azureExchange = "$groupId:token-support-azure-exchange:$version"
