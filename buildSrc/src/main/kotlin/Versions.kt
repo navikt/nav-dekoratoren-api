@@ -22,14 +22,14 @@ object Finn {
 }
 
 object Jackson {
-    private const val version = "2.14.1"
+    private const val version = "2.14.2"
 
     const val dataTypeJsr310 = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$version"
     const val moduleKotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:$version"
 }
 
 object Junit {
-    private const val version = "5.9.1"
+    private const val version = "5.9.2"
     private const val groupId = "org.junit.jupiter"
 
     const val api = "$groupId:junit-jupiter-api:$version"
@@ -42,7 +42,7 @@ object Kluent {
 }
 
 object Kotlin {
-    const val version = "1.8.0"
+    const val version = "1.8.10"
 }
 
 object Kotlinx {
@@ -53,7 +53,7 @@ object Kotlinx {
 }
 
 object Ktor {
-    private const val version = "2.2.2"
+    private const val version = "2.2.3"
     private const val groupId = "io.ktor"
 
     const val metricsMicrometer = "$groupId:ktor-server-metrics-micrometer:$version"
@@ -86,12 +86,12 @@ object Logstash {
 }
 
 object Micrometer {
-    private const val version = "1.10.2"
+    private const val version = "1.10.3"
     const val registryPrometheus = "io.micrometer:micrometer-registry-prometheus:$version"
 }
 
 object Mockk {
-    private const val version = "1.13.3"
+    private const val version = "1.13.4"
     const val mockk = "io.mockk:mockk:$version"
 }
 
@@ -104,7 +104,7 @@ object NAV {
     }
 
     object Common {
-        private const val version = "2.2023.01.02_13.51-1c6adeb1653b"
+        private const val version = "2.2023.01.10_13.49-81ddc732df3a"
         private const val groupId = "no.nav.common"
         const val featureToggle = "$groupId:feature-toggle:$version"
     }
@@ -116,13 +116,13 @@ object Shadow {
 }
 
 object TmsKtorTokenSupport {
-    private const val version = "2022.08.08-14.36-ac5034ce487b"
+    private const val version = "2.1.0"
     private const val groupId = "com.github.navikt.tms-ktor-token-support"
 
     const val azureExchange = "$groupId:token-support-azure-exchange:$version"
 }
 
 object Versions {
-    const val version = "0.44.0"
+    const val version = "0.45.0"
     const val pluginId = "com.github.ben-manes.versions"
 }
