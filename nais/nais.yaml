@@ -6,7 +6,7 @@ metadata:
   labels:
     team: personbruker
 spec:
-  image: {{version}}
+  image: {{image}}
   port: 8080
   liveness:
     path: /person/nav-dekoratoren-api/internal/isAlive
