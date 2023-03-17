@@ -2,10 +2,7 @@
   "ingresses": [
     "https://www.dev.nav.no/person/nav-dekoratoren-api",
     "https://www.dev.intern.nav.no/person/nav-dekoratoren-api",
-    "https://innloggingsstatus.dev.nav.no/person/innloggingsstatus",
-    "https://innloggingsstatus.dev.intern.nav.no/person/innloggingsstatus",
-    "https://www.dev.nav.no/person/innloggingsstatus",
-    "https://www.dev.intern.nav.no/person/innloggingsstatus"
+    "https://person.ekstern.dev.nav.no/person/nav-dekoratoren-api"
   ],
   "pdl-api-host": "https://pdl-api.dev-fss-pub.nais.io",
   "min-replicas": 1,
