@@ -1,5 +1,5 @@
 object Caffeine {
-    private const val version = "3.1.2"
+    private const val version = "3.1.5"
     private const val groupId = "com.github.ben-manes.caffeine"
 
     const val caffeine = "$groupId:caffeine:$version"
@@ -53,7 +53,7 @@ object Kotlinx {
 }
 
 object Ktor {
-    private const val version = "2.2.3"
+    private const val version = "2.2.4"
     private const val groupId = "io.ktor"
 
     const val metricsMicrometer = "$groupId:ktor-server-metrics-micrometer:$version"
@@ -76,17 +76,17 @@ object Ktor {
 }
 
 object Logback {
-    private const val version = "1.4.5"
+    private const val version = "1.4.6"
     const val classic = "ch.qos.logback:logback-classic:$version"
 }
 
 object Logstash {
-    private const val version = "7.2"
+    private const val version = "7.3"
     const val logbackEncoder = "net.logstash.logback:logstash-logback-encoder:$version"
 }
 
 object Micrometer {
-    private const val version = "1.10.3"
+    private const val version = "1.10.5"
     const val registryPrometheus = "io.micrometer:micrometer-registry-prometheus:$version"
 }
 
@@ -97,7 +97,7 @@ object Mockk {
 
 object NAV {
     object Security {
-        private const val version = "3.0.2"
+        private const val version = "3.0.8"
         private const val groupId = "no.nav.security"
 
         const val tokenValidationKtor = "$groupId:token-validation-ktor-v2:$version"
@@ -111,7 +111,7 @@ object NAV {
 }
 
 object Shadow {
-    const val version = "7.1.2"
+    const val version = "8.1.0"
     const val pluginId = "com.github.johnrengelman.shadow"
 }
 
@@ -123,6 +123,6 @@ object TmsKtorTokenSupport {
 }
 
 object Versions {
-    const val version = "0.45.0"
+    const val version = "0.46.0"
     const val pluginId = "com.github.ben-manes.versions"
 }
