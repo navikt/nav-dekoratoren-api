@@ -20,7 +20,7 @@ spec:
             receiver_reference: team-navno-backend-alerts
             alert_type: custom
         - alert: høy feilrate i logger
-          expr: (100 * sum by (log_app, log_namespace) (rate(logd_messages_total{log_app="nav-dekoratoren-api",log_level=~"Warning|Error"}[3m])) / sum by (log_app, log_namespace) (rate(logd_messages_total{log_app="nav-dekoratoren-api"}[3m]))) > 10
+          expr: (sum by (log_app, log_namespace) (increase(logd_messages_total{log_app="nav-dekoratoren-api",log_level=~"Warning|Error"}[3m]))) > 10 AND (100 * sum by (log_app, log_namespace) (rate(logd_messages_total{log_app="nav-dekoratoren-api",log_level=~"Warning|Error"}[3m])) / sum by (log_app, log_namespace) (rate(logd_messages_total{log_app="nav-dekoratoren-api"}[3m]))) > 10
           for: 3m
           annotations:
             action: "Sjekk loggene til app {{ $labels.log_app }} i namespace {{ $labels.log_namespace }}, for å se hvorfor det er så mye feil"
@@ -38,7 +38,7 @@ spec:
             receiver_reference: team-navno-backend-alerts
             alert_type: custom
         - alert: Høy andel HTTP klientfeil (4xx responser)
-          expr: (100 * (sum by (backend) (rate(response_total{status_code=~"^4\\d\\d", namespace="personbruker", app="nav-dekoratoren-api"}[3m])) / sum by (backend) (rate(response_total{namespace="personbruker", app="nav-dekoratoren-api"}[3m])))) > 20
+          expr: (100 * (sum by (backend) (rate(response_total{status_code=~"^4\\d\\d", namespace="personbruker", app="nav-dekoratoren-api"}[3m])) / sum by (backend) (rate(response_total{namespace="personbruker", app="nav-dekoratoren-api"}[3m])))) > 10
           for: 3m
           annotations:
             action: "Sjekk loggene for å se hvorfor nav-dekoratoren-api returnerer HTTP feilresponser"
