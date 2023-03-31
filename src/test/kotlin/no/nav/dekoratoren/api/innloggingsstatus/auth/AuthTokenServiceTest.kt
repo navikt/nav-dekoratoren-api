@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 import kotlinx.coroutines.runBlocking
 import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenInfo
 import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenService
-import no.nav.dekoratoren.api.innloggingsstatus.selfissued.SelfIssuedTokenService
+import no.nav.dekoratoren.api.innloggingsstatus.wonderwall.WonderwallTokenService
 import no.nav.dekoratoren.api.innloggingsstatus.user.SubjectNameService
 import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.Test
@@ -22,12 +22,12 @@ internal class AuthTokenServiceTest {
 
     private val oidcTokenService: OidcTokenService = mockk()
     private val subjectNameService: SubjectNameService = mockk()
-    private val selfIssuedTokenService: SelfIssuedTokenService = mockk()
+    private val wonderwallTokenService: WonderwallTokenService = mockk()
 
     private val authTokenService = no.nav.dekoratoren.api.innloggingsstatus.auth.AuthTokenService(
         oidcTokenService,
         subjectNameService,
-        selfIssuedTokenService,
+        wonderwallTokenService,
     )
 
     private val call: ApplicationCall = mockk()
@@ -42,7 +42,7 @@ internal class AuthTokenServiceTest {
         )
 
         coEvery { oidcTokenService.getOidcToken(call) } returns tokenInfo
-        coEvery { selfIssuedTokenService.getSelfIssuedToken(call) } returns null
+        coEvery { wonderwallTokenService.getToken(call) } returns null
         coEvery { subjectNameService.getSubjectName(subject1) } returns subject1Name
 
         val subjectInfo = runBlocking { authTokenService.getAuthenticatedUserInfo(call) }
@@ -62,7 +62,7 @@ internal class AuthTokenServiceTest {
         )
 
         coEvery { oidcTokenService.getOidcToken(call) } returns null
-        coEvery { selfIssuedTokenService.getSelfIssuedToken(call) } returns tokenInfo
+        coEvery { wonderwallTokenService.getToken(call) } returns tokenInfo
         coEvery { subjectNameService.getSubjectName(subject1) } returns subject1Name
 
         val subjectInfo = runBlocking { authTokenService.getAuthenticatedUserInfo(call) }
@@ -75,7 +75,7 @@ internal class AuthTokenServiceTest {
     @Test
     fun `should provide correct info when unauthenticated`() {
         coEvery { oidcTokenService.getOidcToken(call) } returns null
-        coEvery { selfIssuedTokenService.getSelfIssuedToken(call) } returns null
+        coEvery { wonderwallTokenService.getToken(call) } returns null
         coEvery { subjectNameService.getSubjectName(any()) } returns subject1Name
 
         val subjectInfo = runBlocking { authTokenService.getAuthenticatedUserInfo(call) }
@@ -95,7 +95,7 @@ internal class AuthTokenServiceTest {
         )
 
         coEvery { oidcTokenService.getOidcToken(call) } returns oidcTokenInfo
-        coEvery { selfIssuedTokenService.getSelfIssuedToken(call) } returns null
+        coEvery { wonderwallTokenService.getToken(call) } returns null
         coEvery { subjectNameService.getSubjectName(subject1) } returns subject1Name
 
         val subjectInfo = runBlocking { authTokenService.getAuthenticatedUserInfo(call) }
@@ -121,7 +121,7 @@ internal class AuthTokenServiceTest {
         )
 
         coEvery { oidcTokenService.getOidcToken(call) } returns oidcTokenInfo
-        coEvery { selfIssuedTokenService.getSelfIssuedToken(call) } returns selfIssuedTokenInfo
+        coEvery { wonderwallTokenService.getToken(call) } returns selfIssuedTokenInfo
         coEvery { subjectNameService.getSubjectName(subject1) } returns subject1Name
         coEvery { subjectNameService.getSubjectName(subject2) } returns subject2Name
 
@@ -148,7 +148,7 @@ internal class AuthTokenServiceTest {
         )
 
         coEvery { oidcTokenService.getOidcToken(call) } returns oidcTokenInfo
-        coEvery { selfIssuedTokenService.getSelfIssuedToken(call) } returns selfIssuedTokenInfo
+        coEvery { wonderwallTokenService.getToken(call) } returns selfIssuedTokenInfo
         coEvery { subjectNameService.getSubjectName(subject1) } returns subject1Name
         coEvery { subjectNameService.getSubjectName(subject2) } returns subject2Name
 
@@ -169,7 +169,7 @@ internal class AuthTokenServiceTest {
         )
 
         coEvery { oidcTokenService.getOidcToken(call) } returns subject1OidcTokenInfo
-        coEvery { selfIssuedTokenService.getSelfIssuedToken(call) } throws Exception()
+        coEvery { wonderwallTokenService.getToken(call) } throws Exception()
         coEvery { subjectNameService.getSubjectName(subject1) } returns subject1Name
 
         val subjectInfo = runBlocking { authTokenService.getAuthenticatedUserInfo(call) }

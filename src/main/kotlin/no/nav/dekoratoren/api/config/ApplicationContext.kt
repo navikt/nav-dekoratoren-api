@@ -18,9 +18,9 @@ import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenService
 import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenValidator
 import no.nav.dekoratoren.api.innloggingsstatus.pdl.PdlConsumer
 import no.nav.dekoratoren.api.innloggingsstatus.pdl.PdlService
-import no.nav.dekoratoren.api.innloggingsstatus.selfissued.SelfIssuedTokenIssuer
-import no.nav.dekoratoren.api.innloggingsstatus.selfissued.SelfIssuedTokenService
-import no.nav.dekoratoren.api.innloggingsstatus.selfissued.SelfIssuedTokenValidator
+import no.nav.dekoratoren.api.innloggingsstatus.wonderwall.SelfIssuedTokenIssuer
+import no.nav.dekoratoren.api.innloggingsstatus.wonderwall.WonderwallTokenService
+import no.nav.dekoratoren.api.innloggingsstatus.wonderwall.WonderwallTokenValidator
 import no.nav.dekoratoren.api.innloggingsstatus.user.SubjectNameService
 import no.nav.dekoratoren.api.varsel.VarselbjelleConsumer
 import no.nav.dekoratoren.api.varsel.VarselbjelleTokenFetcher
@@ -48,13 +48,13 @@ class ApplicationContext(config: ApplicationConfig) {
 
     val subjectNameService = SubjectNameService(pdlService, setupSubjectNameCache(environment))
 
-    val selfIssuedTokenValidator = SelfIssuedTokenValidator(environment)
+    val wonderwallTokenValidator = WonderwallTokenValidator(environment)
     val selfIssuedTokenIssuer = SelfIssuedTokenIssuer(environment)
-    val selfIssuedTokenService =
-        SelfIssuedTokenService(selfIssuedTokenValidator, selfIssuedTokenIssuer, oidcTokenValidator, environment)
+    val wonderwallTokenService =
+        WonderwallTokenService(wonderwallTokenValidator, selfIssuedTokenIssuer, oidcTokenValidator, environment)
 
     val authTokenService =
-        AuthTokenService(oidcValidationService, subjectNameService, selfIssuedTokenService)
+        AuthTokenService(oidcValidationService, subjectNameService, wonderwallTokenService)
 
     val varselbjelleTokenFetcher = VarselbjelleTokenFetcher(azureService, environment.varselbjelleApiClientId)
     val varselbjelleConsumer = VarselbjelleConsumer(environment.varselbjelleApiUrl, httpClient, varselbjelleTokenFetcher)

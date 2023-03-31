@@ -1,4 +1,4 @@
-package no.nav.dekoratoren.api.innloggingsstatus.selfissued
+package no.nav.dekoratoren.api.innloggingsstatus.wonderwall
 
 import com.nimbusds.oauth2.sdk.OAuth2Error
 import io.ktor.server.application.ApplicationCall
@@ -10,16 +10,28 @@ import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenInfoFactory
 import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenValidator
 import no.nav.security.token.support.core.jwt.JwtToken
 
-class SelfIssuedTokenService(
-    private val selfIssuedTokenValidator: SelfIssuedTokenValidator,
+class WonderwallTokenService(
+    private val wonderwallTokenValidator: WonderwallTokenValidator,
     private val selfIssuedTokenIssuer: SelfIssuedTokenIssuer,
     private val oidcTokenValidator: OidcTokenValidator,
     private val environment: Environment,
 ) {
 
-    // get and map self issued token from well-known cookie, returns null if invalid or not found
-    fun getSelfIssuedToken(call: ApplicationCall): OidcTokenInfo? {
-        return selfIssuedTokenValidator.getValidToken(call)?.let { token ->
+    // get and map Wonderwall token in this priority:
+    // 1. idporten token from Authorization header (sso)
+    // 2. self issued token from well-known cookie
+    //
+    // returns null if both are invalid or not found
+    fun getToken(call: ApplicationCall): OidcTokenInfo? {
+        val authHeaderToken = wonderwallTokenValidator.getAuthHeaderToken(call)?.let { token ->
+            OidcTokenInfoFactory.mapOidcTokenInfo(token, environment.idportenIdentityClaim)
+        }
+
+        if (authHeaderToken != null) {
+            return authHeaderToken
+        }
+
+        return wonderwallTokenValidator.getSelfIssuedToken(call)?.let { token ->
             OidcTokenInfoFactory.mapOidcTokenInfo(token, SelfIssuedTokenIssuer.CLAIM_IDENTITY)
         }
     }
