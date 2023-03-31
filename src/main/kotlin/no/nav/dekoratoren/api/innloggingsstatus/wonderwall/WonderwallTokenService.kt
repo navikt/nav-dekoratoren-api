@@ -38,7 +38,7 @@ class WonderwallTokenService(
 
     // exchanges an inbound ID-porten token with a self-issued token containing custom claims based on the input token
     fun exchangeToken(call: ApplicationCall): SelfIssuedTokenResponse {
-        val idportenToken: JwtToken? = oidcTokenValidator.getValidToken(call, environment.oidcIssuer)
+        val idportenToken: JwtToken? = wonderwallTokenValidator.getAuthHeaderToken(call)
 
         if (idportenToken == null) {
             val description = "Authorization header does not contain a valid ID-porten token."

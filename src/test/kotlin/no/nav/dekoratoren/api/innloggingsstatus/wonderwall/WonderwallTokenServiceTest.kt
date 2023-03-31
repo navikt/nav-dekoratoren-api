@@ -92,12 +92,10 @@ class WonderwallTokenServiceTest {
         val key = generateRandomKey()
         val selfIssuedToken = SelfIssuedTokenObjectMother.generate(key, claims())
 
-        val idportenIssuer = "idporten"
         val idportenIdentityClaim = "pid"
 
-        every { environment.oidcIssuer } returns idportenIssuer
         every { environment.idportenIdentityClaim } returns idportenIdentityClaim
-        every { oidcTokenValidator.getValidToken(call, idportenIssuer) } returns idportenToken
+        every { wonderwallTokenValidator.getAuthHeaderToken(call) } returns idportenToken
         every { selfIssuedTokenIssuer.issueToken(idportenToken) } returns selfIssuedToken
 
         when (val response = wonderwallTokenService.exchangeToken(call)) {
@@ -111,9 +109,7 @@ class WonderwallTokenServiceTest {
 
     @Test
     fun `should return access denied if attempting to exchange invalid ID-porten token`() {
-        val issuer = "idporten"
-        every { environment.oidcIssuer } returns issuer
-        every { oidcTokenValidator.getValidToken(call, issuer) } returns null
+        every { wonderwallTokenValidator.getAuthHeaderToken(call) } returns null
 
         when (val response = wonderwallTokenService.exchangeToken(call)) {
             is SelfIssuedTokenResponse.OK -> fail("Expected $response to be an instance of ${SelfIssuedTokenResponse.Invalid::class}")
