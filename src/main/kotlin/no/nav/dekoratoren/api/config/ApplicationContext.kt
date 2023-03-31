@@ -50,8 +50,7 @@ class ApplicationContext(config: ApplicationConfig) {
 
     val wonderwallTokenValidator = WonderwallTokenValidator(environment)
     val selfIssuedTokenIssuer = SelfIssuedTokenIssuer(environment)
-    val wonderwallTokenService =
-        WonderwallTokenService(wonderwallTokenValidator, selfIssuedTokenIssuer, oidcTokenValidator, environment)
+    val wonderwallTokenService = WonderwallTokenService(wonderwallTokenValidator, selfIssuedTokenIssuer, environment)
 
     val authTokenService =
         AuthTokenService(oidcValidationService, subjectNameService, wonderwallTokenService)

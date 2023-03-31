@@ -7,7 +7,6 @@ import java.time.LocalDateTime
 import no.nav.dekoratoren.api.common.toUtcDateTime
 import no.nav.dekoratoren.api.config.Environment
 import no.nav.dekoratoren.api.innloggingsstatus.oidc.JwtTokenObjectMother
-import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenValidator
 import no.nav.dekoratoren.api.innloggingsstatus.wonderwall.SelfIssuedTokenObjectMother.claims
 import org.amshove.kluent.`should be before`
 import org.amshove.kluent.`should be equal to`
@@ -21,13 +20,11 @@ class WonderwallTokenServiceTest {
 
     private val selfIssuedTokenIssuer: SelfIssuedTokenIssuer = mockk()
     private val wonderwallTokenValidator: WonderwallTokenValidator = mockk()
-    private val oidcTokenValidator: OidcTokenValidator = mockk()
     private val environment: Environment = mockk()
 
     private val wonderwallTokenService = WonderwallTokenService(
         wonderwallTokenValidator,
         selfIssuedTokenIssuer,
-        oidcTokenValidator,
         environment
     )
 

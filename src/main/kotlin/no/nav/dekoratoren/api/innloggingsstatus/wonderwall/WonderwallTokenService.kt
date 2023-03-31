@@ -7,13 +7,11 @@ import java.time.Instant
 import no.nav.dekoratoren.api.config.Environment
 import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenInfo
 import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenInfoFactory
-import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenValidator
 import no.nav.security.token.support.core.jwt.JwtToken
 
 class WonderwallTokenService(
     private val wonderwallTokenValidator: WonderwallTokenValidator,
     private val selfIssuedTokenIssuer: SelfIssuedTokenIssuer,
-    private val oidcTokenValidator: OidcTokenValidator,
     private val environment: Environment,
 ) {
 
