@@ -42,7 +42,7 @@ object Kluent {
 }
 
 object Kotlin {
-    const val version = "1.8.10"
+    const val version = "1.8.20"
 }
 
 object Kotlinx {
@@ -97,7 +97,7 @@ object Mockk {
 
 object NAV {
     object Security {
-        private const val version = "3.0.8"
+        private const val version = "3.0.9"
         private const val groupId = "no.nav.security"
 
         const val tokenValidationKtor = "$groupId:token-validation-ktor-v2:$version"
@@ -111,7 +111,7 @@ object NAV {
 }
 
 object Shadow {
-    const val version = "8.1.0"
+    const val version = "8.1.1"
     const val pluginId = "com.github.johnrengelman.shadow"
 }
 
