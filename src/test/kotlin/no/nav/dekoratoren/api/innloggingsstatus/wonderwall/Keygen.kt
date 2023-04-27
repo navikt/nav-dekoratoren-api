@@ -1,4 +1,4 @@
-package no.nav.dekoratoren.api.innloggingsstatus.selfissued
+package no.nav.dekoratoren.api.innloggingsstatus.wonderwall
 
 import java.security.SecureRandom
 

@@ -1,4 +1,4 @@
-package no.nav.dekoratoren.api.innloggingsstatus.selfissued
+package no.nav.dekoratoren.api.innloggingsstatus.wonderwall
 
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
@@ -9,9 +9,9 @@ import java.time.Instant
 import java.time.temporal.ChronoUnit
 import java.util.*
 import no.nav.dekoratoren.api.config.Environment
-import no.nav.dekoratoren.api.innloggingsstatus.selfissued.SelfIssuedTokenObjectMother.DEFAULT_ISSUER
-import no.nav.dekoratoren.api.innloggingsstatus.selfissued.SelfIssuedTokenObjectMother.DEFAULT_SECURITY_LEVEL
-import no.nav.dekoratoren.api.innloggingsstatus.selfissued.SelfIssuedTokenObjectMother.DEFAULT_SUBJECT
+import no.nav.dekoratoren.api.innloggingsstatus.wonderwall.SelfIssuedTokenObjectMother.DEFAULT_ISSUER
+import no.nav.dekoratoren.api.innloggingsstatus.wonderwall.SelfIssuedTokenObjectMother.DEFAULT_SECURITY_LEVEL
+import no.nav.dekoratoren.api.innloggingsstatus.wonderwall.SelfIssuedTokenObjectMother.DEFAULT_SUBJECT
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should be null`
 import org.amshove.kluent.`should be true`
@@ -21,21 +21,24 @@ import org.junit.jupiter.api.Test
 
 private const val DEFAULT_COOKIE_NAME = "some-cookie"
 
-class SelfIssuedTokenValidatorTest {
+class WonderwallTokenValidatorTest {
     private val environment: Environment = mockk()
     private val call: ApplicationCall = mockk()
 
     init {
         every { environment.selfIssuedIssuer } returns DEFAULT_ISSUER
         every { environment.selfIssuedCookieName } returns DEFAULT_COOKIE_NAME
+        every { environment.idportenAudience } returns "idporten-audience"
+        every { environment.idportenIssuer } returns "idporten-issuer"
+        every { environment.idportenJwksUri } returns "https://idporten/jwks"
     }
 
     @Test
-    fun `should return JwtToken when given a valid token`() {
+    fun `should return JwtToken when given a valid self-issued token`() {
         initMocks()
 
-        val selfIssuedTokenValidator = SelfIssuedTokenValidator(environment)
-        val validJwt = selfIssuedTokenValidator.getValidToken(call)
+        val wonderwallTokenValidator = WonderwallTokenValidator(environment)
+        val validJwt = wonderwallTokenValidator.getSelfIssuedToken(call)
 
         validJwt.`should not be null`()
 
@@ -106,8 +109,8 @@ class SelfIssuedTokenValidatorTest {
     }
 
     private fun assertInvalidToken() {
-        val selfIssuedTokenValidator = SelfIssuedTokenValidator(environment)
-        val invalidJwt = selfIssuedTokenValidator.getValidToken(call)
+        val wonderwallTokenValidator = WonderwallTokenValidator(environment)
+        val invalidJwt = wonderwallTokenValidator.getSelfIssuedToken(call)
 
         invalidJwt.`should be null`()
     }
