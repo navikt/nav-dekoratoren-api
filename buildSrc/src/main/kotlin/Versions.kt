@@ -1,5 +1,5 @@
 object Caffeine {
-    private const val version = "3.1.5"
+    private const val version = "3.1.6"
     private const val groupId = "com.github.ben-manes.caffeine"
 
     const val caffeine = "$groupId:caffeine:$version"
@@ -22,14 +22,14 @@ object Finn {
 }
 
 object Jackson {
-    private const val version = "2.14.2"
+    private const val version = "2.15.0"
 
     const val dataTypeJsr310 = "com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$version"
     const val moduleKotlin = "com.fasterxml.jackson.module:jackson-module-kotlin:$version"
 }
 
 object Junit {
-    private const val version = "5.9.2"
+    private const val version = "5.9.3"
     private const val groupId = "org.junit.jupiter"
 
     const val api = "$groupId:junit-jupiter-api:$version"
@@ -42,18 +42,18 @@ object Kluent {
 }
 
 object Kotlin {
-    const val version = "1.8.20"
+    const val version = "1.8.21"
 }
 
 object Kotlinx {
     private const val groupId = "org.jetbrains.kotlinx"
 
     const val coroutines = "$groupId:kotlinx-coroutines-core:1.6.4"
-    const val htmlJvm = "$groupId:kotlinx-html-jvm:0.8.0"
+    const val htmlJvm = "$groupId:kotlinx-html-jvm:0.8.1"
 }
 
 object Ktor {
-    private const val version = "2.2.4"
+    private const val version = "2.3.0"
     private const val groupId = "io.ktor"
 
     const val metricsMicrometer = "$groupId:ktor-server-metrics-micrometer:$version"
@@ -76,7 +76,7 @@ object Ktor {
 }
 
 object Logback {
-    private const val version = "1.4.6"
+    private const val version = "1.4.7"
     const val classic = "ch.qos.logback:logback-classic:$version"
 }
 
@@ -86,18 +86,18 @@ object Logstash {
 }
 
 object Micrometer {
-    private const val version = "1.10.5"
+    private const val version = "1.10.6"
     const val registryPrometheus = "io.micrometer:micrometer-registry-prometheus:$version"
 }
 
 object Mockk {
-    private const val version = "1.13.4"
+    private const val version = "1.13.5"
     const val mockk = "io.mockk:mockk:$version"
 }
 
 object NAV {
     object Security {
-        private const val version = "3.0.9"
+        private const val version = "3.0.11"
         private const val groupId = "no.nav.security"
 
         const val tokenValidationKtor = "$groupId:token-validation-ktor-v2:$version"
