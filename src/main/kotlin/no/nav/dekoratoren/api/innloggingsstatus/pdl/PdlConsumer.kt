@@ -27,6 +27,7 @@ import org.slf4j.LoggerFactory
 
 private const val CONSUMER_ID = "nav-dekoratoren-api"
 private const val GENERELL = "GEN"
+private const val BEHANDLINGSNUMMER = "B328"
 
 private val logger = LoggerFactory.getLogger(PdlConsumer::class.java)
 
@@ -48,6 +49,7 @@ class PdlConsumer(private val client: HttpClient, environment: Environment) : Se
             bearerHeader(accessToken)
             header("Nav-Consumer-Id", CONSUMER_ID)
             header("Tema", GENERELL)
+            header("Behandlingsnummer", BEHANDLINGSNUMMER)
             setBody(request)
         }
         if (response.status.isSuccess()) {
