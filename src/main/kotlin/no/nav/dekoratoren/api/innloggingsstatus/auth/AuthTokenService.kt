@@ -3,7 +3,7 @@ package no.nav.dekoratoren.api.innloggingsstatus.auth
 import io.ktor.server.application.ApplicationCall
 import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenInfo
 import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenService
-import no.nav.dekoratoren.api.innloggingsstatus.selfissued.SelfIssuedTokenService
+import no.nav.dekoratoren.api.innloggingsstatus.wonderwall.WonderwallTokenService
 import no.nav.dekoratoren.api.innloggingsstatus.user.SubjectNameService
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory
 class AuthTokenService(
     private val oidcTokenService: OidcTokenService,
     private val subjectNameService: SubjectNameService,
-    private val selfIssuedTokenService: SelfIssuedTokenService,
+    private val wonderwallTokenService: WonderwallTokenService,
 ) {
     private val log: Logger = LoggerFactory.getLogger(AuthTokenService::class.java)
 
@@ -51,12 +51,12 @@ class AuthTokenService(
 
     private fun getNewestOidcToken(call: ApplicationCall): OidcTokenInfo? {
         val oidcToken = oidcTokenService.getOidcToken(call)
-        val selfIssuedToken = selfIssuedTokenService.getSelfIssuedToken(call)
+        val wonderwallToken = wonderwallTokenService.getToken(call)
 
         return when {
-            oidcToken == null && selfIssuedToken != null -> selfIssuedToken
-            oidcToken != null && selfIssuedToken == null -> oidcToken
-            oidcToken != null && selfIssuedToken != null -> oidcToken.mostRecentlyIssued(selfIssuedToken)
+            oidcToken == null && wonderwallToken != null -> wonderwallToken
+            oidcToken != null && wonderwallToken == null -> oidcToken
+            oidcToken != null && wonderwallToken != null -> oidcToken.mostRecentlyIssued(wonderwallToken)
             else -> null
         }
     }

@@ -6,10 +6,10 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import no.nav.dekoratoren.api.innloggingsstatus.auth.AuthTokenService
-import no.nav.dekoratoren.api.innloggingsstatus.selfissued.SelfIssuedTokenResponse
-import no.nav.dekoratoren.api.innloggingsstatus.selfissued.SelfIssuedTokenService
+import no.nav.dekoratoren.api.innloggingsstatus.wonderwall.SelfIssuedTokenResponse
+import no.nav.dekoratoren.api.innloggingsstatus.wonderwall.WonderwallTokenService
 
-fun Route.authApi(authService: AuthTokenService, selfIssuedTokenService: SelfIssuedTokenService) {
+fun Route.authApi(authService: AuthTokenService, wonderwallTokenService: WonderwallTokenService) {
 
     get("/auth") {
         authService.getAuthenticatedUserInfo(call).let { userInfo ->
@@ -28,7 +28,7 @@ fun Route.authApi(authService: AuthTokenService, selfIssuedTokenService: SelfIss
     }
 
     get("/token") {
-        when (val response: SelfIssuedTokenResponse = selfIssuedTokenService.exchangeToken(call)) {
+        when (val response: SelfIssuedTokenResponse = wonderwallTokenService.exchangeToken(call)) {
             is SelfIssuedTokenResponse.OK -> call.respond(HttpStatusCode.OK, response)
             is SelfIssuedTokenResponse.Invalid -> call.respond(HttpStatusCode.Unauthorized, response)
         }

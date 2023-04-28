@@ -1,4 +1,4 @@
-package no.nav.dekoratoren.api.innloggingsstatus.selfissued
+package no.nav.dekoratoren.api.innloggingsstatus.wonderwall
 
 import com.nimbusds.jose.JWSAlgorithm
 import com.nimbusds.jose.JWSHeader
