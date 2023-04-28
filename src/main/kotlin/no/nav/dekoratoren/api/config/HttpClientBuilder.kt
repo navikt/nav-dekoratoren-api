@@ -1,5 +1,6 @@
 package no.nav.dekoratoren.api.config
 
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.apache.Apache
@@ -15,6 +16,7 @@ object HttpClientBuilder {
             install(ContentNegotiation) {
                 jackson {
                     registerModule(JavaTimeModule())
+                    configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                 }
             }
             install(HttpRequestRetry) {

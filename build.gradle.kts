@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
     kotlin("jvm") version Kotlin.version
     kotlin("plugin.allopen") version Kotlin.version
@@ -9,8 +7,8 @@ plugins {
     application
 }
 
-tasks.withType<KotlinCompile> {
-    kotlinOptions.jvmTarget = "17"
+kotlin {
+    jvmToolchain(17)
 }
 
 repositories {

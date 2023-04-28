@@ -20,11 +20,16 @@ import no.nav.dekoratoren.api.health.SelfTest
 import no.nav.dekoratoren.api.health.ServiceStatus
 import no.nav.dekoratoren.api.innloggingsstatus.pdl.query.PdlPersonInfo
 import no.nav.dekoratoren.api.innloggingsstatus.pdl.query.PdlResponse
+import no.nav.dekoratoren.api.innloggingsstatus.pdl.query.PdlWarning
 import no.nav.dekoratoren.api.innloggingsstatus.pdl.query.SubjectNameRequest
 import no.nav.dekoratoren.api.innloggingsstatus.pdl.query.createSubjectNameRequest
+import org.slf4j.LoggerFactory
 
 private const val CONSUMER_ID = "nav-dekoratoren-api"
 private const val GENERELL = "GEN"
+private const val BEHANDLINGSNUMMER = "B328"
+
+private val logger = LoggerFactory.getLogger(PdlConsumer::class.java)
 
 class PdlConsumer(private val client: HttpClient, environment: Environment) : SelfTest {
     private val endpoint = environment.pdlApiUrl
@@ -44,16 +49,32 @@ class PdlConsumer(private val client: HttpClient, environment: Environment) : Se
             bearerHeader(accessToken)
             header("Nav-Consumer-Id", CONSUMER_ID)
             header("Tema", GENERELL)
+            header("Behandlingsnummer", BEHANDLINGSNUMMER)
             setBody(request)
         }
-        return if (response.status.isSuccess()) {
+        if (response.status.isSuccess()) {
             try {
-                response.body<PdlResponse>().data.person
+                val responseBody = response.body<PdlResponse>()
+                val warnings = responseBody.extensions?.warnings;
+                if (!warnings.isNullOrEmpty()) {
+                    logWarnings(warnings)
+                }
+                return responseBody.data.person
             } catch (e: Exception) {
-                throw PdlException("Kunne ikke utlede person fra PDL-respons. Respons: [${response.bodyAsText()}]")
+                throw PdlException("Kunne ikke utlede person fra PDL-respons", e)
             }
         } else {
             throw PdlException("Feil i kall mot PDL, HTTP response status=[${response.status}], feilmelding=[${response.bodyAsText()}]")
+        }
+    }
+
+    private fun logWarnings(warnings: List<PdlWarning>) {
+        warnings.forEach {
+            try {
+                logger.warn("Advarsel fra PDL: ${it.message}. Detaljer: ${it.details}.")
+            } catch (e: Exception) {
+                logger.warn("Fikk advarsel fra PDL (deserialisering av advarsel feilet)")
+            }
         }
     }
 
