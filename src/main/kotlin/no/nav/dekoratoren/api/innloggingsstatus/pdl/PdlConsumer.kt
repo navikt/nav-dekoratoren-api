@@ -59,7 +59,7 @@ class PdlConsumer(private val client: HttpClient, environment: Environment) : Se
                 }
                 return responseBody.data.person
             } catch (e: Exception) {
-                throw PdlException("Kunne ikke utlede person fra PDL-respons. Respons: [${response.bodyAsText()}]")
+                throw PdlException("Kunne ikke utlede person fra PDL-respons", e)
             }
         } else {
             throw PdlException("Feil i kall mot PDL, HTTP response status=[${response.status}], feilmelding=[${response.bodyAsText()}]")
