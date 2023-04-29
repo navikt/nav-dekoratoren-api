@@ -48,3 +48,4 @@ spec:
     enabled: true
     sidecar:
       enabled: true
+      level: Level3
