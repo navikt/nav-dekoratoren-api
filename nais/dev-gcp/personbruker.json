@@ -1,8 +1,7 @@
 {
   "ingresses": [
-    "https://www.dev.nav.no/person/nav-dekoratoren-api",
-    "https://www.dev.intern.nav.no/person/nav-dekoratoren-api",
     "https://person.ekstern.dev.nav.no/person/nav-dekoratoren-api"
+    "https://www.ekstern.dev.nav.no/person/nav-dekoratoren-api"
   ],
   "pdl-api-host": "https://pdl-api.dev-fss-pub.nais.io",
   "min-replicas": 1,
