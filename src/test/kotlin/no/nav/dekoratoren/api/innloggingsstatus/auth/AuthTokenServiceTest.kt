@@ -3,14 +3,14 @@ package no.nav.dekoratoren.api.innloggingsstatus.auth
 import io.ktor.server.application.ApplicationCall
 import io.mockk.coEvery
 import io.mockk.mockk
-import java.time.LocalDateTime
 import kotlinx.coroutines.runBlocking
 import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenInfo
 import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenService
-import no.nav.dekoratoren.api.innloggingsstatus.wonderwall.WonderwallTokenService
 import no.nav.dekoratoren.api.innloggingsstatus.user.SubjectNameService
+import no.nav.dekoratoren.api.innloggingsstatus.wonderwall.WonderwallTokenService
 import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.Test
+import java.time.LocalDateTime
 
 internal class AuthTokenServiceTest {
 
@@ -106,14 +106,14 @@ internal class AuthTokenServiceTest {
     }
 
     @Test
-    fun `should defer to oidc token if it is newer than self issued token`() {
+    fun `should defer to oidc token if it is newer than wonderwall token`() {
         val oidcTokenInfo = OidcTokenInfo(
             subject = subject1,
             authLevel = 3,
             issueTime = LocalDateTime.now(),
             expiryTime = LocalDateTime.now().plusDays(1)
         )
-        val selfIssuedTokenInfo = OidcTokenInfo(
+        val wonderwallTokenInfo = OidcTokenInfo(
             subject = subject2,
             authLevel = 4,
             issueTime = LocalDateTime.now().minusMinutes(5),
@@ -121,7 +121,7 @@ internal class AuthTokenServiceTest {
         )
 
         coEvery { oidcTokenService.getOidcToken(call) } returns oidcTokenInfo
-        coEvery { wonderwallTokenService.getToken(call) } returns selfIssuedTokenInfo
+        coEvery { wonderwallTokenService.getToken(call) } returns wonderwallTokenInfo
         coEvery { subjectNameService.getSubjectName(subject1) } returns subject1Name
         coEvery { subjectNameService.getSubjectName(subject2) } returns subject2Name
 
@@ -140,7 +140,7 @@ internal class AuthTokenServiceTest {
             issueTime = LocalDateTime.now().minusMinutes(5),
             expiryTime = LocalDateTime.now().plusDays(1)
         )
-        val selfIssuedTokenInfo = OidcTokenInfo(
+        val wonderwallTokenInfo = OidcTokenInfo(
             subject = subject2,
             authLevel = 4,
             issueTime = LocalDateTime.now(),
@@ -148,7 +148,7 @@ internal class AuthTokenServiceTest {
         )
 
         coEvery { oidcTokenService.getOidcToken(call) } returns oidcTokenInfo
-        coEvery { wonderwallTokenService.getToken(call) } returns selfIssuedTokenInfo
+        coEvery { wonderwallTokenService.getToken(call) } returns wonderwallTokenInfo
         coEvery { subjectNameService.getSubjectName(subject1) } returns subject1Name
         coEvery { subjectNameService.getSubjectName(subject2) } returns subject2Name
 

@@ -2,7 +2,6 @@ package no.nav.dekoratoren.api.innloggingsstatus.wonderwall
 
 import com.nimbusds.jose.JWSAlgorithm
 import com.nimbusds.jwt.SignedJWT
-import com.nimbusds.oauth2.sdk.auth.Secret
 import com.nimbusds.oauth2.sdk.id.ClientID
 import com.nimbusds.oauth2.sdk.id.Issuer
 import com.nimbusds.openid.connect.sdk.validators.IDTokenValidator
@@ -16,43 +15,16 @@ import java.net.URL
 
 private val JWS_ALGORITHM = JWSAlgorithm.RS256
 
-class WonderwallTokenValidator(private val environment: Environment) {
+class WonderwallTokenValidator(environment: Environment) {
     private val log = LoggerFactory.getLogger(WonderwallTokenValidator::class.java)
 
-    private val selfIssuedValidator: IDTokenValidator
     private val idportenValidator: IDTokenValidator
 
     init {
-        val selfIssuer = Issuer(environment.selfIssuedIssuer)
-        val selfClientID = ClientID(environment.selfIssuedIssuer)
-        val selfSecret = Secret(environment.selfIssuedSecretKey)
-        selfIssuedValidator =
-            IDTokenValidator(selfIssuer, selfClientID, SelfIssuedTokenIssuer.signatureAlgorithm, selfSecret)
-
         val idportenIssuer = Issuer(environment.idportenIssuer)
         val idportenClientID = ClientID(environment.idportenAudience)
         val idportenJwksUri = URL(environment.idportenJwksUri)
         idportenValidator = IDTokenValidator(idportenIssuer, idportenClientID, JWS_ALGORITHM, idportenJwksUri)
-    }
-
-    fun getSelfIssuedToken(call: ApplicationCall): JwtToken? {
-        val cookieName = environment.selfIssuedCookieName
-        val cookieValue = call.request.cookies[cookieName]
-
-        if (cookieValue == null) {
-            log.debug("Fant ingen cookie med navn $cookieName")
-            return null
-        }
-
-        return try {
-            val signedJwt = SignedJWT.parse(cookieValue)
-            selfIssuedValidator.validate(signedJwt, null)
-
-            JwtToken(cookieValue)
-        } catch (e: Exception) {
-            log.info("Kunne ikke validere token: ${e.message}", e)
-            null
-        }
     }
 
     fun getAuthHeaderToken(call: ApplicationCall): JwtToken? {
