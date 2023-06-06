@@ -6,9 +6,8 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import no.nav.dekoratoren.api.innloggingsstatus.auth.AuthTokenService
-import no.nav.dekoratoren.api.innloggingsstatus.wonderwall.WonderwallTokenService
 
-fun Route.authApi(authService: AuthTokenService, wonderwallTokenService: WonderwallTokenService) {
+fun Route.authApi(authService: AuthTokenService) {
 
     get("/auth") {
         authService.getAuthenticatedUserInfo(call).let { userInfo ->

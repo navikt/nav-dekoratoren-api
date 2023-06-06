@@ -51,13 +51,13 @@ fun Application.mainModule() {
         route("/person/nav-dekoratoren-api") {
             healthApi(applicationContext.selfTests, applicationContext.appMicrometerRegistry)
             featureToggles(applicationContext.unleashClient)
-            authApi(applicationContext.authTokenService, applicationContext.wonderwallTokenService)
+            authApi(applicationContext.authTokenService)
             varselApi(applicationContext.authTokenService, applicationContext.varselbjelleConsumer)
         }
 
         // Nødvendig for å støtte gamle innloggingsstatus-ingresser
         route("/person/innloggingsstatus") {
-            authApi(applicationContext.authTokenService, applicationContext.wonderwallTokenService)
+            authApi(applicationContext.authTokenService)
         }
     }
 
