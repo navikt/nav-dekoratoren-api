@@ -6,10 +6,8 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import no.nav.dekoratoren.api.innloggingsstatus.auth.AuthTokenService
-import no.nav.dekoratoren.api.innloggingsstatus.wonderwall.SelfIssuedTokenResponse
-import no.nav.dekoratoren.api.innloggingsstatus.wonderwall.WonderwallTokenService
 
-fun Route.authApi(authService: AuthTokenService, wonderwallTokenService: WonderwallTokenService) {
+fun Route.authApi(authService: AuthTokenService) {
 
     get("/auth") {
         authService.getAuthenticatedUserInfo(call).let { userInfo ->
@@ -24,13 +22,6 @@ fun Route.authApi(authService: AuthTokenService, wonderwallTokenService: Wonderw
             }
         } catch (exception: Exception) {
             call.respond(HttpStatusCode.InternalServerError)
-        }
-    }
-
-    get("/token") {
-        when (val response: SelfIssuedTokenResponse = wonderwallTokenService.exchangeToken(call)) {
-            is SelfIssuedTokenResponse.OK -> call.respond(HttpStatusCode.OK, response)
-            is SelfIssuedTokenResponse.Invalid -> call.respond(HttpStatusCode.Unauthorized, response)
         }
     }
 }
