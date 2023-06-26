@@ -20,8 +20,8 @@ object OidcTokenInfoFactory {
     private fun extractAuthLevel(token: JwtToken): Int {
 
         return when (token.jwtTokenClaims.getStringClaim("acr")) {
-            "Level3" -> 3
-            "Level4" -> 4
+            "Level3", "idporten-loa-substantial" -> 3
+            "Level4", "idporten-loa-high" -> 4
             else -> throw Exception("Innloggingsnivå ble ikke funnet. Dette skal ikke kunne skje.")
         }
     }
