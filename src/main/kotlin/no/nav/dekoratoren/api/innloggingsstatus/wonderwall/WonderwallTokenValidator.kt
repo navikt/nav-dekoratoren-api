@@ -1,10 +1,12 @@
 package no.nav.dekoratoren.api.innloggingsstatus.wonderwall
 
 import com.nimbusds.jose.JWSAlgorithm
-import com.nimbusds.jwt.SignedJWT
-import com.nimbusds.oauth2.sdk.id.ClientID
-import com.nimbusds.oauth2.sdk.id.Issuer
-import com.nimbusds.openid.connect.sdk.validators.IDTokenValidator
+import com.nimbusds.jose.jwk.source.JWKSourceBuilder
+import com.nimbusds.jose.proc.JWSVerificationKeySelector
+import com.nimbusds.jose.proc.SecurityContext
+import com.nimbusds.jwt.JWTClaimsSet
+import com.nimbusds.jwt.proc.DefaultJWTClaimsVerifier
+import com.nimbusds.jwt.proc.DefaultJWTProcessor
 import io.ktor.http.auth.HttpAuthHeader
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.auth.parseAuthorizationHeader
@@ -13,18 +15,39 @@ import no.nav.security.token.support.core.jwt.JwtToken
 import org.slf4j.LoggerFactory
 import java.net.URL
 
-private val JWS_ALGORITHM = JWSAlgorithm.RS256
-
 class WonderwallTokenValidator(environment: Environment) {
     private val log = LoggerFactory.getLogger(WonderwallTokenValidator::class.java)
 
-    private val idportenValidator: IDTokenValidator
+    // ID-porten does not include 'nbf' claim in their JWTs, 'aud' is also an optional claim
+    private val requiredClaims = setOf(
+        "sub",
+        "iss",
+        "iat",
+        "exp"
+    )
 
-    init {
-        val idportenIssuer = Issuer(environment.idportenIssuer)
-        val idportenClientID = ClientID(environment.idportenAudience)
-        val idportenJwksUri = URL(environment.idportenJwksUri)
-        idportenValidator = IDTokenValidator(idportenIssuer, idportenClientID, JWS_ALGORITHM, idportenJwksUri)
+    private val issuer = environment.idportenIssuer
+    private val jwksUrl = URL(environment.idportenJwksUri)
+
+    private val jwtProcessor = DefaultJWTProcessor<SecurityContext>().apply {
+        jwsKeySelector = JWSVerificationKeySelector(
+            JWSAlgorithm.RS256,
+            JWKSourceBuilder.create<SecurityContext>(jwksUrl)
+                .retrying(true)
+                .outageTolerant(true)
+                .build()
+        )
+        jwtClaimsSetVerifier = DefaultJWTClaimsVerifier(
+            JWTClaimsSet.Builder()
+                .issuer(issuer)
+                .build(),
+            requiredClaims
+        )
+    }
+
+    private fun validate(token: String): JwtToken {
+        jwtProcessor.process(token, null)
+        return JwtToken(token)
     }
 
     fun getAuthHeaderToken(call: ApplicationCall): JwtToken? {
@@ -37,10 +60,7 @@ class WonderwallTokenValidator(environment: Environment) {
 
         if (authHeader is HttpAuthHeader.Single && authHeader.authScheme.lowercase() == "bearer") {
             return try {
-                val signedJwt = SignedJWT.parse(authHeader.blob)
-                idportenValidator.validate(signedJwt, null)
-
-                JwtToken(authHeader.blob)
+                validate(authHeader.blob)
             } catch (e: Exception) {
                 log.info("Kunne ikke validere token: ${e.message}", e)
                 null

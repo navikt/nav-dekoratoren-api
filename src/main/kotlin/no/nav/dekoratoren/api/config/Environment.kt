@@ -14,7 +14,6 @@ data class Environment(
     val corsAllowedSchemes: List<String> = getEnvVarAsList("CORS_ALLOWED_SCHEMES", listOf("https")),
     val subjectNameCacheThreshold: Int = getEnvVarAsInt("SUBJECT_NAME_CACHE_THRESHOLD", 4096),
     val subjectNameCacheExpiryMinutes: Long = getEnvVarAsLong("SUBJECT_NAME_CACHE_EXPIRY_MINUTES", 30),
-    val idportenAudience: String = getEnvVar("IDPORTEN_AUDIENCE"),
     val idportenIdentityClaim: String = getEnvVar("IDPORTEN_IDENTITY_CLAIM", "pid"),
     val idportenIssuer: String = getEnvVar("IDPORTEN_ISSUER"),
     val idportenJwksUri: String = getEnvVar("IDPORTEN_JWKS_URI"),
