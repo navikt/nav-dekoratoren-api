@@ -17,8 +17,6 @@ import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenValidator
 import no.nav.dekoratoren.api.innloggingsstatus.pdl.PdlConsumer
 import no.nav.dekoratoren.api.innloggingsstatus.pdl.PdlService
 import no.nav.dekoratoren.api.innloggingsstatus.user.SubjectNameService
-import no.nav.dekoratoren.api.innloggingsstatus.wonderwall.WonderwallTokenService
-import no.nav.dekoratoren.api.innloggingsstatus.wonderwall.WonderwallTokenValidator
 import no.nav.dekoratoren.api.varsel.VarselbjelleConsumer
 import no.nav.dekoratoren.api.varsel.VarselbjelleTokenFetcher
 import no.nav.tms.token.support.azure.exchange.AzureServiceBuilder
@@ -47,11 +45,7 @@ class ApplicationContext(config: ApplicationConfig) {
 
     val subjectNameService = SubjectNameService(pdlService, setupSubjectNameCache(environment))
 
-    val wonderwallTokenValidator = WonderwallTokenValidator(environment)
-    val wonderwallTokenService = WonderwallTokenService(wonderwallTokenValidator, environment)
-
-    val authTokenService =
-        AuthTokenService(oidcValidationService, subjectNameService, wonderwallTokenService)
+    val authTokenService = AuthTokenService(oidcValidationService, subjectNameService)
 
     val varselbjelleTokenFetcher = VarselbjelleTokenFetcher(azureService, environment.varselbjelleApiClientId)
     val varselbjelleConsumer = VarselbjelleConsumer(environment.varselbjelleApiUrl, httpClient, varselbjelleTokenFetcher)
