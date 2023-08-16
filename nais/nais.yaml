@@ -32,7 +32,6 @@ spec:
       external:
         - host: {{ pdl-api-host }}
   envFrom:
-    - configmap: loginservice-idporten
     - secret: nav-dekoratoren-api-secret
   resources:
     limits:
