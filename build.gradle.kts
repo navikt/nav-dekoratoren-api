@@ -41,7 +41,7 @@ dependencies {
         val logstash = "7.4"
         val micrometer = "1.11.3"
         val mockk = "1.13.7"
-        val navSecurity = "3.1.3"
+        val navSecurity = "3.1.4"
         val navCommon = "2.2023.01.10_13.49-81ddc732df3a"
     }
 
