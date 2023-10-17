@@ -14,7 +14,6 @@ import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.plugins.defaultheaders.DefaultHeaders
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
-import no.nav.dekoratoren.api.featuretoggles.featureToggles
 import no.nav.dekoratoren.api.health.healthApi
 import no.nav.dekoratoren.api.innloggingsstatus.authApi
 import no.nav.dekoratoren.api.varsel.varselApi
@@ -50,7 +49,6 @@ fun Application.mainModule() {
     routing {
         route("/person/nav-dekoratoren-api") {
             healthApi(applicationContext.selfTests, applicationContext.appMicrometerRegistry)
-            featureToggles(applicationContext.unleashClient)
             authApi(applicationContext.authTokenService)
             varselApi(applicationContext.authTokenService, applicationContext.varselbjelleConsumer)
         }

@@ -5,43 +5,13 @@ on:
 
 jobs:
   deploy:
+    if: github.event.release.target_commitish == 'master'
     permissions:
       contents: "read"
       id-token: "write"
-    runs-on: ubuntu-latest
-    environment: prod-gcp:personbruker
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Abort if branch is not master
-        if: github.event.release.target_commitish != 'master'
-        run: echo "Release is not on master, aborting"; exit 1;
-      - name: Setup java
-        uses: actions/setup-java@v2
-        with:
-          distribution: 'zulu'
-          java-version: 17
-      - name: Setup cache
-        uses: actions/cache@v3
-        with:
-          path: '~/.gradle/caches
-        ~/.gradle/wrapper'
-          key: ${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}
-      - name: Build application
-        run: |
-          ./gradlew clean build
-      - name: Build and push docker image
-        uses: nais/docker-build-push@v0
-        id: docker-build-push
-        with:
-          team: personbruker
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-      - name: Deploy to prod-gcp
-        uses: nais/deploy/actions/deploy@v1
-        env:
-          CLUSTER: prod-gcp
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          RESOURCE: ./nais/nais.yaml
-          VAR: image=${{steps.docker-build-push.outputs.image}}
-          VARS: ./nais/prod-gcp/personbruker.json
+    uses: ./.github/workflows/build-and-deploy.yml
+    with:
+      environment: prod
+    secrets:
+      NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+      NAIS_DEPLOY_APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}

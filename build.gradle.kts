@@ -4,7 +4,7 @@ plugins {
     val versions = object {
         val kotlin = "1.9.10"
         val shadow = "8.1.1"
-        val versions = "0.48.0"
+        val versions = "0.49.0"
     }
 
     kotlin("jvm") version(versions.kotlin)
@@ -28,21 +28,18 @@ dependencies {
     val versions = object {
         val caffeine = "3.1.8"
         val dittnavCommon = "2022.09.30-12.41-aa46d2d75788"
-        val tmsKtorTokenSupport = "2.2.0"
-        val unleash = "4.4.1"
-        val jackson = "2.15.2"
+        val tmsKtorTokenSupport = "3.0.0"
+        val jackson = "2.15.3"
         val junit = "5.10.0"
         val kluent = "1.73"
-        val kotlin = "1.8.21"
         val kotlinxCoroutines = "1.7.3"
         val kotlinxHtmlJvm = "0.9.1"
-        val ktor = "2.3.4"
+        val ktor = "2.3.5"
         val logback = "1.4.11"
         val logstash = "7.4"
-        val micrometer = "1.11.4"
-        val mockk = "1.13.7"
-        val navSecurity = "3.1.5"
-        val navCommon = "2.2023.01.10_13.49-81ddc732df3a"
+        val micrometer = "1.11.5"
+        val mockk = "1.13.8"
+        val navSecurity = "3.1.7"
     }
 
     implementation("com.github.navikt.dittnav-common-lib:dittnav-common-utils:${versions.dittnavCommon}")
@@ -70,8 +67,6 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:${versions.logback}")
     implementation("net.logstash.logback:logstash-logback-encoder:${versions.logstash}")
     implementation("no.nav.security:token-validation-ktor-v2:${versions.navSecurity}")
-    implementation("no.nav.common:feature-toggle:${versions.navCommon}")
-    implementation("no.finn.unleash:unleash-client-java:${versions.unleash}")
     testImplementation("org.junit.jupiter:junit-jupiter-api:${versions.junit}")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:${versions.junit}")
     testImplementation("org.amshove.kluent:kluent:${versions.kluent}")
