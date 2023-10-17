@@ -14,13 +14,6 @@ object DittNAV {
     }
 }
 
-object Finn {
-    private const val version = "4.4.1"
-    private const val groupId = "no.finn.unleash"
-
-    const val unleashClient = "$groupId:unleash-client-java:$version"
-}
-
 object Jackson {
     private const val version = "2.15.0"
 
@@ -106,7 +99,6 @@ object NAV {
     object Common {
         private const val version = "2.2023.01.10_13.49-81ddc732df3a"
         private const val groupId = "no.nav.common"
-        const val featureToggle = "$groupId:feature-toggle:$version"
     }
 }
 

@@ -29,7 +29,6 @@ dependencies {
         val caffeine = "3.1.8"
         val dittnavCommon = "2022.09.30-12.41-aa46d2d75788"
         val tmsKtorTokenSupport = "2.2.0"
-        val unleash = "4.4.1"
         val jackson = "2.15.2"
         val junit = "5.10.0"
         val kluent = "1.73"
@@ -70,8 +69,6 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:${versions.logback}")
     implementation("net.logstash.logback:logstash-logback-encoder:${versions.logstash}")
     implementation("no.nav.security:token-validation-ktor-v2:${versions.navSecurity}")
-    implementation("no.nav.common:feature-toggle:${versions.navCommon}")
-    implementation("no.finn.unleash:unleash-client-java:${versions.unleash}")
     testImplementation("org.junit.jupiter:junit-jupiter-api:${versions.junit}")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:${versions.junit}")
     testImplementation("org.amshove.kluent:kluent:${versions.kluent}")
