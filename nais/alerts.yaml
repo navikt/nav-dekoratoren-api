@@ -13,8 +13,8 @@ spec:
           expr: kube_deployment_status_replicas_available{deployment="nav-dekoratoren-api"} == 0
           for: 2m
           annotations:
-            summary: "App {{ $labels.app }} er nede i namespace {{ $labels.kubernetes_namespace }}"
-            action: "`kubectl describe pod -l app={{ $labels.app }} -n {{ $labels.namespace }}` for events, og `kubectl logs -l app={{ $labels.app }} -n {{ $labels.namespace }}` for logger"
+            summary: "App nav-dekoratoren-api er nede"
+            action: "Sjekk logger/events i kubectl"
           labels:
             severity: danger
             receiver_reference: team-navno-backend-alerts
@@ -23,7 +23,8 @@ spec:
           expr: (100 * sum by (log_app, log_namespace) (rate(log_messages_errors{app="nav-dekoratoren-api",level=~"Warning|Error"}[3m])) / sum by (log_app, log_namespace) (rate(log_messages_total{app="nav-dekoratoren-api"}[3m]))) > 10
           for: 3m
           annotations:
-            action: "Sjekk loggene til app {{ $labels.log_app }} i namespace {{ $labels.log_namespace }}, for å se hvorfor det er så mye feil"
+            summary: "App nav-dekoratoren-api har høy feilrate i logger"
+            action: "Sjekk logger i kibana eller kubectl"
           labels:
             severity: warning
             receiver_reference: team-navno-backend-alerts
@@ -32,7 +33,8 @@ spec:
           expr: (100 * (sum by (backend) (rate(ktor_http_server_requests_seconds_count {status=~"^5\\d\\d", namespace="personbruker", app="nav-dekoratoren-api"}[3m])) / sum by (backend) (rate(ktor_http_server_requests_seconds_count {namespace="personbruker", app="nav-dekoratoren-api"}[3m])))) > 1
           for: 3m
           annotations:
-            action: "Sjekk loggene for å se hvorfor nav-dekoratoren-api returnerer HTTP feilresponser"
+            summary: "App nav-dekoratoren-api returnerer en høy andel 5xx-responser"
+            action: "Sjekk logger i kibana eller kubectl"
           labels:
             severity: danger
             receiver_reference: team-navno-backend-alerts
@@ -41,7 +43,8 @@ spec:
           expr: (100 * (sum by (backend) (rate(ktor_http_server_requests_seconds_count {status=~"^4\\d\\d", namespace="personbruker", app="nav-dekoratoren-api"}[3m])) / sum by (backend) (rate(ktor_http_server_requests_seconds_count {namespace="personbruker", app="nav-dekoratoren-api"}[3m])))) > 10
           for: 3m
           annotations:
-            action: "Sjekk loggene for å se hvorfor nav-dekoratoren-api returnerer HTTP feilresponser"
+            summary: "App nav-dekoratoren-api returnerer en høy andel 4xx-responser"
+            action: "Sjekk logger i kibana eller kubectl"
           labels:
             severity: warning
             receiver_reference: team-navno-backend-alerts
