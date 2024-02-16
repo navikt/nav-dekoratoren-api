@@ -27,12 +27,8 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 21
-      - name: Setup cache
-        uses: actions/cache@v4
-        with:
-          path: '~/.gradle/caches
-        ~/.gradle/wrapper'
-          key: ${{ runner.os }}-${{ hashFiles('**/*.gradle*') }}
+      - name: Setup gradle
+        uses: gradle/actions/setup-gradle@v3
       - name: Build application
         run: |
           ./gradlew clean build
