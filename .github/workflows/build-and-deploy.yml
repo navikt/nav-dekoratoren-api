@@ -8,8 +8,6 @@ on:
     secrets:
       NAIS_WORKLOAD_IDENTITY_PROVIDER:
         required: true
-      NAIS_DEPLOY_APIKEY:
-        required: true
 
 jobs:
   deploy:
