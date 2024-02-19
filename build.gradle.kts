@@ -30,16 +30,16 @@ dependencies {
         val dittnavCommon = "2022.09.30-12.41-aa46d2d75788"
         val tmsKtorTokenSupport = "4.0.0"
         val jackson = "2.16.1"
-        val junit = "5.10.1"
+        val junit = "5.10.2"
         val kluent = "1.73"
-        val kotlinxCoroutines = "1.7.3"
+        val kotlinxCoroutines = "1.8.0"
         val kotlinxHtmlJvm = "0.11.0"
-        val ktor = "2.3.7"
-        val logback = "1.4.14"
+        val ktor = "2.3.8"
+        val logback = "1.5.0"
         val logstash = "7.4"
-        val micrometer = "1.12.2"
+        val micrometer = "1.12.3"
         val mockk = "1.13.9"
-        val navSecurity = "4.1.0"
+        val navSecurity = "4.1.3"
     }
 
     implementation("com.github.navikt.dittnav-common-lib:dittnav-common-utils:${versions.dittnavCommon}")
