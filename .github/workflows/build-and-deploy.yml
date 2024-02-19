@@ -12,13 +12,13 @@ on:
         required: true
 
 jobs:
-  build-and-deploy:
+  deploy:
     name: Build image and deploy to nais
     runs-on: ubuntu-latest
     permissions:
       contents: "read"
       id-token: "write"
-    environment: ${{ inputs.environment }}:personbruker
+    environment: ${{ inputs.environment }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -46,3 +46,4 @@ jobs:
           RESOURCE: ./nais/nais.yaml
           VAR: image=${{steps.docker-build-push.outputs.image}}
           VARS: ./nais/${{ inputs.environment }}-gcp/personbruker.json
+
