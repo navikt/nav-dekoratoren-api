@@ -3,7 +3,8 @@ package no.nav.dekoratoren.api.varsel
 import io.ktor.client.request.header
 import io.ktor.client.request.request
 import io.ktor.client.request.url
-import io.ktor.client.statement.*
+import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.readBytes
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
@@ -19,25 +20,25 @@ import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.delay
 import java.time.LocalDateTime
-import no.nav.dekoratoren.api.innloggingsstatus.auth.AuthInfo
-import no.nav.dekoratoren.api.innloggingsstatus.auth.AuthTokenService
+import kotlin.system.measureTimeMillis
+import kotlinx.coroutines.delay
 import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenInfo
+import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenService
 import org.amshove.kluent.`should be equal to`
 import org.amshove.kluent.`should be less than`
 import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
-import kotlin.system.measureTimeMillis
 
 internal class VarselApiTest {
 
-    private val authService: AuthTokenService = mockk()
+    private val oidcTokenService: OidcTokenService = mockk()
     private val tokenFetcher: VarselbjelleTokenFetcher = mockk()
 
     private val ident = "123"
     private val level = 4
+    private val dummyDateTime = LocalDateTime.now()
     private val varselbjelleUrl = "http://varselbjelle-api"
     private val sammendrag = "sammendrag"
 
@@ -45,14 +46,14 @@ internal class VarselApiTest {
 
     @AfterEach
     fun cleanup() {
-        clearMocks(authService, tokenFetcher)
+        clearMocks(oidcTokenService, tokenFetcher)
     }
 
     @Test
     fun `Henter varselSammendrag fra varselbjelle-api`() = testVarselApi {
 
 
-        every { authService.fetchAndParseAuthInfo(any()) } returns authenticated(ident, level)
+        every { oidcTokenService.getOidcToken(any()) } returns authenticated(ident, level)
         coEvery { tokenFetcher.fetchToken() } returns "token"
 
         val result = client.request {
@@ -67,7 +68,7 @@ internal class VarselApiTest {
 
     @Test
     fun `Videresender erlest til varselbjelle-api`() = testVarselApi {
-        every { authService.fetchAndParseAuthInfo(any()) } returns authenticated(ident, level)
+        every { oidcTokenService.getOidcToken(any()) } returns authenticated(ident, level)
         coEvery { tokenFetcher.fetchToken() } returns "token"
 
         val id = "654"
@@ -84,7 +85,7 @@ internal class VarselApiTest {
 
     @Test
     fun `Proxyer get-kall til vilkårlige endepunkt hos varselbjelle-api`() = testVarselApi {
-        every { authService.fetchAndParseAuthInfo(any()) } returns authenticated(ident, level)
+        every { oidcTokenService.getOidcToken(any()) } returns authenticated(ident, level)
         coEvery { tokenFetcher.fetchToken() } returns "token"
 
         val result = client.request {
@@ -98,7 +99,7 @@ internal class VarselApiTest {
 
     @Test
     fun `Svarer med 401 hvis bruker ikke er autentisert`() = testVarselApi {
-        every { authService.fetchAndParseAuthInfo(any()) } returns unauthenticated()
+        every { oidcTokenService.getOidcToken(any()) } returns unauthenticated()
 
         client.request {
             url("/rest/varsel/hentsiste")
@@ -127,7 +128,7 @@ internal class VarselApiTest {
 
     @Test
     fun `Proxyer post-kall til vilkårlige endepunkt hos varselbjelle-api`() = testVarselApi {
-        every { authService.fetchAndParseAuthInfo(any()) } returns authenticated(ident, level)
+        every { oidcTokenService.getOidcToken(any()) } returns authenticated(ident, level)
         coEvery { tokenFetcher.fetchToken() } returns "token"
 
         val result = client.request {
@@ -141,7 +142,7 @@ internal class VarselApiTest {
 
     @Test
     fun `Svarer med 400 hvis path ikke fantes hos varselbjelle-api`() = testVarselApi {
-        every { authService.fetchAndParseAuthInfo(any()) } returns authenticated(ident, level)
+        every { oidcTokenService.getOidcToken(any()) } returns authenticated(ident, level)
         coEvery { tokenFetcher.fetchToken() } returns "token"
 
         val result = client.request {
@@ -155,7 +156,7 @@ internal class VarselApiTest {
 
     @Test
     fun `Svarer umiddelbart ved kall til eget done-endepunkt`() = testVarselApi {
-        every { authService.fetchAndParseAuthInfo(any()) } returns authenticated(ident, level)
+        every { oidcTokenService.getOidcToken(any()) } returns authenticated(ident, level)
         coEvery { tokenFetcher.fetchToken() } returns "token"
 
         lateinit var response: HttpResponse
@@ -171,18 +172,14 @@ internal class VarselApiTest {
         elapsed `should be less than` doneDelay
     }
 
-    private fun authenticated(ident: String, level: Int): AuthInfo {
-        val tokenInfo = OidcTokenInfo(
-            subject = ident,
-            authLevel = level,
-            issueTime = LocalDateTime.now(),
-            expiryTime = LocalDateTime.now().plusHours(1)
-        )
+    private fun authenticated(subject: String, authLevel: Int) = OidcTokenInfo(
+        subject = subject,
+        authLevel = authLevel,
+        expiryTime = dummyDateTime,
+        issueTime = dummyDateTime
+    )
 
-        return AuthInfo(tokenInfo)
-    }
-
-    private fun unauthenticated() = AuthInfo(null)
+    private fun unauthenticated() = null
 
     @KtorDsl
     private fun testVarselApi(block: suspend ApplicationTestBuilder.(VarselbjelleConsumer) -> Unit) = testApplication {
@@ -190,7 +187,7 @@ internal class VarselApiTest {
 
         application {
             routing {
-                varselApi(authService, varselbjelleConsumer)
+                varselApi(oidcTokenService, varselbjelleConsumer)
             }
         }
 
@@ -206,7 +203,7 @@ internal class VarselApiTest {
                     }
 
                     post("/varsel/erlest/{id}") {
-                        call.respond(HttpStatusCode.OK, call.parameters["id"]?:"")
+                        call.respond(HttpStatusCode.OK, call.parameters["id"] ?: "")
                     }
 
                     post("/annet/endepunkt") {

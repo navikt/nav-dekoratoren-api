@@ -3,21 +3,19 @@ package no.nav.dekoratoren.api.innloggingsstatus.auth
 import io.ktor.server.application.ApplicationCall
 import io.mockk.coEvery
 import io.mockk.mockk
+import java.time.LocalDateTime
 import kotlinx.coroutines.runBlocking
 import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenInfo
 import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenService
 import no.nav.dekoratoren.api.innloggingsstatus.user.SubjectNameService
 import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.Test
-import java.time.LocalDateTime
 
 internal class AuthTokenServiceTest {
 
     private val subject1 = "123"
-    private val subject2 = "456"
 
     private val subject1Name = "oneTwoThree"
-    private val subject2Name = "fourFiveSix"
 
     private val oidcTokenService: OidcTokenService = mockk()
     private val subjectNameService: SubjectNameService = mockk()

@@ -6,13 +6,23 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import no.nav.dekoratoren.api.innloggingsstatus.auth.AuthTokenService
+import no.nav.dekoratoren.api.innloggingsstatus.auth.UserInfo
+import org.slf4j.LoggerFactory
+
+private val logger = LoggerFactory.getLogger("innloggingsstatusRoute")
 
 fun Route.authApi(authService: AuthTokenService) {
 
     get("/auth") {
-        authService.getAuthenticatedUserInfo(call).let { userInfo ->
-            call.respond(HttpStatusCode.OK, userInfo)
+        try {
+            authService.getAuthenticatedUserInfo(call).let { userInfo ->
+                call.respond(HttpStatusCode.OK, userInfo)
+            }
+        } catch (e: Exception) {
+            logger.warn("Feil ved henting av brukers innloggingsinfo", e)
+            UserInfo.unauthenticated()
         }
+
     }
 
     get("/summary") {
@@ -20,7 +30,8 @@ fun Route.authApi(authService: AuthTokenService) {
             authService.getAuthSummary(call).let { authInfo ->
                 call.respond(HttpStatusCode.OK, authInfo)
             }
-        } catch (exception: Exception) {
+        } catch (e: Exception) {
+            logger.warn("Feil ved henting av summary", e)
             call.respond(HttpStatusCode.InternalServerError)
         }
     }

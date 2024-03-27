@@ -19,14 +19,6 @@ object JwtTokenObjectMother {
         .serialize()
         .let { JwtToken(it) }
 
-    fun idportenToken(subject: String = "Navn Navnesen", level: Int = 4, pid: String = "12345789") = createJwtToken(
-        identityClaim = "pid",
-        nbf = null,
-        subject = subject,
-        level = level,
-        pid = pid,
-    )
-
     private fun tokenClaims(
         subject: String,
         acr: String,
