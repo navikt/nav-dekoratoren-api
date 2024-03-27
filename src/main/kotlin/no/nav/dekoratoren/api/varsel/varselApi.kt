@@ -1,20 +1,25 @@
 package no.nav.dekoratoren.api.varsel
 
-import io.ktor.client.statement.*
-import io.ktor.http.*
+import io.ktor.client.statement.HttpResponse
+import io.ktor.client.statement.readBytes
+import io.ktor.http.ContentType
+import io.ktor.http.HttpHeaders
+import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.application.call
-import io.ktor.server.request.*
-import io.ktor.server.response.*
+import io.ktor.server.request.ApplicationRequest
+import io.ktor.server.request.receive
+import io.ktor.server.response.respond
+import io.ktor.server.response.respondBytes
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
 import io.ktor.util.pipeline.PipelineContext
-import no.nav.dekoratoren.api.innloggingsstatus.auth.AuthTokenService
+import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenService
 
-fun Route.varselApi(authService: AuthTokenService, varselbjelleConsumer: VarselbjelleConsumer) {
+fun Route.varselApi(oidcTokenService: OidcTokenService, varselbjelleConsumer: VarselbjelleConsumer) {
     get("/rest/varsel/hentsiste") {
-        doIfAuthenticated(authService) { ident, authLevel ->
+        doIfAuthenticated(oidcTokenService) { ident, authLevel ->
             val response = varselbjelleConsumer.getVarselSummary(ident, authLevel)
 
             call.respondBytes(response.readBytes(), response.contentType(), response.status)
@@ -22,7 +27,7 @@ fun Route.varselApi(authService: AuthTokenService, varselbjelleConsumer: Varselb
     }
 
     post("/rest/varsel/erlest/{varselId}") {
-        doIfAuthenticated(authService) { ident, _ ->
+        doIfAuthenticated(oidcTokenService) { ident, _ ->
             val varselId = call.parameters["varselId"]?: ""
 
             val response = varselbjelleConsumer.postErLest(ident, varselId)
@@ -32,7 +37,7 @@ fun Route.varselApi(authService: AuthTokenService, varselbjelleConsumer: Varselb
     }
 
     get("/varsel/proxy/{proxyPath...}") {
-        doIfAuthenticated(authService) { ident, authLevel ->
+        doIfAuthenticated(oidcTokenService) { ident, authLevel ->
             val path = call.getParametersAsPath("proxyPath")
 
             val response = varselbjelleConsumer.makeGetProxyCall(path, ident, authLevel)
@@ -46,7 +51,7 @@ fun Route.varselApi(authService: AuthTokenService, varselbjelleConsumer: Varselb
     }
 
     post("/varsel/proxy/{proxyPath...}") {
-        doIfAuthenticated(authService) { ident, authLevel ->
+        doIfAuthenticated(oidcTokenService) { ident, authLevel ->
             val path = call.getParametersAsPath("proxyPath")
 
             val content = call.request.receiveContent()
@@ -62,7 +67,7 @@ fun Route.varselApi(authService: AuthTokenService, varselbjelleConsumer: Varselb
     }
 
     post("/varsel/beskjed/done") {
-        doIfAuthenticated(authService) { ident, authLevel ->
+        doIfAuthenticated(oidcTokenService) { ident, authLevel ->
             val content = call.request.receiveContent()
 
             varselbjelleConsumer.postBeskjedDoneAsync(ident, authLevel, content)
@@ -73,13 +78,13 @@ fun Route.varselApi(authService: AuthTokenService, varselbjelleConsumer: Varselb
 }
 
 suspend fun PipelineContext<Unit, ApplicationCall>.doIfAuthenticated(
-    authService: AuthTokenService,
+    oidcTokenService: OidcTokenService,
     block: suspend (String, Int) -> Unit
 ) {
-    val authInfo = authService.fetchAndParseAuthInfo(call)
+    val token = oidcTokenService.getOidcToken(call)
 
-    if (authInfo.authenticated) {
-        block(authInfo.subject!!, authInfo.authLevel!!)
+    if (token != null) {
+        block(token.subject, token.authLevel)
     } else {
         call.respond(HttpStatusCode.Unauthorized)
     }

@@ -9,19 +9,14 @@ import no.nav.security.token.support.core.jwt.JwtToken
 import no.nav.security.token.support.core.validation.JwtTokenValidationHandler
 import no.nav.security.token.support.v2.asIssuerProps
 
-class OidcTokenValidator constructor(applicationConfig: ApplicationConfig) {
-
+class OidcTokenValidator(applicationConfig: ApplicationConfig) {
     private val resourceRetriever: ProxyAwareResourceRetriever = ProxyAwareResourceRetriever()
-
     private val jwtTokenValidationHandler: JwtTokenValidationHandler
-
     private val multiIssuerConfiguration: MultiIssuerConfiguration
 
     init {
         val issuerPropertiesMap: Map<String, IssuerProperties> = applicationConfig.asIssuerProps()
-
         multiIssuerConfiguration = MultiIssuerConfiguration(issuerPropertiesMap, resourceRetriever)
-
         jwtTokenValidationHandler = JwtTokenValidationHandler(multiIssuerConfiguration)
     }
 
