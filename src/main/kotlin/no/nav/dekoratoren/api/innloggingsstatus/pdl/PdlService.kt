@@ -11,7 +11,6 @@ class PdlService(
     private val azureService: AzureService,
     private val environment: Environment
 ) {
-
     private val log: Logger = LoggerFactory.getLogger(PdlService::class.java)
 
     suspend fun getSubjectName(ident: String): PdlNavn? {

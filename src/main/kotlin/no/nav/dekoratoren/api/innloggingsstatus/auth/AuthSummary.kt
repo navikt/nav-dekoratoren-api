@@ -1,38 +1,18 @@
 package no.nav.dekoratoren.api.innloggingsstatus.auth
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect
-import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY
 import com.fasterxml.jackson.annotation.JsonInclude
 import java.time.LocalDateTime
+import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenInfo
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@JsonAutoDetect(fieldVisibility = ANY)
-class AuthSummary private constructor(authInfo: AuthInfo) {
-    private val authenticated: Boolean = authInfo.authenticated
-    private val authLevel: Int? = authInfo.authLevel
-    private val oidc: OidcSummary? =
-        OidcSummary.fromAuthInfo(authInfo)
-
+data class AuthSummary(val authenticated: Boolean, val authLevel: Int?, val oidc: OidcSummary?) {
     companion object {
-        fun fromAuthInfo(authInfo: AuthInfo): AuthSummary =
-            AuthSummary(authInfo)
+        fun fromOidcToken(oidcTokenInfo: OidcTokenInfo?): AuthSummary =
+            AuthSummary(
+                authenticated = oidcTokenInfo != null,
+                authLevel = oidcTokenInfo?.authLevel,
+                oidc = oidcTokenInfo?.let { OidcSummary(it.authLevel, it.issueTime, it.expiryTime) })
     }
-}
 
-private data class OidcSummary(
-    val authLevel: Int,
-    val issueTime: LocalDateTime,
-    val expiryTime: LocalDateTime
-) {
-    companion object {
-        fun fromAuthInfo(authInfo: AuthInfo): OidcSummary? {
-            return authInfo.oidcToken?.let { oidc ->
-                OidcSummary(
-                    oidc.authLevel,
-                    oidc.issueTime,
-                    oidc.expiryTime
-                )
-            }
-        }
-    }
+    data class OidcSummary(val authLevel: Int, val issueTime: LocalDateTime, val expiryTime: LocalDateTime)
 }
