@@ -20,13 +20,13 @@ object HttpClientBuilder {
                 }
             }
             install(HttpRequestRetry) {
-                retryOnServerErrors(maxRetries = 3)
-                retryOnException(maxRetries = 3, retryOnTimeout = true)
-                constantDelay(1000)
+                retryOnServerErrors(maxRetries = 2)
+                retryOnException(maxRetries = 2, retryOnTimeout = true)
+                constantDelay(100)
             }
             install(HttpTimeout) {
-                requestTimeoutMillis = 5000
-                connectTimeoutMillis = 2000
+                requestTimeoutMillis = 2000
+                connectTimeoutMillis = 1000
             }
         }
     }
