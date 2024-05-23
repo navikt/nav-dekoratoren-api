@@ -5,8 +5,9 @@ on:
 jobs:
   deploy:
     permissions:
-      contents: "read"
-      id-token: "write"
+      contents: read
+      id-token: write
+      packages: read
     uses: ./.github/workflows/build-and-deploy.yml
     with:
       environment: dev
