@@ -36,7 +36,7 @@ dependencies {
     val logstashVersion = "7.4"
     val micrometerVersion = "1.12.5"
     val mockkVersion = "1.13.11"
-    val navSecurityVersion = "4.1.4"
+    val navSecurityVersion = "4.1.7"
 
     implementation("com.github.navikt.dittnav-common-lib:dittnav-common-utils:$dittnavCommonVersion")
     implementation("com.github.navikt.tms-ktor-token-support:azure-exchange:$tmsKtorTokenSupportVersion")
