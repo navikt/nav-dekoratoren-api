@@ -1,7 +1,7 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 plugins {
-    val kotlinVersion = "1.9.23"
+    val kotlinVersion = "2.0.0"
     val shadowVersion = "8.1.1"
     val versionsVersion = "0.51.0"
 
@@ -32,17 +32,17 @@ dependencies {
     val caffeineVersion = "3.1.8"
     val dittnavCommonVersion = "2022.09.30-12.41-aa46d2d75788"
     val tmsKtorTokenSupportVersion = "4.1.1"
-    val jacksonVersion = "2.17.0"
+    val jacksonVersion = "2.17.1"
     val junitVersion = "5.10.2"
     val kluentVersion = "1.73"
-    val kotlinxCoroutinesVersion = "1.8.0"
+    val kotlinxCoroutinesVersion = "1.8.1"
     val kotlinxHtmlJvmVersion = "0.11.0"
-    val ktorVersion = "2.3.10"
+    val ktorVersion = "2.3.11"
     val logbackVersion = "1.5.6"
     val logstashVersion = "7.4"
     val micrometerVersion = "1.12.5"
-    val mockkVersion = "1.13.10"
-    val navSecurityVersion = "4.1.4"
+    val mockkVersion = "1.13.11"
+    val navSecurityVersion = "4.1.7"
 
     implementation("com.github.navikt.dittnav-common-lib:dittnav-common-utils:$dittnavCommonVersion")
     implementation("no.nav.tms.token.support:azure-exchange:$tmsKtorTokenSupportVersion")
