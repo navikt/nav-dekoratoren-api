@@ -3,8 +3,9 @@ package no.nav.dekoratoren.api.config
 import com.github.benmanes.caffeine.cache.Cache
 import com.github.benmanes.caffeine.cache.Caffeine
 import io.ktor.server.config.ApplicationConfig
-import io.micrometer.prometheus.PrometheusConfig
-import io.micrometer.prometheus.PrometheusMeterRegistry
+import io.micrometer.prometheusmetrics.PrometheusConfig
+import io.micrometer.prometheusmetrics.PrometheusMeterRegistry
+import java.util.concurrent.TimeUnit
 import no.nav.dekoratoren.api.innloggingsstatus.auth.AuthTokenService
 import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenService
 import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenValidator
@@ -14,7 +15,6 @@ import no.nav.dekoratoren.api.innloggingsstatus.user.SubjectNameService
 import no.nav.dekoratoren.api.varsel.VarselbjelleConsumer
 import no.nav.dekoratoren.api.varsel.VarselbjelleTokenFetcher
 import no.nav.tms.token.support.azure.exchange.AzureServiceBuilder
-import java.util.concurrent.TimeUnit
 
 class ApplicationContext(config: ApplicationConfig) {
 
