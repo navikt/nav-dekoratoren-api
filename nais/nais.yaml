@@ -45,10 +45,10 @@ spec:
     - secret: nav-dekoratoren-api-secret
   resources:
     limits:
-      memory: 768Mi
+      memory: 1024Mi
     requests:
       cpu: 300m
-      memory: 384Mi
+      memory: 768Mi
   azure:
     application:
       enabled: true
