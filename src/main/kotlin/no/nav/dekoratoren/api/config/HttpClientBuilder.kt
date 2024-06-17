@@ -19,7 +19,7 @@ object HttpClientBuilder {
                 }
             }
             install(HttpTimeout) {
-                requestTimeoutMillis = 1000
+                requestTimeoutMillis = 2000
             }
         }
     }
