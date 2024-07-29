@@ -41,7 +41,7 @@ dependencies {
     val logbackVersion = "1.5.6"
     val logstashVersion = "7.4"
     val micrometerVersion = "1.13.2"
-    val mockkVersion = "1.13.11"
+    val mockkVersion = "1.13.12"
     val navSecurityVersion = "5.0.1"
 
     implementation("com.github.navikt.dittnav-common-lib:dittnav-common-utils:$dittnavCommonVersion")
