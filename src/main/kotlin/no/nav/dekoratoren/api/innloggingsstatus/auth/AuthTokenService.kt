@@ -22,7 +22,8 @@ class AuthTokenService(
     private suspend fun getUserInfo(oidcTokenInfo: OidcTokenInfo?): UserInfo {
         return if (oidcTokenInfo != null) {
             val subjectName = subjectNameService.getSubjectName(oidcTokenInfo.subject)
-            UserInfo.authenticated(subjectName, oidcTokenInfo.authLevel)
+
+            UserInfo.authenticated(subjectName, oidcTokenInfo.authLevel, oidcTokenInfo.subject)
         } else {
             UserInfo.unauthenticated()
         }
