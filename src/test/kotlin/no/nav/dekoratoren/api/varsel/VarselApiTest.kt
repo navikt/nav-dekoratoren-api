@@ -51,7 +51,6 @@ class VarselApiTest {
     @Test
     fun `Henter varselSammendrag fra varselbjelle-api`() = testVarselApi {
 
-
         every { oidcTokenService.getOidcToken(any()) } returns authenticated(ident, level)
         coEvery { tokenFetcher.fetchToken() } returns "token"
 

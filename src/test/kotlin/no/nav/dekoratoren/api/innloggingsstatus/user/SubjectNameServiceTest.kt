@@ -25,7 +25,6 @@ class SubjectNameServiceTest {
 
     @Test
     fun `should return subject if name was not found`() {
-
         coEvery { pdlService.getSubjectName(SUBJECT) } returns null
 
         val result = runBlocking { subjectNameService.getSubjectName(SUBJECT) }

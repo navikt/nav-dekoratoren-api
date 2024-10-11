@@ -61,7 +61,6 @@ class OidcTokenServiceTest {
         }
     }
 
-
     @Test
     fun `should throw exception when no identity is found for requested claim`() {
         val jwtToken = JwtTokenObjectMother.createJwtToken()
