@@ -1,6 +1,6 @@
 package no.nav.dekoratoren.api.common
 
-import java.util.*
+import java.util.Base64
 
 fun String.toBase64() = encodeBase64(this)
 
