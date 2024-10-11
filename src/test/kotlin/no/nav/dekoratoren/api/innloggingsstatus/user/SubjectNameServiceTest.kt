@@ -2,26 +2,19 @@ package no.nav.dekoratoren.api.innloggingsstatus.user
 
 import com.github.benmanes.caffeine.cache.Cache
 import com.github.benmanes.caffeine.cache.Caffeine
+import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import no.nav.dekoratoren.api.innloggingsstatus.pdl.PdlService
 import no.nav.dekoratoren.api.innloggingsstatus.pdl.query.PdlNavn
-import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import org.junit.jupiter.api.TestInstance
 
-@TestInstance(TestInstance.Lifecycle.PER_CLASS)
-internal class SubjectNameServiceTest {
+class SubjectNameServiceTest {
 
     val pdlService: PdlService = mockk()
     val cache: Cache<String, String> = Caffeine.newBuilder().build()
-
-    val subject = "123465"
-    val fornavn = "Fornavn"
-    val mellomnavn = "Mellomnavn"
-    val etternavn = "Etternavn"
 
     val subjectNameService = SubjectNameService(pdlService, cache)
 
@@ -33,44 +26,50 @@ internal class SubjectNameServiceTest {
     @Test
     fun `should return subject if name was not found`() {
 
-        coEvery { pdlService.getSubjectName(subject) } returns null
+        coEvery { pdlService.getSubjectName(SUBJECT) } returns null
 
-        val result = runBlocking { subjectNameService.getSubjectName(subject) }
+        val result = runBlocking { subjectNameService.getSubjectName(SUBJECT) }
 
-        result `should be equal to` subject
+        result shouldBe SUBJECT
     }
 
     @Test
     fun `should concatenate full name correctly`() {
-        val fullName = PdlNavn(fornavn, mellomnavn, etternavn)
+        val fullName = PdlNavn(FORNAVN, MELLOMNAVN, ETTERNAVN)
 
-        coEvery { pdlService.getSubjectName(subject) } returns fullName
+        coEvery { pdlService.getSubjectName(SUBJECT) } returns fullName
 
-        val result = runBlocking { subjectNameService.getSubjectName(subject) }
+        val result = runBlocking { subjectNameService.getSubjectName(SUBJECT) }
 
-        result `should be equal to` "$fornavn $mellomnavn $etternavn"
+        result shouldBe "$FORNAVN $MELLOMNAVN $ETTERNAVN"
     }
 
     @Test
     fun `should concatenate name correctly when middle name is missing`() {
-        val fullName = PdlNavn(fornavn, null, etternavn)
+        val fullName = PdlNavn(FORNAVN, null, ETTERNAVN)
 
-        coEvery { pdlService.getSubjectName(subject) } returns fullName
+        coEvery { pdlService.getSubjectName(SUBJECT) } returns fullName
 
-        val result = runBlocking { subjectNameService.getSubjectName(subject) }
+        val result = runBlocking { subjectNameService.getSubjectName(SUBJECT) }
 
-        result `should be equal to` "$fornavn $etternavn"
+        result shouldBe "$FORNAVN $ETTERNAVN"
     }
 
     @Test
     fun `should concatenate name correctly when middle name is an empty string`() {
-        val fullName = PdlNavn(fornavn, "", etternavn)
+        val fullName = PdlNavn(FORNAVN, "", ETTERNAVN)
 
-        coEvery { pdlService.getSubjectName(subject) } returns fullName
+        coEvery { pdlService.getSubjectName(SUBJECT) } returns fullName
 
-        val result = runBlocking { subjectNameService.getSubjectName(subject) }
+        val result = runBlocking { subjectNameService.getSubjectName(SUBJECT) }
 
-        result `should be equal to` "$fornavn $etternavn"
+        result shouldBe "$FORNAVN $ETTERNAVN"
     }
 
+    companion object {
+        val SUBJECT = "123465"
+        val FORNAVN = "Fornavn"
+        val MELLOMNAVN = "Mellomnavn"
+        val ETTERNAVN = "Etternavn"
+    }
 }
