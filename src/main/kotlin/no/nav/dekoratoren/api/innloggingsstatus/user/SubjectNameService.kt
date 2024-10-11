@@ -18,9 +18,8 @@ class SubjectNameService(private val pdlService: PdlService, private val cache: 
 
     private suspend fun fetchNameFromPdlAndConcatenate(subject: String): String? {
         return pdlService.getSubjectName(subject)
-            ?.let { listOf(it.fornavn, it.mellomnavn, it.etternavn) }
-            ?.filter { !it.isNullOrBlank() }
+            ?.let { listOfNotNull(it.fornavn, it.mellomnavn, it.etternavn) }
+            ?.filter { it.isNotBlank() }
             ?.joinToString(" ")
     }
-
 }

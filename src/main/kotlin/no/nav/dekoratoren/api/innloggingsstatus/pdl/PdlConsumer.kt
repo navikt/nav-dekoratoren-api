@@ -2,6 +2,7 @@ package no.nav.dekoratoren.api.innloggingsstatus.pdl
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
+import io.ktor.client.request.bearerAuth
 import io.ktor.client.request.header
 import io.ktor.client.request.options
 import io.ktor.client.request.post
@@ -13,8 +14,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
 import io.ktor.http.isSuccess
-import java.net.URL
-import no.nav.dekoratoren.api.common.bearerHeader
+import java.net.URI
 import no.nav.dekoratoren.api.config.Environment
 import no.nav.dekoratoren.api.health.SelfTest
 import no.nav.dekoratoren.api.health.ServiceStatus
@@ -25,13 +25,9 @@ import no.nav.dekoratoren.api.innloggingsstatus.pdl.query.SubjectNameRequest
 import no.nav.dekoratoren.api.innloggingsstatus.pdl.query.createSubjectNameRequest
 import org.slf4j.LoggerFactory
 
-private const val CONSUMER_ID = "nav-dekoratoren-api"
-private const val GENERELL = "GEN"
-private const val BEHANDLINGSNUMMER = "B328"
-
-private val logger = LoggerFactory.getLogger(PdlConsumer::class.java)
-
 class PdlConsumer(private val client: HttpClient, environment: Environment) : SelfTest {
+    private val logger = LoggerFactory.getLogger(PdlConsumer::class.java)
+
     private val endpoint = environment.pdlApiUrl
 
     override val externalServiceName: String get() = "PDL-api"
@@ -46,7 +42,7 @@ class PdlConsumer(private val client: HttpClient, environment: Environment) : Se
         val response: HttpResponse = client.post {
             url(endpoint)
             contentType(ContentType.Application.Json)
-            bearerHeader(accessToken)
+            bearerAuth(accessToken)
             header("Nav-Consumer-Id", CONSUMER_ID)
             header("Tema", GENERELL)
             header("Behandlingsnummer", BEHANDLINGSNUMMER)
@@ -92,7 +88,13 @@ class PdlConsumer(private val client: HttpClient, environment: Environment) : Se
 
     private suspend fun getLivenessResponse(): HttpResponse {
         return client.options {
-            url(URL("$endpoint/graphql"))
+            url(URI("$endpoint/graphql").toURL())
         }
+    }
+
+    companion object {
+        private const val CONSUMER_ID = "nav-dekoratoren-api"
+        private const val GENERELL = "GEN"
+        private const val BEHANDLINGSNUMMER = "B328"
     }
 }

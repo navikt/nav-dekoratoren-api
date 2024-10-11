@@ -1,8 +1,8 @@
 package no.nav.dekoratoren.api.innloggingsstatus.oidc
 
 import java.time.LocalDateTime
-import java.util.*
-import no.nav.dekoratoren.api.common.toUtcDateTime
+import java.time.ZoneId
+import java.util.Date
 import no.nav.security.token.support.core.jwt.JwtToken
 
 object OidcTokenInfoFactory {
@@ -19,7 +19,7 @@ object OidcTokenInfoFactory {
         return when (token.jwtTokenClaims.getStringClaim("acr")) {
             "Level3", "idporten-loa-substantial" -> 3
             "Level4", "idporten-loa-high" -> 4
-            else -> throw Exception("Innloggingsnivå ble ikke funnet. Dette skal ikke kunne skje.")
+            else -> throw IllegalStateException("Innloggingsnivå ble ikke funnet. Dette skal ikke kunne skje.")
         }
     }
 
@@ -38,4 +38,6 @@ object OidcTokenInfoFactory {
     private fun getIdent(token: JwtToken, identityClaim: String): String {
         return token.jwtTokenClaims.getStringClaim(identityClaim)
     }
+
+    private fun Date.toUtcDateTime(): LocalDateTime = LocalDateTime.ofInstant(this.toInstant(), ZoneId.of("UTC"))
 }

@@ -26,10 +26,7 @@ class ApplicationContext(config: ApplicationConfig) {
     val oidcTokenValidator = OidcTokenValidator(config)
     val oidcValidationService = OidcTokenService(oidcTokenValidator, environment)
 
-    val azureService = AzureServiceBuilder.buildAzureService(
-        cachingEnabled = true,
-        enableDefaultProxy = false,
-    )
+    val azureService = AzureServiceBuilder.buildAzureService()
 
     val pdlConsumer = PdlConsumer(httpClient, environment)
     val pdlService = PdlService(pdlConsumer, azureService, environment)
