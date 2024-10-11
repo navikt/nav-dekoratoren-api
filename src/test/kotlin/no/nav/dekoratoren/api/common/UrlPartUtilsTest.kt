@@ -3,7 +3,7 @@ package no.nav.dekoratoren.api.common
 import org.amshove.kluent.`should be equal to`
 import org.junit.jupiter.api.Test
 
-internal class UrlPartUtilTest {
+internal class UrlPartUtilsTest {
 
     @Test
     fun `Should parse domain from origin url, leaving out scheme`() {
@@ -12,8 +12,8 @@ internal class UrlPartUtilTest {
         val httpUrl = "http://$domain"
         val httpsUrl = "https://$domain"
 
-        UrlPartUtil.parseDomain(httpUrl) `should be equal to` domain
-        UrlPartUtil.parseDomain(httpsUrl) `should be equal to` domain
+        UrlPartUtils.parseDomain(httpUrl) `should be equal to` domain
+        UrlPartUtils.parseDomain(httpsUrl) `should be equal to` domain
     }
 
     @Test
@@ -22,6 +22,6 @@ internal class UrlPartUtilTest {
 
         val url = "https://$domain/path/to/something?param=123"
 
-        UrlPartUtil.parseDomain(url) `should be equal to` domain
+        UrlPartUtils.parseDomain(url) `should be equal to` domain
     }
 }

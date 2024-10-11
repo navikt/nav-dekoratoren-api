@@ -1,6 +1,6 @@
 package no.nav.dekoratoren.api.common
 
-object UrlPartUtil {
+object UrlPartUtils {
 
     fun parseDomain(origin: String): String {
         val originRegex = "^(.+)://([^/\\?]+)(.+)?$".toRegex()

@@ -187,7 +187,7 @@ internal class VarselApiTest {
 
         application {
             routing {
-                varselApi(oidcTokenService, varselbjelleConsumer)
+                varsel(oidcTokenService, varselbjelleConsumer)
             }
         }
 
