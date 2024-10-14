@@ -15,8 +15,8 @@ import io.ktor.server.plugins.defaultheaders.DefaultHeaders
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
 import no.nav.dekoratoren.api.health.healthApi
-import no.nav.dekoratoren.api.innloggingsstatus.authApi
-import no.nav.dekoratoren.api.varsel.varselApi
+import no.nav.dekoratoren.api.innloggingsstatus.auth
+import no.nav.dekoratoren.api.varsel.varsel
 
 fun Application.mainModule() {
 
@@ -49,13 +49,13 @@ fun Application.mainModule() {
     routing {
         route("/person/nav-dekoratoren-api") {
             healthApi(applicationContext.selfTests, applicationContext.appMicrometerRegistry)
-            authApi(applicationContext.authTokenService)
-            varselApi(applicationContext.oidcValidationService, applicationContext.varselbjelleConsumer)
+            auth(applicationContext.authTokenService)
+            varsel(applicationContext.oidcValidationService, applicationContext.varselbjelleConsumer)
         }
 
         // Nødvendig for å støtte gamle innloggingsstatus-ingresser
         route("/person/innloggingsstatus") {
-            authApi(applicationContext.authTokenService)
+            auth(applicationContext.authTokenService)
         }
     }
 

@@ -34,7 +34,6 @@ dependencies {
     val tmsKtorTokenSupportVersion = "4.1.1"
     val jacksonVersion = "2.18.0"
     val junitVersion = "5.11.2"
-    val kluentVersion = "1.73"
     val kotlinxCoroutinesVersion = "1.9.0"
     val kotlinxHtmlJvmVersion = "0.11.0"
     val ktorVersion = "2.3.12"
@@ -43,6 +42,7 @@ dependencies {
     val micrometerVersion = "1.13.5"
     val mockkVersion = "1.13.13"
     val navSecurityVersion = "5.0.5"
+    val kotestVersion = "5.9.1"
 
     implementation("com.github.navikt.dittnav-common-lib:dittnav-common-utils:$dittnavCommonVersion")
     implementation("no.nav.tms.token.support:azure-exchange:$tmsKtorTokenSupportVersion")
@@ -71,11 +71,12 @@ dependencies {
     implementation("no.nav.security:token-validation-ktor-v2:$navSecurityVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
-    testImplementation("org.amshove.kluent:kluent:$kluentVersion")
     testImplementation("io.ktor:ktor-client-mock:$ktorVersion")
     testImplementation("io.ktor:ktor-client-mock-jvm:$ktorVersion")
     testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+    testImplementation("io.kotest:kotest-assertions-json:$kotestVersion")
 }
 
 application {
