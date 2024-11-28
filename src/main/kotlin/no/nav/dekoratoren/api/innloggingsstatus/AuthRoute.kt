@@ -11,7 +11,7 @@ import org.slf4j.LoggerFactory
 
 private val logger = LoggerFactory.getLogger("innloggingsstatusRoute")
 
-fun Route.authApi(authService: AuthTokenService) {
+fun Route.auth(authService: AuthTokenService) {
 
     get("/auth") {
         try {

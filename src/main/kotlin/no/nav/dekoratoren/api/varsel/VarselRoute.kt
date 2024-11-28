@@ -17,7 +17,7 @@ import io.ktor.server.routing.post
 import io.ktor.util.pipeline.PipelineContext
 import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenService
 
-fun Route.varselApi(oidcTokenService: OidcTokenService, varselbjelleConsumer: VarselbjelleConsumer) {
+fun Route.varsel(oidcTokenService: OidcTokenService, varselbjelleConsumer: VarselbjelleConsumer) {
     get("/rest/varsel/hentsiste") {
         doIfAuthenticated(oidcTokenService) { ident, authLevel ->
             val response = varselbjelleConsumer.getVarselSummary(ident, authLevel)

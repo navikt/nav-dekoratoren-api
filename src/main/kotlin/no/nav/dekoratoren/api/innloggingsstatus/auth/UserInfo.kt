@@ -10,7 +10,18 @@ data class UserInfo(
     val userId: String?
 ) {
     companion object {
-        fun authenticated(name: String, authLevel: Int, userId: String): UserInfo = UserInfo(true, name, authLevel.toString(), userId)
-        fun unauthenticated(): UserInfo = UserInfo(false, null, null, null)
+        fun authenticated(name: String, authLevel: Int, userId: String) = UserInfo(
+            authenticated = true,
+            name = name,
+            securityLevel = authLevel.toString(),
+            userId = userId
+        )
+
+        fun unauthenticated() = UserInfo(
+            authenticated = false,
+            name = null,
+            securityLevel = null,
+            userId = null
+        )
     }
 }

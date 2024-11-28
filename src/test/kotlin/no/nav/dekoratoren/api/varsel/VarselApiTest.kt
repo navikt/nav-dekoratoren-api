@@ -1,5 +1,7 @@
 package no.nav.dekoratoren.api.varsel
 
+import io.kotest.matchers.longs.shouldBeLessThan
+import io.kotest.matchers.shouldBe
 import io.ktor.client.request.header
 import io.ktor.client.request.request
 import io.ktor.client.request.url
@@ -25,13 +27,10 @@ import kotlin.system.measureTimeMillis
 import kotlinx.coroutines.delay
 import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenInfo
 import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenService
-import org.amshove.kluent.`should be equal to`
-import org.amshove.kluent.`should be less than`
-import org.amshove.kluent.shouldBeEqualTo
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Test
 
-internal class VarselApiTest {
+class VarselApiTest {
 
     private val oidcTokenService: OidcTokenService = mockk()
     private val tokenFetcher: VarselbjelleTokenFetcher = mockk()
@@ -52,7 +51,6 @@ internal class VarselApiTest {
     @Test
     fun `Henter varselSammendrag fra varselbjelle-api`() = testVarselApi {
 
-
         every { oidcTokenService.getOidcToken(any()) } returns authenticated(ident, level)
         coEvery { tokenFetcher.fetchToken() } returns "token"
 
@@ -62,8 +60,8 @@ internal class VarselApiTest {
             header(HttpHeaders.Authorization, "dummy")
         }
 
-        result.status `should be equal to` HttpStatusCode.OK
-        result.readBytes() shouldBeEqualTo sammendrag.encodeToByteArray()
+        result.status shouldBe HttpStatusCode.OK
+        result.readBytes() shouldBe sammendrag.encodeToByteArray()
     }
 
     @Test
@@ -79,8 +77,8 @@ internal class VarselApiTest {
             header(HttpHeaders.Authorization, "dummy")
         }
 
-        result.status `should be equal to` HttpStatusCode.OK
-        result.readBytes() shouldBeEqualTo id.encodeToByteArray()
+        result.status shouldBe HttpStatusCode.OK
+        result.readBytes() shouldBe id.encodeToByteArray()
     }
 
     @Test
@@ -94,7 +92,7 @@ internal class VarselApiTest {
             header(HttpHeaders.Authorization, "dummy")
         }
 
-        result.status `should be equal to` HttpStatusCode.OK
+        result.status shouldBe HttpStatusCode.OK
     }
 
     @Test
@@ -105,25 +103,25 @@ internal class VarselApiTest {
             url("/rest/varsel/hentsiste")
             method = HttpMethod.Get
             header(HttpHeaders.Authorization, "dummy")
-        }.status shouldBeEqualTo HttpStatusCode.Unauthorized
+        }.status shouldBe HttpStatusCode.Unauthorized
 
         client.request {
             url("/rest/varsel/erlest/123")
             method = HttpMethod.Post
             header(HttpHeaders.Authorization, "dummy")
-        }.status shouldBeEqualTo HttpStatusCode.Unauthorized
+        }.status shouldBe HttpStatusCode.Unauthorized
 
         client.request {
             url("/varsel/proxy/annet/endepunkt")
             method = HttpMethod.Get
             header(HttpHeaders.Authorization, "dummy")
-        }.status shouldBeEqualTo HttpStatusCode.Unauthorized
+        }.status shouldBe HttpStatusCode.Unauthorized
 
         client.request {
             url("/varsel/proxy/annet/endepunkt")
             method = HttpMethod.Post
             header(HttpHeaders.Authorization, "dummy")
-        }.status shouldBeEqualTo HttpStatusCode.Unauthorized
+        }.status shouldBe HttpStatusCode.Unauthorized
     }
 
     @Test
@@ -137,7 +135,7 @@ internal class VarselApiTest {
             header(HttpHeaders.Authorization, "dummy")
         }
 
-        result.status `should be equal to` HttpStatusCode.OK
+        result.status shouldBe HttpStatusCode.OK
     }
 
     @Test
@@ -151,7 +149,7 @@ internal class VarselApiTest {
             header(HttpHeaders.Authorization, "dummy")
         }
 
-        result.status `should be equal to` HttpStatusCode.BadRequest
+        result.status shouldBe HttpStatusCode.BadRequest
     }
 
     @Test
@@ -168,8 +166,8 @@ internal class VarselApiTest {
             }
         }
 
-        response.status `should be equal to` HttpStatusCode.Accepted
-        elapsed `should be less than` doneDelay
+        response.status shouldBe HttpStatusCode.Accepted
+        elapsed shouldBeLessThan doneDelay
     }
 
     private fun authenticated(subject: String, authLevel: Int) = OidcTokenInfo(
@@ -187,7 +185,7 @@ internal class VarselApiTest {
 
         application {
             routing {
-                varselApi(oidcTokenService, varselbjelleConsumer)
+                varsel(oidcTokenService, varselbjelleConsumer)
             }
         }
 

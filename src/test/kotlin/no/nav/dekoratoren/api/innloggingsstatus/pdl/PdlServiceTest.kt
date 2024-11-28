@@ -1,64 +1,61 @@
 package no.nav.dekoratoren.api.innloggingsstatus.pdl
 
+import io.kotest.assertions.assertSoftly
+import io.kotest.matchers.nulls.shouldBeNull
+import io.kotest.matchers.shouldBe
 import io.mockk.coEvery
 import io.mockk.mockk
 import kotlinx.coroutines.runBlocking
 import no.nav.dekoratoren.api.config.Environment
 import no.nav.tms.token.support.azure.exchange.AzureService
-import org.amshove.kluent.`should be equal to`
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-internal class PdlServiceTest {
+class PdlServiceTest {
 
     val azureService: AzureService = mockk()
     val pdlConsumer: PdlConsumer = mockk()
     val environment: Environment = mockk()
 
-    val appName = "appName"
-
-    val ident = "123456"
-    val fornavn = "Fornavn"
-    val mellomnavn = "Mellomnavn"
-    val etternavn = "Etternavn"
-
-    val accessToken = "accessToken"
-
     val pdlService = PdlService(pdlConsumer, azureService, environment)
 
-    @Test
-    fun `should return null if we received an error response from pdl due to a bad token`() {
-        coEvery { environment.pdlAppName } returns appName
-        coEvery { azureService.getAccessToken(appName) } returns accessToken
-        coEvery { pdlConsumer.getPersonInfo(ident, accessToken) } throws PdlException()
-
-        val response = runBlocking { pdlService.getSubjectName(ident) }
-
-        response `should be equal to` null
-    }
-
-    @Test
-    fun `should just return null if we did not receive a valid response for any other reason`() {
-        coEvery { environment.pdlAppName } returns appName
-        coEvery { azureService.getAccessToken(appName) } returns accessToken
-        coEvery { pdlConsumer.getPersonInfo(ident, accessToken) } throws PdlException()
-
-        val response = runBlocking { pdlService.getSubjectName(ident) }
-
-        response `should be equal to` null
+    @BeforeEach
+    fun setupCommonMocks() {
+        coEvery { environment.pdlAppName } returns APP_NAME
+        coEvery { azureService.getAccessToken(APP_NAME) } returns ACCESS_TOKEN
     }
 
     @Test
     fun `should map valid response correctly`() {
-        val pdlResponse = PdlPersonInfoObjectMother.createPdlPersonInfo(fornavn, mellomnavn, etternavn)
+        val pdlResponse = PdlPersonInfoObjectMother.createPdlPersonInfo(FORNAVN, MELLOMNAVN, ETTERNAVN)
+        coEvery { pdlConsumer.getPersonInfo(IDENT, ACCESS_TOKEN) } returns pdlResponse
 
-        coEvery { environment.pdlAppName } returns appName
-        coEvery { azureService.getAccessToken(appName) } returns accessToken
-        coEvery { pdlConsumer.getPersonInfo(ident, accessToken) } returns pdlResponse
+        val response = requireNotNull(runBlocking { pdlService.getSubjectName(IDENT) })
 
-        val response = runBlocking { pdlService.getSubjectName(ident) }
+        assertSoftly(response) {
+            fornavn shouldBe FORNAVN
+            mellomnavn shouldBe MELLOMNAVN
+            etternavn shouldBe ETTERNAVN
+        }
+    }
 
-        response?.fornavn `should be equal to` fornavn
-        response?.mellomnavn `should be equal to` mellomnavn
-        response?.etternavn `should be equal to` etternavn
+    @Test
+    fun `should return null if we received an error response from pdl due to a bad token`() {
+        coEvery { pdlConsumer.getPersonInfo(IDENT, ACCESS_TOKEN) } throws PdlException()
+
+        val response = runBlocking { pdlService.getSubjectName(IDENT) }
+
+        response.shouldBeNull()
+    }
+
+    companion object {
+        val APP_NAME = "appName"
+
+        val IDENT = "123456"
+        val FORNAVN = "Fornavn"
+        val MELLOMNAVN = "Mellomnavn"
+        val ETTERNAVN = "Etternavn"
+
+        val ACCESS_TOKEN = "accessToken"
     }
 }
