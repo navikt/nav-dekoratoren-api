@@ -5,8 +5,7 @@ import io.kotest.matchers.shouldBe
 import io.ktor.client.request.header
 import io.ktor.client.request.request
 import io.ktor.client.request.url
-import io.ktor.client.statement.HttpResponse
-import io.ktor.client.statement.readBytes
+import io.ktor.client.statement.*
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpMethod
 import io.ktor.http.HttpStatusCode
@@ -17,7 +16,6 @@ import io.ktor.server.routing.post
 import io.ktor.server.routing.routing
 import io.ktor.server.testing.ApplicationTestBuilder
 import io.ktor.server.testing.testApplication
-import io.ktor.util.KtorDsl
 import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.every
@@ -61,7 +59,7 @@ class VarselApiTest {
         }
 
         result.status shouldBe HttpStatusCode.OK
-        result.readBytes() shouldBe sammendrag.encodeToByteArray()
+        result.readRawBytes() shouldBe sammendrag.encodeToByteArray()
     }
 
     @Test
@@ -78,7 +76,7 @@ class VarselApiTest {
         }
 
         result.status shouldBe HttpStatusCode.OK
-        result.readBytes() shouldBe id.encodeToByteArray()
+        result.readRawBytes() shouldBe id.encodeToByteArray()
     }
 
     @Test
@@ -179,7 +177,6 @@ class VarselApiTest {
 
     private fun unauthenticated() = null
 
-    @KtorDsl
     private fun testVarselApi(block: suspend ApplicationTestBuilder.(VarselbjelleConsumer) -> Unit) = testApplication {
         val varselbjelleConsumer = VarselbjelleConsumer(varselbjelleUrl, client, tokenFetcher)
 
