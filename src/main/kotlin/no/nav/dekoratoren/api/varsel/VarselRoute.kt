@@ -6,15 +6,14 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.ApplicationCall
-import io.ktor.server.application.call
 import io.ktor.server.request.ApplicationRequest
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondBytes
 import io.ktor.server.routing.Route
+import io.ktor.server.routing.RoutingContext
 import io.ktor.server.routing.get
 import io.ktor.server.routing.post
-import io.ktor.util.pipeline.PipelineContext
 import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenService
 
 fun Route.varsel(oidcTokenService: OidcTokenService, varselbjelleConsumer: VarselbjelleConsumer) {
@@ -28,7 +27,7 @@ fun Route.varsel(oidcTokenService: OidcTokenService, varselbjelleConsumer: Varse
 
     post("/rest/varsel/erlest/{varselId}") {
         doIfAuthenticated(oidcTokenService) { ident, _ ->
-            val varselId = call.parameters["varselId"]?: ""
+            val varselId = call.parameters["varselId"] ?: ""
 
             val response = varselbjelleConsumer.postErLest(ident, varselId)
 
@@ -77,7 +76,7 @@ fun Route.varsel(oidcTokenService: OidcTokenService, varselbjelleConsumer: Varse
     }
 }
 
-suspend fun PipelineContext<Unit, ApplicationCall>.doIfAuthenticated(
+suspend fun RoutingContext.doIfAuthenticated(
     oidcTokenService: OidcTokenService,
     block: suspend (String, Int) -> Unit
 ) {
