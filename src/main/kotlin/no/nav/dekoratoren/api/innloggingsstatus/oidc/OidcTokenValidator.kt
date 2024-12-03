@@ -2,12 +2,15 @@ package no.nav.dekoratoren.api.innloggingsstatus.oidc
 
 import io.ktor.server.application.ApplicationCall
 import io.ktor.server.config.ApplicationConfig
+import no.nav.security.token.support.core.JwtTokenConstants.AUTHORIZATION_HEADER
 import no.nav.security.token.support.core.configuration.IssuerProperties
+import no.nav.security.token.support.core.configuration.IssuerProperties.JwksCache
+import no.nav.security.token.support.core.configuration.IssuerProperties.Validation
 import no.nav.security.token.support.core.configuration.MultiIssuerConfiguration
 import no.nav.security.token.support.core.configuration.ProxyAwareResourceRetriever
 import no.nav.security.token.support.core.jwt.JwtToken
 import no.nav.security.token.support.core.validation.JwtTokenValidationHandler
-import no.nav.security.token.support.v2.asIssuerProps
+import no.nav.security.token.support.v3.asIssuerProps
 
 class OidcTokenValidator(applicationConfig: ApplicationConfig) {
     private val resourceRetriever: ProxyAwareResourceRetriever = ProxyAwareResourceRetriever()
