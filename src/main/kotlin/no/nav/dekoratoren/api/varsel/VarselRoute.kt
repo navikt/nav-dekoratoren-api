@@ -11,9 +11,7 @@ import io.ktor.server.request.ApplicationRequest
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondBytes
-import io.ktor.server.routing.Route
-import io.ktor.server.routing.get
-import io.ktor.server.routing.post
+import io.ktor.server.routing.*
 import io.ktor.util.pipeline.PipelineContext
 import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenService
 
@@ -77,7 +75,7 @@ fun Route.varsel(oidcTokenService: OidcTokenService, varselbjelleConsumer: Varse
     }
 }
 
-suspend fun PipelineContext<Unit, ApplicationCall>.doIfAuthenticated(
+suspend fun RoutingContext.doIfAuthenticated(
     oidcTokenService: OidcTokenService,
     block: suspend (String, Int) -> Unit
 ) {
