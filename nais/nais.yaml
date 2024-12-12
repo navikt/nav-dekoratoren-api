@@ -33,8 +33,8 @@ spec:
       rules:
         - namespace: min-side
           application: tms-varselbjelle-api
-      external:
-        - host: {{ pdl-api-host }}
+        - namespace: pdl
+          application: pdl-api
   envFrom:
     - secret: nav-dekoratoren-api-secret
   resources:
