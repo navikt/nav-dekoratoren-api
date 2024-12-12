@@ -4,6 +4,7 @@
     "https://www.nav.no/person/innloggingsstatus",
     "https://innloggingsstatus-test.intern.nav.no/person/innloggingsstatus"
   ],
+  "pdl-api-host": "pdl-api.prod-fss-pub.nais.io",
   "min-replicas": 2,
   "max-replicas": 8
 }
