@@ -2,7 +2,6 @@
   "ingresses": [
     "https://www.ekstern.dev.nav.no/person/nav-dekoratoren-api"
   ],
-  "pdl-api-host": "pdl-api.dev-fss-pub.nais.io",
   "min-replicas": 1,
   "max-replicas": 2
 }
