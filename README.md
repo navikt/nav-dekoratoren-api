@@ -2,7 +2,7 @@
 
 Ktor-backend for dekoratøren på nav.no.
 
-Secrets ligger i [Google Secret Manager](https://doc.nais.io/security/secrets/google-secrets-manager/).
+Secrets ligger i [Nais console](https://console.nav.cloud.nais.io/team/personbruker/secrets).
 
 ## Deploy til dev
 
