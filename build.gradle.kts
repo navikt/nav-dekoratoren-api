@@ -35,7 +35,7 @@ dependencies {
     val junitVersion = "5.11.4"
     val kotestVersion = "5.9.1"
     val kotlinxCoroutinesVersion = "1.9.0"
-    val kotlinxHtmlJvmVersion = "0.11.0"
+    val kotlinxHtmlJvmVersion = "0.12.0"
     val ktorVersion = "3.0.3"
     val logbackVersion = "1.5.16"
     val logstashVersion = "8.0"
