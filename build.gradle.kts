@@ -3,7 +3,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 plugins {
     val kotlinVersion = "2.1.0"
     val shadowVersion = "8.1.1"
-    val versionsVersion = "0.51.0"
+    val versionsVersion = "0.52.0"
 
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.allopen") version kotlinVersion
@@ -29,7 +29,7 @@ repositories {
 }
 
 dependencies {
-    val caffeineVersion = "3.1.8"
+    val caffeineVersion = "3.2.0"
     val dittnavCommonVersion = "2022.09.30-12.41-aa46d2d75788"
     val jacksonVersion = "2.18.2"
     val junitVersion = "5.11.4"
