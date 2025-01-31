@@ -3,6 +3,11 @@ package no.nav.dekoratoren.api.consent
 import java.util.Date
 
 data class Consent(
+    val consentObject: ConsentObject,
+    val originUrl: String
+)
+
+data class ConsentObject(
     val consent: ConsentOptions,
     val userActionTaken: Boolean,
     val meta: ConsentMeta
