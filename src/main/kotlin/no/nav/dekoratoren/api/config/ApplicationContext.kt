@@ -13,6 +13,7 @@ import no.nav.dekoratoren.api.innloggingsstatus.pdl.PdlConsumer
 import no.nav.dekoratoren.api.innloggingsstatus.pdl.PdlService
 import no.nav.dekoratoren.api.innloggingsstatus.user.SubjectNameService
 import no.nav.dekoratoren.api.varsel.VarselbjelleConsumer
+import no.nav.dekoratoren.api.consent.ConsentService
 import no.nav.dekoratoren.api.varsel.VarselbjelleTokenFetcher
 import no.nav.tms.token.support.azure.exchange.AzureServiceBuilder
 
@@ -34,6 +35,8 @@ class ApplicationContext(config: ApplicationConfig) {
     val subjectNameService = SubjectNameService(pdlService, setupSubjectNameCache(environment))
 
     val authTokenService = AuthTokenService(oidcValidationService, subjectNameService)
+
+    val consentService = ConsentService()
 
     val varselbjelleTokenFetcher = VarselbjelleTokenFetcher(azureService, environment.varselbjelleApiClientId)
     val varselbjelleConsumer = VarselbjelleConsumer(environment.varselbjelleApiUrl, httpClient, varselbjelleTokenFetcher)

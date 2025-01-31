@@ -14,6 +14,7 @@ import io.ktor.server.plugins.cors.routing.CORS
 import io.ktor.server.plugins.defaultheaders.DefaultHeaders
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
+import no.nav.dekoratoren.api.consent.consent
 import no.nav.dekoratoren.api.health.healthApi
 import no.nav.dekoratoren.api.innloggingsstatus.auth
 import no.nav.dekoratoren.api.varsel.varsel
@@ -51,6 +52,7 @@ fun Application.mainModule() {
             healthApi(applicationContext.selfTests, applicationContext.appMicrometerRegistry)
             auth(applicationContext.authTokenService)
             varsel(applicationContext.oidcValidationService, applicationContext.varselbjelleConsumer)
+            consent(applicationContext.consentService)
         }
 
         // Nødvendig for å støtte gamle innloggingsstatus-ingresser
