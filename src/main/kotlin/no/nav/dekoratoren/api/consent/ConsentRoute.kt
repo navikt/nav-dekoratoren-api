@@ -14,6 +14,7 @@ fun Route.consent(consentService: ConsentService) {
     post("/consent") {
         try {
             val consent = call.receive<Consent>()
+            logger.info("Sending consent information: $consent")
             consentService.sendConsentInfoToMetabase(consent)
             call.respond(HttpStatusCode.OK)
         } catch (e: BadRequestException) {
