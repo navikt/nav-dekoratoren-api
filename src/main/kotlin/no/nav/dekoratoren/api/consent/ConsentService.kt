@@ -7,5 +7,6 @@ class ConsentService {
 
     fun sendConsentInfoToMetabase(consent: Consent) {
         logger.info("Sending consent information: $consent")
+
     }
 }

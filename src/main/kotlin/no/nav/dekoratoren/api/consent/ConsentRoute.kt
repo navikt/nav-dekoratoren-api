@@ -2,23 +2,22 @@ package no.nav.dekoratoren.api.consent
 
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.request.receive
+import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import org.slf4j.LoggerFactory
 
-private val logger = LoggerFactory.getLogger("SamtykkeRoute")
+private val logger = LoggerFactory.getLogger("ConsentRoute")
 
 fun Route.consent(consentService: ConsentService) {
     post("/consent") {
         try {
             val consent = call.receive<Consent>()
             consentService.sendConsentInfoToMetabase(consent)
+            call.respond(HttpStatusCode.OK)
         } catch (e: Exception) {
             logger.warn("Klarte ikke lagre samtykkeinformasjon", e)
-            call.respond(
-                HttpStatusCode.InternalServerError,
-                typeInfo = TODO()
-            )
+            call.respond(HttpStatusCode.InternalServerError)
         }
 
     }
