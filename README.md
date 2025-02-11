@@ -10,8 +10,8 @@ Secrets ligger i [Nais console](https://console.nav.cloud.nais.io/team/personbru
 
 ## Prodsetting
 
--   Lag en PR til master, og merge inn etter godkjenning
--   Lag en release på master med versjon-bump, beskrivende tittel og oppsummering av endringene dine
+-   Lag en PR til main, og merge inn etter godkjenning
+-   Lag en release på main med versjon-bump, beskrivende tittel og oppsummering av endringene dine
 -   Publiser release'en for å starte deploy til prod
 
 ## Logging
