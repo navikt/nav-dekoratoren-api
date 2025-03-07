@@ -17,6 +17,10 @@ spec:
   prometheus:
     enabled: true
     path: /person/nav-dekoratoren-api/internal/metrics
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: java
   replicas:
     min: {{ min-replicas }}
     max: {{ max-replicas }}
