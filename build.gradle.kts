@@ -32,7 +32,7 @@ dependencies {
     val caffeineVersion = "3.2.0"
     val dittnavCommonVersion = "2022.09.30-12.41-aa46d2d75788"
     val jacksonVersion = "2.18.3"
-    val junitVersion = "5.12.0"
+    val junitVersion = "5.12.1"
     val kotestVersion = "5.9.1"
     val kotlinxCoroutinesVersion = "1.10.1"
     val kotlinxHtmlJvmVersion = "0.12.0"
