@@ -40,6 +40,14 @@ jobs:
           team: personbruker
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+      - name: Deploy HPA
+        uses: nais/deploy/actions/deploy@v2
+        timeout-minutes: 1
+        continue-on-error: true
+        env:
+          CLUSTER: ${{ inputs.environment }}-gcp
+          RESOURCE: ./nais/hpa.yml
+          VARS: ./nais/${{ inputs.environment }}-gcp/personbruker.json
       - name: Deploy to nais
         uses: nais/deploy/actions/deploy@v2
         env:
