@@ -46,7 +46,7 @@ jobs:
         continue-on-error: true
         env:
           CLUSTER: ${{ inputs.environment }}-gcp
-          RESOURCE: ./nais/hpa.yml
+          RESOURCE: ./nais/hpa.yaml
           VARS: ./nais/${{ inputs.environment }}-gcp/personbruker.json
       - name: Deploy to nais
         uses: nais/deploy/actions/deploy@v2

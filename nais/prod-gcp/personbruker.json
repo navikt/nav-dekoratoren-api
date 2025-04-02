@@ -7,7 +7,7 @@
   "pdl-api-host": "pdl-api.prod-fss-pub.nais.io",
   "min-replicas": 2,
   "max-replicas": 8,
-  "average-utilization": 60,
+  "average-utilization": 80,
   "cpu": "250m",
   "memory": "640Mi"
 }
