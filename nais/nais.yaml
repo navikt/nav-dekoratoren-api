@@ -22,12 +22,11 @@ spec:
       enabled: true
       runtime: java
   replicas:
-    min: {{ min-replicas }}
-    max: {{ max-replicas }}
+    disableAutoScaling: true
   ingresses:
-  {{#each ingresses}}
+    {{#each ingresses}}
     - "{{this}}"
-  {{/each}}
+    {{/each}}
   accessPolicy:
     inbound:
       rules:
@@ -43,10 +42,10 @@ spec:
     - secret: nav-dekoratoren-api-secret
   resources:
     limits:
-      memory: 1024Mi
-    requests:
-      cpu: 300m
       memory: 768Mi
+    requests:
+      cpu: {{ cpu }}
+      memory: {{ memory }}
   azure:
     application:
       enabled: true
