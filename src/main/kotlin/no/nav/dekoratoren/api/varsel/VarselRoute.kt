@@ -1,18 +1,15 @@
 package no.nav.dekoratoren.api.varsel
 
-import io.ktor.client.statement.HttpResponse
-import io.ktor.client.statement.readBytes
+import io.ktor.client.statement.*
 import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.server.application.ApplicationCall
-import io.ktor.server.application.call
 import io.ktor.server.request.ApplicationRequest
 import io.ktor.server.request.receive
 import io.ktor.server.response.respond
 import io.ktor.server.response.respondBytes
 import io.ktor.server.routing.*
-import io.ktor.util.pipeline.PipelineContext
 import no.nav.dekoratoren.api.innloggingsstatus.oidc.OidcTokenService
 
 fun Route.varsel(oidcTokenService: OidcTokenService, varselbjelleConsumer: VarselbjelleConsumer) {
@@ -20,7 +17,7 @@ fun Route.varsel(oidcTokenService: OidcTokenService, varselbjelleConsumer: Varse
         doIfAuthenticated(oidcTokenService) { ident, authLevel ->
             val response = varselbjelleConsumer.getVarselSummary(ident, authLevel)
 
-            call.respondBytes(response.readBytes(), response.contentType(), response.status)
+            call.respondBytes(response.readRawBytes(), response.contentType(), response.status)
         }
     }
 
@@ -30,7 +27,7 @@ fun Route.varsel(oidcTokenService: OidcTokenService, varselbjelleConsumer: Varse
 
             val response = varselbjelleConsumer.postErLest(ident, varselId)
 
-            call.respondBytes(response.readBytes(), response.contentType(), response.status)
+            call.respondBytes(response.readRawBytes(), response.contentType(), response.status)
         }
     }
 
@@ -43,7 +40,7 @@ fun Route.varsel(oidcTokenService: OidcTokenService, varselbjelleConsumer: Varse
             if (response.status == HttpStatusCode.NotFound) {
                 call.respond(HttpStatusCode.BadRequest, "Endepunkt [$path] fantes ikke hos tms-varselbjelle-api")
             } else {
-                call.respondBytes(response.readBytes(), response.contentType(), response.status)
+                call.respondBytes(response.readRawBytes(), response.contentType(), response.status)
             }
         }
     }
@@ -59,7 +56,7 @@ fun Route.varsel(oidcTokenService: OidcTokenService, varselbjelleConsumer: Varse
             if (response.status == HttpStatusCode.NotFound) {
                 call.respond(HttpStatusCode.BadRequest, "Endepunkt [$path] fantes ikke hos tms-varselbjelle-api")
             } else {
-                call.respondBytes(response.readBytes(), response.contentType(), response.status)
+                call.respondBytes(response.readRawBytes(), response.contentType(), response.status)
             }
         }
     }
