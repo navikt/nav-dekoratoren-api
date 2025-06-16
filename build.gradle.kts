@@ -1,7 +1,7 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 plugins {
-    val kotlinVersion = "2.1.20"
+    val kotlinVersion = "2.1.21"
     val shadowVersion = "8.1.1"
     val versionsVersion = "0.52.0"
 
@@ -29,7 +29,7 @@ repositories {
 }
 
 dependencies {
-    val caffeineVersion = "3.2.0"
+    val caffeineVersion = "3.2.1"
     val dittnavCommonVersion = "2022.09.30-12.41-aa46d2d75788"
     val jacksonVersion = "2.19.1"
     val junitVersion = "5.13.1"
@@ -39,7 +39,7 @@ dependencies {
     val ktorVersion = "3.2.0"
     val logbackVersion = "1.5.18"
     val logstashVersion = "8.1"
-    val micrometerVersion = "1.14.5"
+    val micrometerVersion = "1.15.1"
     val mockkVersion = "1.14.2"
 
     val navSecurityVersion = "5.0.29"
