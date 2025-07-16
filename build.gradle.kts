@@ -29,7 +29,7 @@ repositories {
 }
 
 dependencies {
-    val caffeineVersion = "3.2.1"
+    val caffeineVersion = "v3.2.2"
     val dittnavCommonVersion = "2022.09.30-12.41-aa46d2d75788"
     val jacksonVersion = "2.19.1"
     val junitVersion = "5.13.3"
