@@ -18,6 +18,10 @@ spec:
     enabled: true
     path: /person/nav-dekoratoren-api/internal/metrics
   observability:
+    logging:
+      destinations:
+        - id: elastic
+        - id: loki
     autoInstrumentation:
       enabled: true
       runtime: java
