@@ -2,14 +2,14 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 plugins {
     val kotlinVersion = "2.2.20"
-    val shadowVersion = "8.1.1"
+    val shadowVersion = "9.1.0"
     val versionsVersion = "0.52.0"
 
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.allopen") version kotlinVersion
 
-    id("com.github.johnrengelman.shadow") version shadowVersion
-    id("com.github.ben-manes.versions") version versionsVersion // ./gradlew dependencyUpdates to check for new versions
+    id("com.gradleup.shadow") version shadowVersion
+    id("com.github.ben-manes.versions") version versionsVersion
     application
 }
 
@@ -22,8 +22,8 @@ repositories {
     maven("https://jitpack.io")
     maven("https://maven.pkg.github.com/navikt/tms-ktor-token-support") {
         credentials {
-            username = System.getenv("GITHUB_ACTOR")?: "x-access-token"
-            password = System.getenv("GITHUB_TOKEN")?: project.findProperty("githubPassword") as String?
+            username = System.getenv("GITHUB_ACTOR") ?: "x-access-token"
+            password = System.getenv("GITHUB_TOKEN") ?: project.findProperty("githubPassword") as String?
         }
     }
 }
@@ -36,7 +36,7 @@ dependencies {
     val kotestVersion = "6.0.3"
     val kotlinxCoroutinesVersion = "1.10.2"
     val kotlinxHtmlJvmVersion = "0.12.0"
-    val ktorVersion = "3.2.3"
+    val ktorVersion = "3.3.0"
     val logbackVersion = "1.5.18"
     val logstashVersion = "8.1"
     val micrometerVersion = "1.15.4"
