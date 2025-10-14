@@ -2,8 +2,8 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 plugins {
     val kotlinVersion = "2.2.20"
-    val shadowVersion = "9.1.0"
-    val versionsVersion = "0.52.0"
+    val shadowVersion = "9.2.2"
+    val versionsVersion = "0.53.0"
 
     kotlin("jvm") version kotlinVersion
     kotlin("plugin.allopen") version kotlinVersion
