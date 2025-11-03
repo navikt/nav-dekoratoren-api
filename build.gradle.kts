@@ -29,20 +29,20 @@ repositories {
 }
 
 dependencies {
-    val caffeineVersion = "3.2.2"
+    val caffeineVersion = "3.2.3"
     val dittnavCommonVersion = "2022.09.30-12.41-aa46d2d75788"
-    val jacksonVersion = "2.20.0"
-    val junitVersion = "6.0.0"
-    val kotestVersion = "6.0.3"
+    val jacksonVersion = "2.20.1"
+    val junitVersion = "6.0.1"
+    val kotestVersion = "6.0.4"
     val kotlinxCoroutinesVersion = "1.10.2"
     val kotlinxHtmlJvmVersion = "0.12.0"
     val ktorVersion = "3.3.1"
-    val logbackVersion = "1.5.19"
+    val logbackVersion = "1.5.20"
     val logstashVersion = "8.1"
     val micrometerVersion = "1.15.4"
     val mockkVersion = "1.14.6"
 
-    val navSecurityVersion = "5.0.37"
+    val navSecurityVersion = "5.0.39"
     val tmsKtorTokenSupportVersion = "5.0.4"
 
     implementation("com.github.navikt.dittnav-common-lib:dittnav-common-utils:$dittnavCommonVersion")
