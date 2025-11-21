@@ -42,7 +42,7 @@ dependencies {
     val micrometerVersion = "1.15.5"
     val mockkVersion = "1.14.6"
 
-    val navSecurityVersion = "5.0.39"
+    val navSecurityVersion = "6.0.0"
     val tmsKtorTokenSupportVersion = "5.0.4"
 
     implementation("com.github.navikt.dittnav-common-lib:dittnav-common-utils:$dittnavCommonVersion")
