@@ -1,7 +1,7 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 plugins {
-    val kotlinVersion = "2.2.21"
+    val kotlinVersion = "2.3.0"
     val shadowVersion = "9.3.1"
     val versionsVersion = "0.53.0"
 
@@ -32,21 +32,17 @@ dependencies {
     val caffeineVersion = "3.2.3"
     val dittnavCommonVersion = "2022.09.30-12.41-aa46d2d75788"
     val jacksonVersion = "2.21.0"
-    val junitVersion = "6.0.1"
+    val junitVersion = "6.0.2"
     val kotestVersion = "6.0.7"
     val kotlinxCoroutinesVersion = "1.10.2"
     val kotlinxHtmlJvmVersion = "0.12.0"
     val ktorVersion = "3.3.3"
-<<<<<<< Updated upstream
-    val logbackVersion = "1.5.23"
-=======
     val logbackVersion = "1.5.25"
->>>>>>> Stashed changes
     val logstashVersion = "9.0"
     val micrometerVersion = "1.16.1"
     val mockkVersion = "1.14.7"
 
-    val navSecurityVersion = "5.0.39"
+    val navSecurityVersion = "6.0.0"
     val tmsKtorTokenSupportVersion = "5.0.5"
 
     implementation("com.github.navikt.dittnav-common-lib:dittnav-common-utils:$dittnavCommonVersion")
