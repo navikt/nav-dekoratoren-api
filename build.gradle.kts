@@ -33,7 +33,7 @@ dependencies {
     val dittnavCommonVersion = "2022.09.30-12.41-aa46d2d75788"
     val jacksonVersion = "2.21.0"
     val junitVersion = "6.0.2"
-    val kotestVersion = "6.0.7"
+    val kotestVersion = "6.1.0"
     val kotlinxCoroutinesVersion = "1.10.2"
     val kotlinxHtmlJvmVersion = "0.12.0"
     val ktorVersion = "3.3.3"
