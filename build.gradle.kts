@@ -43,7 +43,7 @@ dependencies {
     val mockkVersion = "1.14.7"
 
     val navSecurityVersion = "6.0.0"
-    val tmsKtorTokenSupportVersion = "5.0.5"
+    val tmsKtorTokenSupportVersion = "5.0.6"
 
     implementation("com.github.navikt.dittnav-common-lib:dittnav-common-utils:$dittnavCommonVersion")
     implementation("no.nav.tms.token.support:azure-exchange:$tmsKtorTokenSupportVersion")
