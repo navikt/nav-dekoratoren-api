@@ -49,7 +49,7 @@ dependencies {
     implementation("no.nav.tms.token.support:azure-exchange:$tmsKtorTokenSupportVersion")
     implementation("com.github.ben-manes.caffeine:caffeine:$caffeineVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
-    implementation("com.fasterxml.jackson.module:jackson-module-ko≥tlin:$jacksonVersion")
+    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:$kotlinxHtmlJvmVersion")
     implementation("io.ktor:ktor-client-apache:$ktorVersion")
