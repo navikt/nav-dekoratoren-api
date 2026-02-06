@@ -33,17 +33,17 @@ dependencies {
     val dittnavCommonVersion = "2022.09.30-12.41-aa46d2d75788"
     val jacksonVersion = "2.21.0"
     val junitVersion = "6.0.2"
-    val kotestVersion = "6.0.7"
+    val kotestVersion = "6.1.1"
     val kotlinxCoroutinesVersion = "1.10.2"
     val kotlinxHtmlJvmVersion = "0.12.0"
-    val ktorVersion = "3.3.3"
-    val logbackVersion = "1.5.24"
+    val ktorVersion = "3.4.0"
+    val logbackVersion = "1.5.26"
     val logstashVersion = "9.0"
-    val micrometerVersion = "1.16.1"
-    val mockkVersion = "1.14.7"
+    val micrometerVersion = "1.16.2"
+    val mockkVersion = "1.14.9"
 
     val navSecurityVersion = "6.0.0"
-    val tmsKtorTokenSupportVersion = "5.0.5"
+    val tmsKtorTokenSupportVersion = "5.0.6"
 
     implementation("com.github.navikt.dittnav-common-lib:dittnav-common-utils:$dittnavCommonVersion")
     implementation("no.nav.tms.token.support:azure-exchange:$tmsKtorTokenSupportVersion")
