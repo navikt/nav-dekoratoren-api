@@ -31,7 +31,7 @@ repositories {
 dependencies {
     val caffeineVersion = "3.2.3"
     val dittnavCommonVersion = "2022.09.30-12.41-aa46d2d75788"
-    val jacksonVersion = "2.21.0"
+    val jacksonVersion = "2.21.1"
     val junitVersion = "6.0.2"
     val kotestVersion = "6.1.1"
     val kotlinxCoroutinesVersion = "1.10.2"
