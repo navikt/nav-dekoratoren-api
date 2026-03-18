@@ -42,7 +42,7 @@ dependencies {
     val micrometerVersion = "1.16.4"
     val mockkVersion = "1.14.9"
 
-    val navSecurityVersion = "6.0.0"
+    val navSecurityVersion = "6.0.3"
     val tmsKtorTokenSupportVersion = "5.0.6"
 
     implementation("com.github.navikt.dittnav-common-lib:dittnav-common-utils:$dittnavCommonVersion")
@@ -52,7 +52,7 @@ dependencies {
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion")
     implementation("org.jetbrains.kotlinx:kotlinx-html-jvm:$kotlinxHtmlJvmVersion")
-    implementation("io.ktor:ktor-client-apache:$ktorVersion")
+    implementation("io.ktor:ktor-client-apache5:$ktorVersion")
     implementation("io.ktor:ktor-client-jackson:$ktorVersion")
     implementation("io.ktor:ktor-client-json:$ktorVersion")
     implementation("io.ktor:ktor-client-logging:$ktorVersion")
