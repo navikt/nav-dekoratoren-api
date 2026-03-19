@@ -5,20 +5,33 @@ on:
       - main
 
 jobs:
-  deploy:
+  build-and-deploy:
+    runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write
       packages: read
-    uses: ./.github/workflows/build-and-deploy.yml
-    with:
-      environment: prod
-    secrets:
-      NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      - name: Build and deploy prod
+        uses: ./.github/actions/build-and-deploy
+        with:
+          ENVIRONMENT: prod
+
+      - name: Deploy HPA
+        uses: nais/deploy/actions/deploy@v2
+        timeout-minutes: 1
+        continue-on-error: true
+        env:
+          CLUSTER: prod-gcp
+          RESOURCE: ./nais/hpa.yaml
+          VARS: ./nais/prod-gcp/personbruker.json
 
   release:
     name: Create a new release
-    needs: deploy
+    needs: build-and-deploy
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -26,6 +39,7 @@ jobs:
     steps:
       - name: Generate unique tag name
         run: echo "TAG_NAME=$(date +%s)" >> $GITHUB_ENV
+
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
