@@ -1,15 +1,32 @@
 name: Deploy to dev
 on:
-  workflow_dispatch
+  workflow_dispatch:
+
+env:
+  ENVIRONMENT: dev
 
 jobs:
-  deploy:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ env.ENVIRONMENT }}
     permissions:
       contents: read
       id-token: write
       packages: read
-    uses: ./.github/workflows/build-and-deploy.yml
-    with:
-      environment: dev
-    secrets:
-      NAIS_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      - name: Build and deploy dev
+        uses: ./.github/actions/build-and-deploy
+        with:
+          ENVIRONMENT: ${{ env.ENVIRONMENT }}
+
+      - name: Deploy HPA
+        uses: nais/deploy/actions/deploy@v2
+        timeout-minutes: 1
+        continue-on-error: true
+        env:
+          CLUSTER: ${{ env.ENVIRONMENT }}-gcp
+          RESOURCE: ./nais/hpa.yaml
+          VARS: ./nais/${{ env.ENVIRONMENT }}-gcp/personbruker.json
