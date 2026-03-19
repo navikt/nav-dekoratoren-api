@@ -2,13 +2,10 @@ name: Deploy to dev
 on:
   workflow_dispatch:
 
-env:
-  ENVIRONMENT: dev
-
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
-    environment: ${{ env.ENVIRONMENT }}
+    environment: dev
     permissions:
       contents: read
       id-token: write
@@ -20,13 +17,13 @@ jobs:
       - name: Build and deploy dev
         uses: ./.github/actions/build-and-deploy
         with:
-          ENVIRONMENT: ${{ env.ENVIRONMENT }}
+          ENVIRONMENT: dev
 
       - name: Deploy HPA
         uses: nais/deploy/actions/deploy@v2
         timeout-minutes: 1
         continue-on-error: true
         env:
-          CLUSTER: ${{ env.ENVIRONMENT }}-gcp
+          CLUSTER: dev-gcp
           RESOURCE: ./nais/hpa.yaml
-          VARS: ./nais/${{ env.ENVIRONMENT }}-gcp/personbruker.json
+          VARS: ./nais/dev-gcp/personbruker.json
