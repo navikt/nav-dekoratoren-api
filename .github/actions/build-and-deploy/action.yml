@@ -4,6 +4,12 @@ inputs:
   ENVIRONMENT:
     description: Target environment, for example dev or prod
     required: true
+  IDENTITY_PROVIDER:
+    description: NAIS workload identity provider
+    required: true
+  PROJECT_ID:
+    description: NAIS management project ID
+    required: true
 
 outputs:
   image:
@@ -38,13 +44,13 @@ runs:
       id: docker-build-push
       with:
         team: personbruker
-        identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-        project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+        identity_provider: ${{ inputs.IDENTITY_PROVIDER }}
+        project_id: ${{ inputs.PROJECT_ID }}
 
     - name: Deploy to nais
       uses: nais/deploy/actions/deploy@v2
       env:
-        CLUSTER: ${{ inputs.environment }}-gcp
+        CLUSTER: ${{ inputs.ENVIRONMENT }}-gcp
         RESOURCE: ./nais/nais.yaml
         VAR: image=${{ steps.docker-build-push.outputs.image }}
-        VARS: ./nais/${{ inputs.environment }}-gcp/personbruker.json
+        VARS: ./nais/${{ inputs.ENVIRONMENT }}-gcp/personbruker.json
