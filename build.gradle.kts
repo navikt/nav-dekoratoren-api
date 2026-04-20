@@ -1,7 +1,7 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 plugins {
-    val kotlinVersion = "2.3.0"
+    val kotlinVersion = "2.3.20"
     val shadowVersion = "9.4.1"
     val versionsVersion = "0.53.0"
 
@@ -42,7 +42,7 @@ dependencies {
     val micrometerVersion = "1.16.4"
     val mockkVersion = "1.14.9"
 
-    val navSecurityVersion = "6.0.3"
+    val navSecurityVersion = "6.0.5"
     val tmsKtorTokenSupportVersion = "5.0.6"
 
     implementation("com.github.navikt.dittnav-common-lib:dittnav-common-utils:$dittnavCommonVersion")
