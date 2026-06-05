@@ -37,7 +37,7 @@ runs:
       shell: bash
       run: ./gradlew clean build
       env:
-        GITHUB_TOKEN: ${{ github.token }}
+        GITHUB_TOKEN: ${{ env.GITHUB_TOKEN }}
 
     - name: Build and push docker image
       uses: nais/docker-build-push@v0
