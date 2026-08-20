@@ -8,12 +8,18 @@ metadata:
 spec:
   image: {{image}}
   port: 8080
+  startup:
+    path: /person/nav-dekoratoren-api/internal/isAlive
+    initialDelay: 10
+    failureThreshold: 30
+    periodSeconds: 5
   liveness:
     path: /person/nav-dekoratoren-api/internal/isAlive
     initialDelay: 5
   readiness:
     path: /person/nav-dekoratoren-api/internal/isReady
     initialDelay: 5
+  terminationGracePeriodSeconds: 30
   prometheus:
     enabled: true
     path: /person/nav-dekoratoren-api/internal/metrics
