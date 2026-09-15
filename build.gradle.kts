@@ -1,7 +1,7 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat
 
 plugins {
-    val kotlinVersion = "2.4.20"
+    val kotlinVersion = "2.4.10"
     val shadowVersion = "9.6.1"
     val versionsVersion = "0.63.0"
 
