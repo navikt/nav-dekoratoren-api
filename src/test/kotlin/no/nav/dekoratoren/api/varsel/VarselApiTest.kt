@@ -1,5 +1,6 @@
 package no.nav.dekoratoren.api.varsel
 
+import io.kotest.assertions.json.shouldEqualJson
 import io.kotest.matchers.longs.shouldBeLessThan
 import io.kotest.matchers.shouldBe
 import io.ktor.client.request.header
@@ -37,7 +38,7 @@ class VarselApiTest {
     private val level = 4
     private val dummyDateTime = LocalDateTime.now()
     private val varselbjelleUrl = "http://varselbjelle-api"
-    private val sammendrag = "sammendrag"
+    private val sammendrag = """{"antall":2,"varsler":[{"id":"1"},{"id":"2"}]}"""
 
     private val doneDelay = 3000L
 
@@ -59,7 +60,14 @@ class VarselApiTest {
         }
 
         result.status shouldBe HttpStatusCode.OK
-        result.readRawBytes() shouldBe sammendrag.encodeToByteArray()
+        val body = result.readRawBytes()
+        body shouldBe sammendrag.encodeToByteArray()
+        body.decodeToString() shouldEqualJson """
+            {
+                "varsler": [{"id": "1"}, {"id": "2"}],
+                "antall": 2
+            }
+        """.trimIndent()
     }
 
     @Test
