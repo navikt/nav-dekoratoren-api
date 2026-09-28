@@ -9,7 +9,7 @@ plugins {
     kotlin("plugin.allopen") version kotlinVersion
 
     id("com.gradleup.shadow") version shadowVersion
-    id("com.github.ben-manes.versions") version versionsVersion
+    id("io.github.ben-manes.versions") version versionsVersion
     application
 }
 
