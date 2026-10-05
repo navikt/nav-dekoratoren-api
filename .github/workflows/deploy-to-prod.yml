@@ -23,7 +23,7 @@ jobs:
           PROJECT_ID: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
 
       - name: Deploy HPA
-        uses: nais/deploy/actions/deploy@v2
+        uses: nais/deploy/actions/deploy@v3
         timeout-minutes: 1
         continue-on-error: true
         env:
