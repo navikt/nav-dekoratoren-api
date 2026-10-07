@@ -28,4 +28,4 @@ jobs:
         env:
           CLUSTER: dev-gcp
           RESOURCE: ./nais/hpa.yaml
-          VARS: ./nais/dev-gcp/personbruker.json
+          VARS: ./nais/dev-gcp/navno.json

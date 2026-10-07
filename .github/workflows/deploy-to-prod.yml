@@ -29,7 +29,7 @@ jobs:
         env:
           CLUSTER: prod-gcp
           RESOURCE: ./nais/hpa.yaml
-          VARS: ./nais/prod-gcp/personbruker.json
+          VARS: ./nais/prod-gcp/navno.json
 
   release:
     name: Create a new release
