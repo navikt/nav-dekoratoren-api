@@ -2,9 +2,9 @@ apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
   name: nav-dekoratoren-api-alert
-  namespace: personbruker
+  namespace: navno
   labels:
-    team: personbruker
+    team: navno
 spec:
   groups:
     - name: nav-dekoratoren-api-alert
@@ -30,7 +30,7 @@ spec:
             receiver_reference: team-navno-backend-alerts
             alert_type: custom
         - alert: Høy andel HTTP serverfeil (5xx responser)
-          expr: (100 * (sum by (backend) (rate(ktor_http_server_requests_seconds_count {status=~"^5\\d\\d", namespace="personbruker", app="nav-dekoratoren-api"}[3m])) / sum by (backend) (rate(ktor_http_server_requests_seconds_count {namespace="personbruker", app="nav-dekoratoren-api"}[3m])))) > 1
+          expr: (100 * (sum by (backend) (rate(ktor_http_server_requests_seconds_count {status=~"^5\\d\\d", namespace="navno", app="nav-dekoratoren-api"}[3m])) / sum by (backend) (rate(ktor_http_server_requests_seconds_count {namespace="navno", app="nav-dekoratoren-api"}[3m])))) > 1
           for: 3m
           annotations:
             summary: "App nav-dekoratoren-api returnerer en høy andel 5xx-responser"
@@ -40,7 +40,7 @@ spec:
             receiver_reference: team-navno-backend-alerts
             alert_type: custom
         - alert: Høy andel HTTP klientfeil (4xx responser)
-          expr: (100 * (sum by (backend) (rate(ktor_http_server_requests_seconds_count {status=~"^4\\d\\d", namespace="personbruker", app="nav-dekoratoren-api"}[3m])) / sum by (backend) (rate(ktor_http_server_requests_seconds_count {namespace="personbruker", app="nav-dekoratoren-api"}[3m])))) > 10
+          expr: (100 * (sum by (backend) (rate(ktor_http_server_requests_seconds_count {status=~"^4\\d\\d", namespace="navno", app="nav-dekoratoren-api"}[3m])) / sum by (backend) (rate(ktor_http_server_requests_seconds_count {namespace="navno", app="nav-dekoratoren-api"}[3m])))) > 10
           for: 3m
           annotations:
             summary: "App nav-dekoratoren-api returnerer en høy andel 4xx-responser"
