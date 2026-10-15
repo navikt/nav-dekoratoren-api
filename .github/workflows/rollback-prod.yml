@@ -33,6 +33,6 @@ jobs:
       cluster: prod-gcp
       ref: ${{ needs.find.outputs.sha }}
       resource: nais/nais.yaml
-      vars: nais/prod-gcp/personbruker.json
+      vars: nais/prod-gcp/navno.json
       var: image=${{ needs.find.outputs.image }}
       hpa-resource: nais/hpa.yaml

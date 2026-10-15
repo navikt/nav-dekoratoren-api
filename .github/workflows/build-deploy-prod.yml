@@ -13,7 +13,7 @@ jobs:
     uses: navikt/navno-ci/.github/workflows/jvm-build.yml@v1
     permissions: { contents: read, id-token: write, packages: read }
     with:
-      team: personbruker
+      team: navno
       gradle-args: clean build --no-daemon
     secrets: inherit
 
@@ -24,6 +24,6 @@ jobs:
     with:
       cluster: prod-gcp
       resource: nais/nais.yaml
-      vars: nais/prod-gcp/personbruker.json
+      vars: nais/prod-gcp/navno.json
       var: image=${{ needs.build.outputs.image }}
       hpa-resource: nais/hpa.yaml

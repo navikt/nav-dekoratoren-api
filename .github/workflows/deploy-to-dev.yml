@@ -11,7 +11,7 @@ jobs:
   build:
     uses: navikt/navno-ci/.github/workflows/jvm-build.yml@v1
     with:
-      team: personbruker
+      team: navno
       github-environment: dev
       image-suffix: dev-deploy
       gradle-args: clean build --no-daemon
@@ -24,6 +24,6 @@ jobs:
       environment: dev
       cluster: dev-gcp
       resource: nais/nais.yaml
-      vars: nais/dev-gcp/personbruker.json
+      vars: nais/dev-gcp/navno.json
       var: image=${{ needs.build.outputs.image }}
       hpa-resource: nais/hpa.yaml

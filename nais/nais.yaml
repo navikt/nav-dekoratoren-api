@@ -2,9 +2,9 @@ apiVersion: "nais.io/v1alpha1"
 kind: "Application"
 metadata:
   name: nav-dekoratoren-api
-  namespace: personbruker
+  namespace: navno
   labels:
-    team: personbruker
+    team: navno
 spec:
   image: {{image}}
   port: 8080
@@ -42,6 +42,8 @@ spec:
       rules:
         - application: "*"
           namespace: personbruker
+        - application: "*"
+          namespace: navno
     outbound:
       rules:
         - namespace: min-side
