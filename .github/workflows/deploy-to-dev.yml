@@ -2,30 +2,28 @@ name: Deploy to dev
 on:
   workflow_dispatch:
 
+permissions:
+  contents: read
+  id-token: write
+  packages: read
+
 jobs:
-  build-and-deploy:
-    runs-on: ubuntu-latest
-    environment: dev
-    permissions:
-      contents: read
-      id-token: write
-      packages: read
-    steps:
-      - name: Checkout repo
-        uses: actions/checkout@v7
+  build:
+    uses: navikt/navno-ci/.github/workflows/jvm-build.yml@v1
+    with:
+      team: navno
+      github-environment: dev
+      image-suffix: dev-deploy
+      gradle-args: clean build --no-daemon
+    secrets: inherit
 
-      - name: Build and deploy dev
-        uses: ./.github/actions/build-and-deploy
-        with:
-          ENVIRONMENT: dev
-          IDENTITY_PROVIDER: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          PROJECT_ID: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-
-      - name: Deploy HPA
-        uses: nais/deploy/actions/deploy@v3
-        timeout-minutes: 1
-        continue-on-error: true
-        env:
-          CLUSTER: dev-gcp
-          RESOURCE: ./nais/hpa.yaml
-          VARS: ./nais/dev-gcp/navno.json
+  deploy:
+    needs: build
+    uses: navikt/navno-ci/.github/workflows/nais-deploy.yml@v1
+    with:
+      environment: dev
+      cluster: dev-gcp
+      resource: nais/nais.yaml
+      vars: nais/dev-gcp/navno.json
+      var: image=${{ needs.build.outputs.image }}
+      hpa-resource: nais/hpa.yaml

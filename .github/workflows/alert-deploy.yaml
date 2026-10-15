@@ -7,18 +7,13 @@ on:
       - 'nais/alerts.yaml'
       - '.github/workflows/alert-deploy.yaml'
 
-jobs:
-  apply-alerts:
-    name: Apply alerts to cluster
-    permissions:
-      id-token: write
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v7
+permissions:
+  contents: read
+  id-token: write
 
-      - name: Deploy alerts to prod
-        uses: nais/deploy/actions/deploy@v3
-        env:
-          CLUSTER: prod-gcp
-          RESOURCE: ./nais/alerts.yaml
+jobs:
+  alerts:
+    uses: navikt/navno-ci/.github/workflows/nais-deploy.yml@v1
+    with:
+      cluster: prod-gcp
+      resource: nais/alerts.yaml
