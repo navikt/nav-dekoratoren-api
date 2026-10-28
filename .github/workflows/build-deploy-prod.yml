@@ -1,0 +1,29 @@
+# Builds main and deploys it to prod.
+# Callers need `permissions: { contents: read, id-token: write, packages: read }` and `secrets: inherit`.
+name: Build and deploy to prod
+on:
+  workflow_call:
+    outputs:
+      image:
+        description: The deployed image, digest-pinned.
+        value: ${{ jobs.build.outputs.image }}
+
+jobs:
+  build:
+    uses: navikt/navno-ci/.github/workflows/jvm-build.yml@v1
+    permissions: { contents: read, id-token: write, packages: read }
+    with:
+      team: navno
+      gradle-args: clean build --no-daemon
+    secrets: inherit
+
+  deploy:
+    needs: build
+    uses: navikt/navno-ci/.github/workflows/nais-deploy.yml@v1
+    permissions: { contents: read, id-token: write }
+    with:
+      cluster: prod-gcp
+      resource: nais/nais.yaml
+      vars: nais/prod-gcp/navno.json
+      var: image=${{ needs.build.outputs.image }}
+      hpa-resource: nais/hpa.yaml

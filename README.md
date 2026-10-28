@@ -2,7 +2,7 @@
 
 Ktor-backend for dekoratøren på nav.no.
 
-Secrets ligger i [Nais console](https://console.nav.cloud.nais.io/team/personbruker/secrets).
+Secrets ligger i [Nais console](https://console.nav.cloud.nais.io/team/navno/secrets).
 
 ## Deploy til dev
 
