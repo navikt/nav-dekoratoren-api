@@ -9,43 +9,57 @@ spec:
   groups:
     - name: nav-dekoratoren-api-alert
       rules:
-        - alert: applikasjon nede
+        - alert: nav-dekoratoren-api is down
           expr: kube_deployment_status_replicas_available{deployment="nav-dekoratoren-api"} == 0
           for: 2m
           annotations:
-            summary: "App nav-dekoratoren-api er nede"
-            action: "Sjekk logger/events i kubectl"
+            summary: "nav-dekoratoren-api is down"
+            action: "Check logs and events with kubectl"
           labels:
             severity: danger
             receiver_reference: team-navno-backend-alerts
             alert_type: custom
-        - alert: høy feilrate i logger
+        - alert: nav-dekoratoren-api high error rate in logs
           expr: (100 * sum by (log_app, log_namespace) (rate(log_messages_errors{app="nav-dekoratoren-api",level=~"Warning|Error"}[3m])) / sum by (log_app, log_namespace) (rate(log_messages_total{app="nav-dekoratoren-api"}[3m]))) > 10
           for: 3m
           annotations:
-            summary: "App nav-dekoratoren-api har høy feilrate i logger"
-            action: "Sjekk logger i kibana eller kubectl"
+            summary: "nav-dekoratoren-api has a high error rate in its logs"
+            action: "Check the logs in Grafana or with kubectl"
           labels:
             severity: warning
             receiver_reference: team-navno-backend-alerts
             alert_type: custom
-        - alert: Høy andel HTTP serverfeil (5xx responser)
+        - alert: nav-dekoratoren-api high share of 5xx responses
           expr: (100 * (sum by (backend) (rate(ktor_http_server_requests_seconds_count {status=~"^5\\d\\d", namespace="navno", app="nav-dekoratoren-api"}[3m])) / sum by (backend) (rate(ktor_http_server_requests_seconds_count {namespace="navno", app="nav-dekoratoren-api"}[3m])))) > 1
           for: 3m
           annotations:
-            summary: "App nav-dekoratoren-api returnerer en høy andel 5xx-responser"
-            action: "Sjekk logger i kibana eller kubectl"
+            summary: "nav-dekoratoren-api returns a high share of 5xx responses"
+            action: "Check the logs in Grafana or with kubectl"
           labels:
             severity: danger
             receiver_reference: team-navno-backend-alerts
             alert_type: custom
-        - alert: Høy andel HTTP klientfeil (4xx responser)
+        - alert: nav-dekoratoren-api high share of 4xx responses
           expr: (100 * (sum by (backend) (rate(ktor_http_server_requests_seconds_count {status=~"^4\\d\\d", namespace="navno", app="nav-dekoratoren-api"}[3m])) / sum by (backend) (rate(ktor_http_server_requests_seconds_count {namespace="navno", app="nav-dekoratoren-api"}[3m])))) > 10
           for: 3m
           annotations:
-            summary: "App nav-dekoratoren-api returnerer en høy andel 4xx-responser"
-            action: "Sjekk logger i kibana eller kubectl"
+            summary: "nav-dekoratoren-api returns a high share of 4xx responses"
+            action: "Check the logs in Grafana or with kubectl"
           labels:
             severity: warning
+            receiver_reference: team-navno-backend-alerts
+            alert_type: custom
+        # A pod that accepts requests but completes none.
+        # Normally 1-3 requests are in progress per pod; a stuck pod piles up thousands
+        # Requests never complete, so the 5xx alert doesn't fire
+        - alert: nav-dekoratoren-api pod not completing requests
+          expr: max by (pod) (ktor_http_server_requests_active{namespace="navno", app="nav-dekoratoren-api"}) > 100
+          for: 2m
+          annotations:
+            summary: '\{{ $labels.pod }} has \{{ $value }} requests in progress and is not completing them'
+            consequence: "Requests routed to this pod hang or get 502 from Wonderwall, so logged-in users can be shown as logged out in the decorator."
+            action: 'Delete the pod (kubectl delete pod -n navno \{{ $labels.pod }}) if it does not restart by itself.'
+          labels:
+            severity: danger
             receiver_reference: team-navno-backend-alerts
             alert_type: custom
